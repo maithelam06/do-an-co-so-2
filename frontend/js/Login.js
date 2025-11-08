@@ -19,12 +19,18 @@ formLogin.addEventListener('submit', async (event) => {
         const data = await e.json();
 
         if (data.status === 'success') {
-            // 🧩 Lưu thông tin đăng nhập để dùng sau
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('role', data.role);
-            localStorage.setItem('name', data.name);
+            //Lưu thông tin đăng nhập để dùng sau
 
-            
+            const user = {
+                name: data.user.name,
+                role: data.role,
+                avatar: data.user.avatar,
+                token: data.token
+            }
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(user)); // lưu cả user object
+
+
             await Swal.fire({
                 scrollbarPadding: false,
                 heightAuto: false,
@@ -35,9 +41,9 @@ formLogin.addEventListener('submit', async (event) => {
             });
 
             if (data.role === 'admin') {
-                window.location.href = '/frontend/admin/dashboard.html';
+                window.location.href = '/frontend/Admin/admin.html';
             } else {
-                window.location.href = '';
+                window.location.href = '/frontend/trangchu.html';
             }
 
         } else {

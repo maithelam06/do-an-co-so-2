@@ -1,385 +1,220 @@
 // ===========================================
-        // CẤU HÌNH API - Thay đổi URL của bạn ở đây
-        // ===========================================
-        const API_BASE_URL = 'http://localhost:8000/api'; // URL Laravel API của bạn
-        
-        // ===========================================
-        // LOAD CATEGORIES
-        // ===========================================
-        async function loadCategories() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/categories`);
-                const categories = await response.json();
-                
-                const categoriesList = document.getElementById('categories-list');
-                
-                // Category "Tất cả"
-                categoriesList.innerHTML = `
-                    <div class="category-item active" onclick="filterByCategory('all')">
-                        <i class="fas fa-th"></i> Tất cả
-                    </div>
-                `;
-                
-                // Render categories từ API
-                categories.forEach(category => {
-                    categoriesList.innerHTML += `
-                        <div class="category-item" onclick="filterByCategory('${category.slug}')">
-                            <i class="${category.icon || 'fas fa-tag'}"></i> ${category.name}
-                        </div>
-                    `;
-                });
-            } catch (error) {
-                console.error('Lỗi khi load categories:', error);
-                // Nếu API lỗi, hiển thị categories mẫu
-                loadDemoCategories();
-            }
-        }
+// ⚙️ CẤU HÌNH API
+// ===========================================
+const API_BASE_URL = 'http://localhost:8000/api'; // Laravel API
 
-        // Categories mẫu khi chưa có API
-        function loadDemoCategories() {
-            const demoCategories = [
-                {name: 'Tất cả', icon: 'fas fa-th', slug: 'all'},
-                {name: 'Laptop', icon: 'fas fa-laptop', slug: 'laptop'},
-                {name: 'Điện thoại', icon: 'fas fa-mobile-alt', slug: 'phone'},
-                {name: 'Tablet', icon: 'fas fa-tablet-alt', slug: 'tablet'},
-                {name: 'Tai nghe', icon: 'fas fa-headphones', slug: 'headphone'},
-                {name: 'Đồng hồ', icon: 'fas fa-clock', slug: 'watch'},
-                {name: 'Camera', icon: 'fas fa-camera', slug: 'camera'},
-                {name: 'Phụ kiện', icon: 'fas fa-plug', slug: 'accessory'}
-            ];
+// ===========================================
+// 🔖 LOAD DANH MỤC
+// ===========================================
+async function loadCategories() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/categories`);
+    const categories = await response.json();
 
-            const categoriesList = document.getElementById('categories-list');
-            categoriesList.innerHTML = '';
-            
-            demoCategories.forEach((cat, index) => {
-                categoriesList.innerHTML += `
-                    <div class="category-item ${index === 0 ? 'active' : ''}" onclick="filterByCategory('${cat.slug}')">
-                        <i class="${cat.icon}"></i> ${cat.name}
-                    </div>
-                `;
-            });
-        }
+    renderCategories(categories);
+  } catch (error) {
+    console.warn('⚠️ Lỗi khi load categories, dùng demo:', error);
+    loadDemoCategories();
+  }
+}
 
-        // ===========================================
-        // LOAD PRODUCTS
-        // ===========================================
-        let currentCategory = 'all';
-        
-        async function loadProducts(categorySlug = 'all') {
-            try {
-                currentCategory = categorySlug;
-                const url = categorySlug === 'all' 
-                    ? `${API_BASE_URL}/products`
-                    : `${API_BASE_URL}/products?category=${categorySlug}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                // Giả sử API trả về: { data: [...products], categories: [...] }
-                const products = data.data || data;
-                
-                if (categorySlug === 'all') {
-                    // Hiển thị tất cả categories với products
-                    const groupedProducts = {};
-                    products.forEach(product => {
-                        const catName = product.category_name || 'Khác';
-                        if (!groupedProducts[catName]) {
-                            groupedProducts[catName] = [];
-                        }
-                        groupedProducts[catName].push(product);
-                    });
-                    renderProducts(groupedProducts);
-                } else {
-                    // Hiển thị chỉ 1 category được chọn
-                    const categoryName = products[0]?.category_name || 'Sản phẩm';
-                    const categoryIcon = products[0]?.category_icon || 'fas fa-box';
-                    renderSingleCategory(categoryName, categoryIcon, categorySlug, products);
-                }
-            } catch (error) {
-                console.error('Lỗi khi load products:', error);
-                // Nếu API lỗi, hiển thị products mẫu
-                loadDemoProducts(categorySlug);
-            }
-        }
+// ✅ Render categories từ API hoặc fallback demo
+function renderCategories(categories) {
+  const list = document.getElementById('categories-list');
+  if (!list) return;
 
-        // ===========================================
-        // RENDER PRODUCTS
-        // ===========================================
-        function renderProducts(groupedProducts) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = '';
-            
-            Object.keys(groupedProducts).forEach(categoryName => {
-                const products = groupedProducts[categoryName];
-                const categorySlug = products[0]?.category_slug || '';
-                const categoryIcon = products[0]?.category_icon || 'fas fa-box';
-                
-                // Lấy tối đa 6 sản phẩm cho mỗi category
-                const displayProducts = products.slice(0, 6);
-                const hasMore = products.length > 6;
-                
-                container.innerHTML += `
-                    <div class="product-section">
-                        <div class="section-header">
-                            <h3 class="section-title">
-                                <i class="${categoryIcon} me-2"></i>${categoryName}
-                            </h3>
-                            ${hasMore ? `<a href="#" class="see-all" onclick="viewAllProducts('${categorySlug}')">Xem tất cả <i class="fas fa-arrow-right"></i></a>` : ''}
-                        </div>
-                        <div class="row g-2" id="products-${categorySlug}">
-                            ${displayProducts.map(product => createProductCard(product)).join('')}
-                        </div>
-                    </div>
-                `;
-            });
-        }
+  list.innerHTML = `
+    <div class="category-item active" onclick="filterByCategory('all', event)">
+      <i class="fas fa-th"></i> Tất cả
+    </div>
+  `;
 
-        // ===========================================
-        // CREATE PRODUCT CARD
-        // ===========================================
-        function createProductCard(product) {
-            const discount = product.discount || 0;
-            const hasDiscount = discount > 0;
-            const oldPrice = product.price;
-            const newPrice = hasDiscount ? oldPrice * (1 - discount / 100) : oldPrice;
-            
-            return `
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                    <div class="product-card" onclick="viewProduct(${product.id})">
-                        <div class="product-img">
-                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : `<i class="fas fa-box"></i>`}
-                            ${hasDiscount ? `<span class="badge-sale">-${discount}%</span>` : ''}
-                        </div>
-                        <div class="product-body">
-                            <h6 class="product-title">${product.name}</h6>
-                            <p class="product-brand">${product.brand || 'Brand'}</p>
-                            <div class="price-container">
-                                <div class="price">${formatPrice(newPrice)}</div>
-                                ${hasDiscount ? `<div class="old-price">${formatPrice(oldPrice)}</div>` : '<div style="height: 18px;"></div>'}
-                            </div>
-                            <div class="rating">
-                                ${createStarRating(product.rating || 5)}
-                                <span class="text-muted">(${product.review_count || 0})</span>
-                            </div>
-                            <button class="btn-cart" onclick="addToCart(${product.id}, event)">
-                                <i class="fas fa-shopping-cart"></i> Thêm giỏ hàng
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+  categories.forEach(cat => {
+    list.innerHTML += `
+      <div class="category-item" onclick="filterByCategory('${cat.slug}', event)">
+        <i class="${cat.icon || 'fas fa-tag'}"></i> ${cat.name}
+      </div>
+    `;
+  });
+}
 
-        // ===========================================
-        // HELPER FUNCTIONS
-        // ===========================================
-        function formatPrice(price) {
-            return new Intl.NumberFormat('vi-VN', { 
-                style: 'currency', 
-                currency: 'VND' 
-            }).format(price);
-        }
+// ⚙️ Categories mẫu khi API lỗi
+function loadDemoCategories() {
+  const demoCategories = [
+    { name: 'Tất cả', icon: 'fas fa-th', slug: 'all' },
+    { name: 'Laptop', icon: 'fas fa-laptop', slug: 'Laptop' },
+    { name: 'Điện thoại', icon: 'fas fa-mobile-alt', slug: 'Điện thoại' },
+    { name: 'Tablet', icon: 'fas fa-tablet-alt', slug: 'Tablet' },
+    { name: 'Tai nghe', icon: 'fas fa-headphones', slug: 'Tai nghe' },
+    { name: 'Đồng hồ', icon: 'fas fa-clock', slug: 'Đồng hồ' },
+    { name: 'Camera', icon: 'fas fa-camera', slug: 'Camera' },
+    { name: 'Phụ kiện', icon: 'fas fa-plug', slug: 'Phụ kiện' }
+  ];
+  renderCategories(demoCategories);
+}
 
-        function createStarRating(rating) {
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 !== 0;
-            let stars = '';
-            
-            for (let i = 0; i < fullStars; i++) {
-                stars += '<i class="fas fa-star"></i>';
-            }
-            if (hasHalfStar) {
-                stars += '<i class="fas fa-star-half-alt"></i>';
-            }
-            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
-                stars += '<i class="far fa-star"></i>';
-            }
-            
-            return stars;
-        }
+// ===========================================
+// 🧱 LOAD PRODUCTS
+// ===========================================
+let allProducts = [];
+let currentCategory = 'all';
 
-        // ===========================================
-        // EVENT HANDLERS
-        // ===========================================
-        function filterByCategory(categorySlug) {
-            // Update active state
-            document.querySelectorAll('.category-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.target.closest('.category-item').classList.add('active');
-            
-            // Load products
-            loadProducts(categorySlug);
-        }
+async function loadProducts(category = 'all') {
+  try {
+    currentCategory = category;
+    const url = category === 'all'
+      ? `${API_BASE_URL}/products/active`
+      : `${API_BASE_URL}/products?category=${encodeURIComponent(category)}`;
 
-        function viewAllProducts(categorySlug) {
-            event.preventDefault();
-            console.log('View all products for category:', categorySlug);
-            // Redirect to category page hoặc load more products
-            window.location.href = `/category/${categorySlug}`;
-        }
+    const res = await fetch(url);
+    const products = await res.json();
+    allProducts = products;
 
-        function viewProduct(productId) {
-            console.log('View product:', productId);
-            // Redirect to product detail page
-            window.location.href = `/product/${productId}`;
-        }
+    renderProducts(products);
+  } catch (error) {
+    console.error('❌ Lỗi khi load sản phẩm:', error);
+    document.getElementById('products-container').innerHTML =
+      `<p class="text-center text-danger mt-4">Không thể tải sản phẩm.</p>`;
+  }
+}
 
-        function addToCart(productId, event) {
-            event.stopPropagation();
-            console.log('Add to cart:', productId);
-            
-            // Gọi API add to cart
-            fetch(`${API_BASE_URL}/cart/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token') // Nếu dùng auth
-                },
-                body: JSON.stringify({
-                    product_id: productId,
-                    quantity: 1
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Đã thêm vào giỏ hàng!');
-                updateCartCount();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra!');
-            });
-        }
+// ===========================================
+// 🎨 RENDER PRODUCTS
+// ===========================================
+function renderProducts(products) {
+  const container = document.getElementById('products-container');
+  if (!container) return;
 
-        // ===========================================
-        // CART FUNCTIONS
-        // ===========================================
-        function toggleCart(event) {
-            event.preventDefault();
-            console.log('Open cart');
-            // Redirect to cart page hoặc mở modal
-            window.location.href = '/cart';
-        }
+  container.innerHTML = '';
 
-        function updateCartCount() {
-            // Gọi API lấy số lượng sản phẩm trong giỏ
-            fetch(`${API_BASE_URL}/cart/count`, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('cart-count').textContent = data.count || 0;
-            })
-            .catch(error => {
-                console.error('Error getting cart count:', error);
-            });
-        }
+  if (!products.length) {
+    container.innerHTML = `<p class="text-center mt-4 text-muted">Không có sản phẩm nào để hiển thị.</p>`;
+    return;
+  }
 
-        // ===========================================
-        // AUTH FUNCTIONS
-        // ===========================================
-        function showLogin(event) {
-            event.preventDefault();
-            console.log('Show login modal');
-            // Mở modal đăng nhập hoặc redirect
-            window.location.href = '/login';
-        }
+  container.innerHTML = `
+    <div class="row g-3">
+      ${products.map(p => `
+        <div class="col-md-3 col-sm-6">
+          <div class="card h-100 shadow-sm product-card">
+            <img src="http://localhost:8000/storage/${p.image}" 
+                 class="card-img-top" alt="${p.name}" 
+                 style="height:180px;object-fit:cover;">
+            <div class="card-body text-center">
+              <h6 class="card-title text-truncate">${p.name}</h6>
+              <p class="text-danger fw-bold mb-1">${Number(p.price).toLocaleString()}₫</p>
+              <p class="text-muted small">${p.description ?? "Không có mô tả"}</p>
+              <button class="btn btn-primary btn-sm w-100" onclick="addToCart(${p.id}, event)">
+                <i class="fas fa-cart-plus me-2"></i>Mua ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
 
-        function showRegister(event) {
-            event.preventDefault();
-            console.log('Show register modal');
-            // Mở modal đăng ký hoặc redirect
-            window.location.href = '/register';
-        }
+// ===========================================
+// 🔍 TÌM KIẾM SẢN PHẨM
+// ===========================================
+function filterProducts(keyword) {
+  const filtered = allProducts.filter(p =>
+    p.name.toLowerCase().includes(keyword)
+  );
+  renderProducts(filtered);
+}
 
-        function logout(event) {
-            event.preventDefault();
-            
-            if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                // Gọi API logout
-                fetch(`${API_BASE_URL}/logout`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token')
-                    }
-                })
-                .then(() => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    updateAuthUI();
-                    window.location.href = '/';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
-        }
+// ===========================================
+// 🧭 LỌC THEO DANH MỤC
+// ===========================================
+function filterByCategory(category, event) {
+  document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
+  event.target.closest('.category-item').classList.add('active');
+  loadProducts(category);
+}
 
-        function updateAuthUI() {
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            
-            if (token && user.name) {
-                // Đã đăng nhập
-                document.getElementById('user-name').textContent = user.name;
-                document.querySelectorAll('.not-logged-in').forEach(el => el.classList.add('d-none'));
-                document.querySelectorAll('.logged-in').forEach(el => el.classList.remove('d-none'));
-            } else {
-                // Chưa đăng nhập
-                document.getElementById('user-name').textContent = 'Tài khoản';
-                document.querySelectorAll('.not-logged-in').forEach(el => el.classList.remove('d-none'));
-                document.querySelectorAll('.logged-in').forEach(el => el.classList.add('d-none'));
-            }
-        }
+// ===========================================
+// 🛒 GIỎ HÀNG
+// ===========================================
+function addToCart(id, event) {
+  event.stopPropagation();
+  let countEl = document.getElementById('cart-count');
+  if (!countEl) return;
+  let count = parseInt(countEl.textContent || '0');
+  countEl.textContent = count + 1;
+  alert(`🛒 Đã thêm sản phẩm ID ${id} vào giỏ hàng!`);
+}
 
-        // Search function
-        document.getElementById('searchInput')?.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            console.log('Searching for:', searchTerm);
-            // Implement search logic
-        });
+function updateCartCount() {
+  fetch(`${API_BASE_URL}/cart/count`, {
+    headers: {
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      const el = document.getElementById('cart-count');
+      if (el) el.textContent = data.count || 0;
+    })
+    .catch(() => {});
+}
 
-        // ===========================================
-        // DEMO DATA (Khi chưa có API)
-        // ===========================================
-        function loadDemoProducts() {
-            const demoProducts = {
-                'Laptop': [
-                    {id: 1, name: 'MacBook Pro M3 14 inch', brand: 'Apple', price: 41990000, discount: 20, rating: 5, review_count: 128, category_icon: 'fas fa-laptop'},
-                    {id: 2, name: 'Dell XPS 15 9530', brand: 'Dell', price: 33990000, discount: 15, rating: 4.5, review_count: 89, category_icon: 'fas fa-laptop'},
-                    {id: 3, name: 'Asus ROG Zephyrus G14', brand: 'Asus', price: 35990000, discount: 25, rating: 4.5, review_count: 145, category_icon: 'fas fa-laptop'},
-                    {id: 4, name: 'HP Envy 13 x360', brand: 'HP', price: 24390000, discount: 18, rating: 4, review_count: 67, category_icon: 'fas fa-laptop'},
-                    {id: 5, name: 'Lenovo ThinkPad X1', brand: 'Lenovo', price: 31990000, discount: 0, rating: 5, review_count: 201, category_icon: 'fas fa-laptop'},
-                    {id: 6, name: 'MSI Prestige 14 Evo', brand: 'MSI', price: 24990000, discount: 10, rating: 4, review_count: 54, category_icon: 'fas fa-laptop'}
-                ],
-                'Điện thoại': [
-                    {id: 7, name: 'iPhone 15 Pro Max 256GB', brand: 'Apple', price: 33990000, discount: 15, rating: 5, review_count: 342, category_icon: 'fas fa-mobile-alt'},
-                    {id: 8, name: 'Samsung Galaxy S24 Ultra', brand: 'Samsung', price: 32990000, discount: 20, rating: 4.5, review_count: 289, category_icon: 'fas fa-mobile-alt'},
-                    {id: 9, name: 'Xiaomi 14 Pro 512GB', brand: 'Xiaomi', price: 23990000, discount: 25, rating: 4, review_count: 156, category_icon: 'fas fa-mobile-alt'},
-                    {id: 10, name: 'OPPO Find X7 Pro', brand: 'OPPO', price: 26790000, discount: 18, rating: 4, review_count: 98, category_icon: 'fas fa-mobile-alt'},
-                    {id: 11, name: 'Google Pixel 8 Pro', brand: 'Google', price: 24990000, discount: 0, rating: 5, review_count: 187, category_icon: 'fas fa-mobile-alt'},
-                    {id: 12, name: 'Vivo X100 Pro 5G', brand: 'Vivo', price: 22690000, discount: 12, rating: 4, review_count: 76, category_icon: 'fas fa-mobile-alt'}
-                ],
-                'Tablet': [
-                    {id: 13, name: 'iPad Pro M2 11 inch', brand: 'Apple', price: 24990000, discount: 20, rating: 5, review_count: 167, category_icon: 'fas fa-tablet-alt'},
-                    {id: 14, name: 'Samsung Galaxy Tab S9', brand: 'Samsung', price: 29390000, discount: 15, rating: 4.5, review_count: 134, category_icon: 'fas fa-tablet-alt'},
-                    {id: 15, name: 'Xiaomi Pad 6 Max', brand: 'Xiaomi', price: 12990000, discount: 0, rating: 4, review_count: 89, category_icon: 'fas fa-tablet-alt'},
-                    {id: 16, name: 'Lenovo Tab P12', brand: 'Lenovo', price: 15990000, discount: 10, rating: 4, review_count: 56, category_icon: 'fas fa-tablet-alt'}
-                ]
-            };
-            
-            renderProducts(demoProducts);
-        }
+// ===========================================
+// 👤 AUTH UI
+// ===========================================
+function updateAuthUI() {
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const nameEl = document.getElementById('user-name');
+  const avatarEl = document.getElementById('user-avatar');
 
-        // ===========================================
-        // KHỞI TẠO
-        // ===========================================
-        document.addEventListener('DOMContentLoaded', function() {
-            loadCategories();
-            loadProducts();
-            updateAuthUI();
-            updateCartCount();
-        });
+  if (token && user) {
+    nameEl.textContent = user.name || 'Người dùng';
+    if (avatarEl)
+      avatarEl.src = user.avatar
+        ? `${user.avatar.startsWith('http') ? user.avatar : 'http://localhost:8000/storage/' + user.avatar}`
+        : 'https://via.placeholder.com/30';
+
+    document.querySelectorAll('.not-logged-in').forEach(el => el.classList.add('d-none'));
+    document.querySelectorAll('.logged-in').forEach(el => el.classList.remove('d-none'));
+  } else {
+    nameEl.textContent = 'Tài khoản';
+    if (avatarEl) avatarEl.src = 'https://via.placeholder.com/30';
+    document.querySelectorAll('.not-logged-in').forEach(el => el.classList.remove('d-none'));
+    document.querySelectorAll('.logged-in').forEach(el => el.classList.add('d-none'));
+  }
+}
+
+async function logout(event) {
+  event.preventDefault();
+  if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+  try {
+    await fetch(`${API_BASE_URL}/logout`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+    });
+  } catch {}
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  updateAuthUI();
+  window.location.href = '/frontend/index.html';
+}
+
+// ===========================================
+// 🔍 SEARCH EVENT
+// ===========================================
+document.getElementById('searchInput')?.addEventListener('input', e => {
+  const term = e.target.value.toLowerCase();
+  filterProducts(term);
+});
+
+// ===========================================
+// 🚀 KHỞI TẠO
+// ===========================================
+document.addEventListener('DOMContentLoaded', () => {
+  loadCategories();
+  loadProducts();
+  updateAuthUI();
+  updateCartCount();
+});

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý sản phẩm - TechStore Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/produc.css">
+</head>
+
+
+<body>
+<body>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <!-- Sidebar danh mục -->
+      <div class="col-md-3 col-lg-2">
+        <div class="sidebar">
+          <h5><i class="fas fa-bars"></i> Danh Mục</h5>
+          <a href="#" class="category-link active" data-category=""><i class="fas fa-th"></i> Tất cả</a>
+          <a href="#" class="category-link" data-category="Laptop"><i class="fas fa-laptop"></i> Laptop</a>
+          <a href="#" class="category-link" data-category="Điện thoại"><i class="fas fa-mobile-alt"></i> Điện thoại</a>
+          <a href="#" class="category-link" data-category="Tablet"><i class="fas fa-tablet-alt"></i> Tablet</a>
+          <a href="#" class="category-link" data-category="Tai nghe"><i class="fas fa-headphones"></i> Tai nghe</a>
+          <a href="#" class="category-link" data-category="Đồng hồ"><i class="fas fa-clock"></i> Đồng hồ</a>
+          <a href="#" class="category-link" data-category="Camera"><i class="fas fa-camera"></i> Camera</a>
+          <a href="#" class="category-link" data-category="Phụ kiện"><i class="fas fa-plug"></i> Phụ kiện</a>
+        </div>
+      </div>
+
+      <!-- Nội dung chính -->
+      <div class="col-md-9 col-lg-10">
+        <h2 class="mb-4 text-center">Quản lý sản phẩm</h2>
+
+        <!-- Form thêm sản phẩm -->
+        <form id="addProductForm" class="mb-5 bg-white p-4 rounded shadow-sm">
+          <input type="hidden" id="productId" name="id">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Tên sản phẩm</label>
+              <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Giá</label>
+              <input type="number" id="price" name="price" class="form-control" required>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Danh mục</label>
+              <select id="category" name="category" class="form-select" required>
+                <option value="">-- Chọn danh mục --</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Điện thoại">Điện thoại</option>
+                <option value="Tablet">Tablet</option>
+                <option value="Tai nghe">Tai nghe</option>
+                <option value="Đồng hồ">Đồng hồ</option>
+                <option value="Camera">Camera</option>
+                <option value="Phụ kiện">Phụ kiện</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Ảnh</label>
+              <div class="custom-file-upload">
+                <input type="file" id="image" name="image" accept="image/*">
+                <label class="file-upload-label" for="image">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span class="file-text">Chọn ảnh sản phẩm</span>
+                </label>
+              </div>
+              <div class="file-name" id="fileName">
+                <i class="fas fa-check-circle"></i>
+                <span></span>
+              </div>
+            </div>
+
+            <div class="col-md-8">
+              <label class="form-label">Mô tả</label>
+              <textarea id="description" name="description" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="col-12 text-end">
+              <button type="submit" id="submitBtn" class="btn btn-primary px-4">
+                <i class="fas fa-plus-circle"></i>
+                <span>Thêm sản phẩm</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Danh sách sản phẩm -->
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <table class="table table-bordered table-striped align-middle" id="productTable">
+              <thead class="table-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Danh mục</th>
+                  <th>Giá</th>
+                  <th>Ảnh</th>
+                  <th>Mô tả</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dữ liệu sẽ được JS render -->
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer bg-white text-center">
+            <a href="../Admin/admin.html" class="btn-home">
+              <i class="fas fa-home"></i>
+              <span>Quay lại trang chủ</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <script src="../js/productmanagement.js"></script>
+</body>
+</html>

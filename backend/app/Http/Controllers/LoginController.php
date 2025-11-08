@@ -9,20 +9,26 @@ class LoginController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $credentials=$request->only('email','password');
+        $credentials = $request->only('email', 'password');
 
-        if(Auth::attempt($credentials))
-        {
-            $user=Auth::user();
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
 
             $token = $user->createToken('authToken')->plainTextToken;
-        
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Đăng nhập thành công',
+                'token' => $token,
                 'role' => $user->role,
-                'name' => $user->name,
-                'token' => $token
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatar' => $user->avatar
+                        ? asset('storage/' . $user->avatar)
+                        : asset('storage/avatars/default.png'),
+                ],
             ]);
         }
 

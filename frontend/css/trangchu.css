@@ -317,3 +317,16 @@ footer ul li {
 .dropdown-item:hover {
     background-color: #f8f9fa;
 }
+
+
+.product-card {
+  transition: all 0.3s ease;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+}
+.card-title {
+  font-size: 1rem;
+}
+
