@@ -24,7 +24,7 @@ formCreate.addEventListener("submit", async (e) => {
 
     try {
 
-        const response = await fetch("http://backend.test/api/register", {
+        const response = await fetch("http://localhost:8000/api/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

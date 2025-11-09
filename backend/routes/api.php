@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -26,3 +27,14 @@ Route::post('/products/{id}', [ProductController::class, 'update']);   // Larave
 Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Xóa sản phẩm
 Route::patch('/products/{id}/toggle', [ProductController::class, 'toggle']); // Bật / Tắt sản phẩm
 Route::get('/products/{id}', [ProductController::class, 'show']);
+
+//
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/cart/add/{productId}', [CartController::class, 'addToCart']);
+    Route::get('/cart', [CartController::class, 'viewCart']);
+    Route::delete('/cart/remove/{itemId}', [CartController::class, 'removeItem']);
+    Route::get('cart/count',[CartController::class,'count']);
+});
+
+

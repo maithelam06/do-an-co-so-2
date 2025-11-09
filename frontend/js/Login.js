@@ -7,7 +7,7 @@ formLogin.addEventListener('submit', async (event) => {
     const password = document.getElementById('passwordLog').value;
 
     try {
-        const e = await fetch('http://backend.test/api/login', {
+        const e = await fetch('http://localhost:8000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
