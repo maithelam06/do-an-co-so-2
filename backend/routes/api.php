@@ -6,15 +6,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProductController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-| Các route này dành cho API (frontend JS gọi qua fetch)
-| http://localhost:8000/api/...
-|--------------------------------------------------------------------------
-*/
-
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -35,6 +26,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'viewCart']);
     Route::delete('/cart/remove/{itemId}', [CartController::class, 'removeItem']);
     Route::get('cart/count',[CartController::class,'count']);
+    Route::put('/cart/update/{itemId}', [CartController::class, 'updateQuantity']);
+    Route::delete('/cart/clear', [CartController::class, 'clearCart']);
+    Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple']);
 });
 
 

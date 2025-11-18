@@ -4,25 +4,8 @@
     --secondary-color: #1e40af;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14px;
-}
 
-.navbar {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    padding: 0.5rem 0;
-}
 
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.nav-link {
-    font-size: 0.9rem;
-    padding: 0.3rem 0.8rem !important;
-}
 
 .sidebar {
     background: white;
@@ -304,22 +287,8 @@ footer ul li {
     min-width: 18px;
 }
 
-/* User Dropdown */
-.dropdown-menu {
-    font-size: 0.9rem;
-    min-width: 200px;
-}
-
-.dropdown-item {
-    padding: 0.5rem 1rem;
-}
-
-.dropdown-item:hover {
-    background-color: #f8f9fa;
-}
 
 
-/* Xóa hoặc comment các đoạn CSS cũ liên quan đến product-card và thay bằng này */
 
 .product-card {
   border-radius: 12px;

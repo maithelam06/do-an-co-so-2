@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm - TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/chitiet.css">
+</head>
+
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-bolt"></i> TechStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/frontend/trangchu.html">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Khuyến mãi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Liên hệ</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <!-- Giỏ hàng -->
+                    <div class="position-relative me-3">
+                        <a href="./tranggiohang.html" class="text-white position-relative" onclick="toggleCart(event)">
+                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                id="cart-count">
+                                0
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <a href="#" class="text-white dropdown-toggle d-flex align-items-center"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img id="user-avatar" src="https://via.placeholder.com/30" alt="avatar"
+                                class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
+                            <span id="user-name">Tài khoản</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <!-- Khi chưa đăng nhập -->
+                            <li class="not-logged-in"><a class="dropdown-item" href="#" onclick="showLogin(event)"><i
+                                class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
+
+                            <!-- Khi đã đăng nhập -->
+                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
+                                class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
+                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
+                                class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
+                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
+                                class="fas fa-heart me-2"></i>Yêu thích</a></li>
+                            <li class="logged-in d-none">
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li class="logged-in d-none"><a class="dropdown-item text-danger" href="#"
+                                onclick="logout(event)"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="container mt-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
+                <li class="breadcrumb-item"><a href="trangchu.html" class="text-decoration-none">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="#" id="breadcrumb-category" class="text-decoration-none">Danh mục</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="breadcrumb-product">Sản phẩm</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Chi tiết sản phẩm -->
+    <div class="container my-4">
+        <div class="row g-4">
+            <!-- Hình ảnh sản phẩm -->
+            <div class="col-lg-5">
+                <div class="bg-white p-4 rounded shadow-sm position-relative">
+                    <div class="position-relative overflow-hidden rounded" style="padding-top: 100%;">
+                        <img id="product-main-image" 
+                             src="" 
+                             alt="Product" 
+                             class="position-absolute top-0 start-0 w-100 h-100"
+                             style="object-fit: cover;">
+                        <span class="badge bg-danger position-absolute top-0 end-0 m-3 fs-6 d-none" id="product-badge"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thông tin sản phẩm -->
+            <div class="col-lg-7">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <!-- Tên sản phẩm -->
+                    <h2 id="product-name" class="fw-bold mb-3"></h2>
+                    
+                    <!-- Rating -->
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="text-warning" id="product-rating"></div>
+                        <span class="text-muted ms-2" id="product-reviews"></span>
+                    </div>
+
+                    <!-- Giá -->
+                    <div class="border-top border-bottom py-3 mb-4">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <h3 class="text-danger mb-0 fw-bold" id="product-price"></h3>
+                            <span class="text-decoration-line-through text-muted fs-5 d-none" id="product-old-price"></span>
+                            <span class="badge bg-danger fs-6 d-none" id="product-discount"></span>
+                        </div>
+                    </div>
+
+                    <!-- Số lượng -->
+                    <div class="mb-4">
+                        <label for="quantity" class="form-label fw-semibold">Số lượng:</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-outline-secondary" onclick="decreaseQuantity()" style="width: 40px; height: 40px;">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" id="quantity" class="form-control text-center fw-semibold" value="1" min="1" max="99" style="width: 80px; height: 40px;">
+                            <button class="btn btn-outline-secondary" onclick="increaseQuantity()" style="width: 40px; height: 40px;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Nút mua hàng -->
+                    <div class="d-grid gap-3 d-md-flex mb-4">
+                        <button class="btn btn-primary btn-lg flex-fill" onclick="addToCart()">
+                            <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ hàng
+                        </button>
+                        <button class="btn btn-danger btn-lg flex-fill" onclick="buyNow()">
+                            <i class="fas fa-bolt me-2"></i>Mua ngay
+                        </button>
+                    </div>
+
+                    <!-- Đặc điểm -->
+                    <div class="row g-3 bg-light p-3 rounded">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-shield-alt text-primary fs-3"></i>
+                                <div>
+                                    <div class="fw-semibold small">Bảo hành chính hãng</div>
+                                    <div class="text-muted small">12 tháng</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-truck text-success fs-3"></i>
+                                <div>
+                                    <div class="fw-semibold small">Miễn phí vận chuyển</div>
+                                    <div class="text-muted small">Toàn quốc</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-sync-alt text-info fs-3"></i>
+                                <div>
+                                    <div class="fw-semibold small">Đổi trả trong 7 ngày</div>
+                                    <div class="text-muted small">Nếu có lỗi</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mô tả và Thông số kỹ thuật -->
+        <div class="row g-4 mt-4">
+            <!-- Mô tả sản phẩm -->
+            <div class="col-lg-6">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <h4 class="fw-bold mb-3"><i class="fas fa-file-alt text-primary me-2"></i>Mô tả sản phẩm</h4>
+                    <p id="product-description" class="text-muted"></p>
+                </div>
+            </div>
+
+            <!-- Thông số kỹ thuật -->
+            <div class="col-lg-6">
+                <div class="bg-white p-4 rounded shadow-sm h-100">
+                    <h4 class="fw-bold mb-3"><i class="fas fa-list-ul text-success me-2"></i>Thông số kỹ thuật</h4>
+                    <div class="bg-light p-3 rounded">
+                        <ul id="product-specs" class="list-unstyled mb-0">
+                            <!-- Specs sẽ được load từ JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-bolt"></i> TechStore</h5>
+                    <p>Cửa hàng điện tử uy tín hàng đầu Việt Nam với hơn 10 năm kinh nghiệm.</p>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">Liên Hệ</h5>
+                    <div>
+                        <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 123 Đường Lê Lợi, Q.1, TP.HCM</p>
+                        <p class="mb-2"><i class="fas fa-phone me-2"></i> Hotline: 1900 1234</p>
+                        <p class="mb-2"><i class="fas fa-envelope me-2"></i> info@techstore.vn</p>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 TechStore. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/chitiet.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

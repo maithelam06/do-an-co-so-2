@@ -1,11 +1,11 @@
-// ===========================================
-// ⚙️ CẤU HÌNH API
-// ===========================================
-const API_BASE_URL = 'http://localhost:8000/api'; // Laravel API
 
-// ===========================================
-// 🔖 LOAD DANH MỤC
-// ===========================================
+// CẤU HÌNH API
+
+const API_BASE_URL = 'http://localhost:8000/api';
+
+
+// LOAD DANH MỤC
+
 async function loadCategories() {
   try {
     const response = await fetch(`${API_BASE_URL}/categories`);
@@ -18,7 +18,7 @@ async function loadCategories() {
   }
 }
 
-// ✅ Render categories từ API hoặc fallback demo
+// Render categories từ API hoặc fallback demo
 function renderCategories(categories) {
   const list = document.getElementById('categories-list');
   if (!list) return;
@@ -38,7 +38,7 @@ function renderCategories(categories) {
   });
 }
 
-// ⚙️ Categories mẫu khi API lỗi
+// Categories mẫu khi API lỗi
 function loadDemoCategories() {
   const demoCategories = [
     { name: 'Tất cả', icon: 'fas fa-th', slug: 'all' },
@@ -53,9 +53,9 @@ function loadDemoCategories() {
   renderCategories(demoCategories);
 }
 
-// ===========================================
-// 🧱 LOAD PRODUCTS
-// ===========================================
+
+// LOAD PRODUCTS
+
 let allProducts = [];
 let currentCategory = 'all';
 
@@ -78,9 +78,9 @@ async function loadProducts(category = 'all') {
   }
 }
 
-// ===========================================
-// 🎨 RENDER PRODUCTS
-// ===========================================
+
+// RENDER PRODUCTS (CLICK CARD = XEM CHI TIẾT)
+
 function renderProducts(products) {
   const container = document.getElementById("products-container");
   if (!container) return;
@@ -88,22 +88,23 @@ function renderProducts(products) {
   container.className = "row g-3";
   container.innerHTML = "";
   
+  if (products.length === 0) {
+    container.innerHTML = '<p class="text-center text-muted mt-4">Không có sản phẩm nào.</p>';
+    return;
+  }
+  
   products.forEach(p => {
     container.innerHTML += `
-      <div class="col-12 col-md-6 col-lg-2">
-        <div class="card product-card h-100 shadow-sm">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card product-card h-100 shadow-sm" onclick="viewProductDetail(${p.id})" style="cursor: pointer;">
           <div class="product-img-wrapper">
             <img src="${p.image}" alt="${p.name}" class="card-img-top">
+            ${p.discount ? `<span class="badge bg-danger position-absolute top-0 end-0 m-2">-${p.discount}%</span>` : ''}
           </div>
           <div class="card-body">
             <h5 class="product-title">${p.name}</h5>
-            <p class="product-price text-danger fw-bold">${p.price.toLocaleString()}₫</p>
-            <button class="btn btn-outline-primary w-100 mb-2" onclick="showAddToCart(${p.id})">
-              <i class="fas fa-cart-plus me-1"></i>Thêm vào giỏ
-            </button>
-            <button class="btn btn-primary w-100" onclick="buyNow(${p.id})">
-              <i class="fas fa-bolt me-1"></i>Mua ngay
-            </button>
+            <p class="product-price text-danger fw-bold mb-1">${p.price.toLocaleString()}₫</p>
+            ${p.oldPrice ? `<p class="text-decoration-line-through text-muted small mb-2">${p.oldPrice.toLocaleString()}₫</p>` : ''}
           </div>
         </div>
       </div>
@@ -111,16 +112,22 @@ function renderProducts(products) {
   });
 }
 
-function buyNow(productId) {
-  // Giả sử ta lưu sản phẩm cần mua ngay vào localStorage để truyền qua trang thanh toán
-  localStorage.setItem("buyNowProduct", JSON.stringify({ id: productId, quantity: 1 }));
-  window.location.href = "checkout.html";
+
+// XEM CHI TIẾT SẢN PHẨM
+
+function viewProductDetail(productId) {
+  // Lưu productId vào localStorage
+  localStorage.setItem('selectedProductId', productId);
+  
+  // Chuyển hướng đến trang chi tiết
+  window.location.href = `chitiet.html?id=${productId}`;
 }
 
 
-// ===========================================
-// 🔍 TÌM KIẾM SẢN PHẨM
-// ===========================================
+
+
+// TÌM KIẾM SẢN PHẨM
+
 function filterProducts(keyword) {
   const filtered = allProducts.filter(p =>
     p.name.toLowerCase().includes(keyword)
@@ -128,109 +135,20 @@ function filterProducts(keyword) {
   renderProducts(filtered);
 }
 
-// ===========================================
-// 🧭 LỌC THEO DANH MỤC
-// ===========================================
+
+// LỌC THEO DANH MỤC
+
 function filterByCategory(category, event) {
   document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
   event.target.closest('.category-item').classList.add('active');
   loadProducts(category);
 }
 
-// ===========================================
-// 🛒 GIỎ HÀNG
-// ===========================================
-let selectedProductId = null;
 
-// Hiện overlay chọn số lượng
-function showAddToCart(productId) {
-  selectedProductId = productId;
-  document.getElementById('quantityInput').value = 1;
-  document.getElementById('addToCartModal').classList.remove('d-none');
-}
 
-// Đóng overlay
-function closeAddToCart() {
-  document.getElementById('addToCartModal').classList.add('d-none');
-}
-
-// Xác nhận thêm vào giỏ hàng
-async function confirmAddToCart() {
-  const token = localStorage.getItem('token');
-  const quantity = parseInt(document.getElementById('quantityInput').value);
-
-  if (!token) {
-    alert('⚠️ Vui lòng đăng nhập trước khi thêm vào giỏ hàng!');
-    window.location.href = '/frontend/login.html';
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/cart/add/${selectedProductId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      },
-      body: JSON.stringify({ quantity })
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      alert('✅ Đã thêm vào giỏ hàng!');
-      await updateCartCount();
-      closeAddToCart();
-    } else {
-      alert('⚠️ ' + (data.message || 'Không thể thêm sản phẩm.'));
-    }
-  } catch (error) {
-    console.error('❌ Lỗi khi thêm giỏ hàng:', error);
-    alert('Không thể kết nối đến máy chủ.');
-  }
-}
-
-// Cập nhật số lượng hiển thị ở icon giỏ hàng
-async function updateCartCount() {
-  const token = localStorage.getItem('token');
-  if (!token) return;
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/cart/count`, {
-      headers: { 'Authorization': 'Bearer ' + token }
-    });
-    const data = await res.json();
-    const el = document.getElementById('cart-count');
-    if (el) el.textContent = data.count || 0;
-  } catch (error) {
-    console.warn('Không thể cập nhật số lượng giỏ hàng:', error);
-  }
-}
-
-// ===========================================
-// 👤 AUTH UI
-// ===========================================
-function updateAuthUI() {
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const nameEl = document.getElementById('user-name');
-  const avatarEl = document.getElementById('user-avatar');
-
-  if (token && user) {
-    nameEl.textContent = user.name || 'Người dùng';
-    if (avatarEl)
-      avatarEl.src = user.avatar
-        ? `${user.avatar.startsWith('http') ? user.avatar : 'http://localhost:8000/storage/' + user.avatar}`
-        : 'https://via.placeholder.com/30';
-
-    document.querySelectorAll('.not-logged-in').forEach(el => el.classList.add('d-none'));
-    document.querySelectorAll('.logged-in').forEach(el => el.classList.remove('d-none'));
-  } else {
-    nameEl.textContent = 'Tài khoản';
-    if (avatarEl) avatarEl.src = 'https://via.placeholder.com/30';
-    document.querySelectorAll('.not-logged-in').forEach(el => el.classList.remove('d-none'));
-    document.querySelectorAll('.logged-in').forEach(el => el.classList.add('d-none'));
-  }
+function showLogin(event) {
+  event.preventDefault(); // tránh reload
+  window.location.href = "/frontend/index.html";
 }
 
 async function logout(event) {
@@ -248,20 +166,17 @@ async function logout(event) {
   window.location.href = '/frontend/index.html';
 }
 
-// ===========================================
-// 🔍 SEARCH EVENT
-// ===========================================
+
+// SEARCH EVENT
+
 document.getElementById('searchInput')?.addEventListener('input', e => {
   const term = e.target.value.toLowerCase();
   filterProducts(term);
 });
 
-// ===========================================
-// 🚀 KHỞI TẠO
-// ===========================================
+
 document.addEventListener('DOMContentLoaded', () => {
   loadCategories();
   loadProducts();
-  updateAuthUI();
-  updateCartCount();
+  
 });

@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-      public function addToCart(Request $request, $productId)
-      {
+    public function addToCart(Request $request, $productId)
+    {
         $user = Auth::user();
 
         // Nếu người dùng chưa có giỏ hàng thì tạo mới
@@ -19,26 +19,20 @@ class CartController extends Controller
         // Lấy số lượng từ frontend (mặc định 1 nếu không có)
         $quantity = $request->input('quantity', 1);
 
-        // Kiểm tra sản phẩm đã có trong giỏ chưa
-        $item = CartItem::where('cart_id', $cart->id)
-                        ->where('product_id', $productId)
-                        ->first();
+        // Tạo mới một dòng CartItem mỗi lần thêm
+        CartItem::create([
+            'cart_id' => $cart->id,
+            'product_id' => $productId,
+            'quantity' => $quantity,
+        ]);
 
-         if ($item) {
-            $item->quantity += $quantity; // ✅ cộng thêm số lượng chọn
-            $item->save();
-        } else {
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'product_id' => $productId,
-                'quantity' => $quantity, // ✅ thêm đúng số lượng chọn
-            ]);
-        }
+        return response()->json([
+            'message' => 'Thêm sản phẩm vào giỏ hàng thành công',
+        ]);
+    }
 
-        return response()->json(['message' => 'Đã thêm sản phẩm vào giỏ hàng']);
-      }
 
-      public function viewCart()
+    public function viewCart()
     {
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->with('items.product')->first();
@@ -55,19 +49,62 @@ class CartController extends Controller
 
     public function count(Request $request)
     {
-        $user = Auth::user(); // Lấy user từ token Sanctum
+        $user = Auth::user();
 
-        // Lấy giỏ hàng của user
+        
         $cart = Cart::where('user_id', $user->id)->first();
 
-        // Tính tổng số lượng (nếu chưa có giỏ hàng thì là 0)
+        // Nếu chưa có giỏ hàng → trả về 0
         if (!$cart) {
             return response()->json(['count' => 0]);
         }
 
-        // Đếm tổng số lượng sản phẩm trong giỏ
-        $count = $cart->items()->sum('quantity');
+        // Đếm số sản phẩm riêng lẻ
+        $count = $cart->items()->count();
 
         return response()->json(['count' => $count]);
+    }
+
+
+    public function updateQuantity(Request $request, $itemId)
+    {
+        $quantity = $request->input('quantity');
+
+        if ($quantity < 1) {
+            return response()->json(['error' => 'Số lượng phải lớn hơn 0'], 400);
+        }
+
+        $item = CartItem::findOrFail($itemId);
+        $item->quantity = $quantity;
+        $item->save();
+
+        return response()->json(['message' => 'Đã cập nhật số lượng']);
+    }
+
+    public function clearCart()
+    {
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->first();
+
+        if ($cart) {
+            $cart->items()->delete();
+        }
+
+        return response()->json(['message' => 'Đã xóa toàn bộ sản phẩm trong giỏ']);
+    }
+
+    // Xóa nhiều sản phẩm cùng lúc
+    public function removeMultiple(Request $request)
+    {
+        $user = Auth::user();
+        $itemIds = $request->input('itemIds', []);
+
+        // Chỉ xóa các item thuộc giỏ của user
+        CartItem::whereIn('id', $itemIds)
+            ->whereHas('cart', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })->delete();
+
+        return response()->json(['message' => 'Đã xóa các sản phẩm đã chọn']);
     }
 }
