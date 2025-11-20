@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\VnpayController;
 
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
@@ -19,7 +21,7 @@ Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Xóa 
 Route::patch('/products/{id}/toggle', [ProductController::class, 'toggle']); // Bật / Tắt sản phẩm
 Route::get('/products/{id}', [ProductController::class, 'show']);
 
-//
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/cart/add/{productId}', [CartController::class, 'addToCart']);
@@ -29,6 +31,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/cart/update/{itemId}', [CartController::class, 'updateQuantity']);
     Route::delete('/cart/clear', [CartController::class, 'clearCart']);
     Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple']);
+    Route::post('/orders', [OrderController::class, 'store']);
 });
+
+
+Route::get('/orders', [OrderController::class, 'index']); /// cho admin
+Route::get('/orders/{id}', [OrderController::class, 'show']);
+
+Route::post('/vnpay/create', [VnpayController::class, 'createPayment']);
+Route::get('/vnpay/return', [VnpayController::class, 'return'])->name('vnpay.return');
+
+
 
 
