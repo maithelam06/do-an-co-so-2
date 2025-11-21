@@ -7,14 +7,17 @@ function formatCurrency(value) {
   });
 }
 
+// Trạng thái THANH TOÁN
 function renderStatus(status) {
   switch (status) {
     case "pending":
       return '<span class="badge bg-warning text-dark">Chờ xử lý</span>';
     case "processing":
-      return '<span class="badge bg-primary">Đang giao</span>';
+      return '<span class="badge bg-primary">Đang xử lý</span>';
     case "completed":
       return '<span class="badge bg-success">Hoàn thành</span>';
+    case "refund_pending":
+      return '<span class="badge bg-warning text-dark">Chờ hoàn tiền</span>';
     case "cancelled":
       return '<span class="badge bg-danger">Đã hủy</span>';
     default:
@@ -22,7 +25,23 @@ function renderStatus(status) {
   }
 }
 
-// Hiển thị text phương thức thanh toán
+// Trạng thái GIAO HÀNG
+function renderShippingStatus(status) {
+  switch (status) {
+    case "pending":
+      return '<span class="badge bg-warning text-dark">Chờ giao</span>';
+    case "processing":
+      return '<span class="badge bg-primary">Đang giao</span>';
+    case "completed":
+      return '<span class="badge bg-success">Đã giao</span>';
+    case "cancelled":
+      return '<span class="badge bg-danger">Đã hủy</span>';
+    default:
+      return '<span class="badge bg-secondary">Không rõ</span>';
+  }
+}
+
+// Hiển thị phương thức thanh toán
 function renderPaymentMethod(order) {
   if (order.payment_method === "cod") {
     return "Thanh toán khi nhận hàng (COD)";
@@ -36,6 +55,9 @@ function renderPaymentMethod(order) {
   return order.payment_method || "Không rõ";
 }
 
+let ORDERS_CACHE = [];
+
+// ===================== LOAD LIST ORDERS =====================
 async function loadOrdersAdmin() {
   const tbody = document.getElementById("orderTableBody");
   const totalText = document.getElementById("orderTotalText");
@@ -46,6 +68,8 @@ async function loadOrdersAdmin() {
   const res = await fetch(`${API_BASE_URL}/orders`);
   const orders = await res.json();
 
+  ORDERS_CACHE = orders;
+
   orders.forEach((order, index) => {
     const tr = document.createElement("tr");
 
@@ -55,21 +79,23 @@ async function loadOrdersAdmin() {
       <td>${order.full_name}</td>
       <td>${order.phone}</td>
       <td>${order.address}</td>
-      <td>
-        ${
-          order.payment_method === "cod"
-            ? "COD"
-            : order.payment_channel || "Chuyển khoản"
-        }
-      </td>
+      <td>${renderPaymentMethod(order)}</td>
       <td>${formatCurrency(order.total_amount)}</td>
       <td>${renderStatus(order.status)}</td>
+      <td>${renderShippingStatus(order.shipping_status)}</td>
       <td>${order.created_at}</td>
       <td>
         <button class="btn btn-sm btn-outline-primary"
                 onclick="showOrderDetail(${order.id})">
           Chi tiết
         </button>
+        <button class="btn btn-sm btn-outline-success ms-1"
+                onclick="openShippingStatusModal(${order.id})">
+          Cập nhật giao hàng
+        </button>
+
+        
+        
       </td>
     `;
 
@@ -80,7 +106,7 @@ async function loadOrdersAdmin() {
   badge.textContent = orders.length;
 }
 
-// ====== CHI TIẾT ĐƠN HÀNG ======
+// ===================== DETAIL ORDER =====================
 async function showOrderDetail(orderId) {
   try {
     const res = await fetch(`${API_BASE_URL}/orders/${orderId}`);
@@ -92,16 +118,12 @@ async function showOrderDetail(orderId) {
     }
 
     const data = await res.json();
-    console.log("Order detail API:", data);
+    const order = data.order;
+    const items = data.items || [];
 
-    const order = data.order || data;
-    const items = data.items || order.items || [];
-
-    // --- Thông tin khách hàng ---
     document.getElementById("detailCustomerName").textContent =
-      order.full_name || order.customer_name || "";
-    document.getElementById("detailCustomerPhone").textContent =
-      order.phone || order.customer_phone || "";
+      order.full_name || "";
+    document.getElementById("detailCustomerPhone").textContent = order.phone || "";
     document.getElementById("detailCustomerAddress").textContent =
       order.address || "";
     document.getElementById("detailPaymentMethod").textContent =
@@ -109,53 +131,31 @@ async function showOrderDetail(orderId) {
     document.getElementById("detailNote").textContent =
       order.note || "Không có";
 
-    // Tổng tiền
     document.getElementById("detailTotalAmount").textContent =
-      formatCurrency(order.total_amount || order.total_price);
+      formatCurrency(order.total_amount);
 
-    // --- Sản phẩm trong đơn ---
     const tbody = document.getElementById("detailProductBody");
     tbody.innerHTML = "";
 
     if (!items.length) {
       tbody.innerHTML = `
-        <tr>
-          <td colspan="5" class="text-center text-muted">
-            Đơn hàng không có sản phẩm hoặc API chưa trả về danh sách sản phẩm.
-          </td>
-        </tr>
+        <tr><td colspan="5" class="text-center text-muted">Không có sản phẩm.</td></tr>
       `;
     } else {
       items.forEach((item, index) => {
-        const name =
-          item.product_name ||
-          item.name ||
-          (item.product && item.product.name) ||
-          "Sản phẩm";
-        const qty = item.quantity || item.qty || 0;
-        const price =
-          item.price || item.unit_price || item.product_price || 0;
-        const lineTotal =
-          item.subtotal ||
-          item.total ||
-          item.total_price ||
-          Number(price) * Number(qty);
-
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${index + 1}</td>
-          <td>${name}</td>
-          <td>${qty}</td>
-          <td>${formatCurrency(price)}</td>
-          <td>${formatCurrency(lineTotal)}</td>
+          <td>${item.product_name}</td>
+          <td>${item.quantity}</td>
+          <td>${formatCurrency(item.price)}</td>
+          <td>${formatCurrency(item.subtotal)}</td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // Mở modal
-    const modalEl = document.getElementById("orderDetailModal");
-    const modal = new bootstrap.Modal(modalEl);
+    const modal = new bootstrap.Modal(document.getElementById("orderDetailModal"));
     modal.show();
   } catch (err) {
     console.error("Exception showOrderDetail:", err);
@@ -163,5 +163,103 @@ async function showOrderDetail(orderId) {
   }
 }
 
+// ===================== UPDATE SHIPPING =====================
+async function openShippingStatusModal(orderId) {
+  const order = ORDERS_CACHE.find((o) => o.id === orderId);
+  if (!order) return;
+
+  const inputOptions = {
+    pending: "Chờ giao",
+    processing: "Đang giao",
+    completed: "Đã giao",
+    cancelled: "Đã hủy",
+  };
+
+  const { value: newShipping, isConfirmed } = await Swal.fire({
+    title: `Cập nhật giao hàng DH${order.id}`,
+    input: "select",
+    inputOptions,
+    inputValue: order.shipping_status || "pending",
+    confirmButtonText: "Lưu",
+    cancelButtonText: "Hủy",
+    showCancelButton: true,
+  });
+
+  if (!isConfirmed || !newShipping) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        shipping_status: newShipping,
+      }),
+    });
+
+    if (!res.ok) {
+      Swal.fire("Lỗi", "Không thể cập nhật giao hàng!", "error");
+      return;
+    }
+
+    Swal.fire("Thành công", "Đã cập nhật trạng thái!", "success");
+    loadOrdersAdmin();
+  } catch (err) {
+    console.error("Lỗi update shipping:", err);
+    Swal.fire("Lỗi", "Có lỗi khi cập nhật giao hàng", "error");
+  }
+}
+
+async function deleteOrder(orderId) {
+  const order = allOrders.find(o => o.id === orderId);
+  const code = order?.code || order?.order_code || `#${orderId}`;
+
+  const result = await Swal.fire({
+    title: "Xóa đơn hàng?",
+    text: `Bạn có chắc muốn xóa đơn ${code}? Hành động này không thể hoàn tác.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Xóa",
+    cancelButtonText: "Hủy",
+    confirmButtonColor: "#d33"
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.error("Lỗi xóa đơn:", err);
+      await Swal.fire("Lỗi", "Xóa đơn hàng thất bại!", "error");
+      return;
+    }
+
+    // Xóa khỏi mảng và render lại
+    allOrders = allOrders.filter(o => o.id !== orderId);
+    renderOrders();
+
+    await Swal.fire("Đã xóa!", `Đơn ${code} đã được xóa.`, "success");
+  } catch (e) {
+    console.error("Lỗi xóa đơn:", e);
+    await Swal.fire("Lỗi", "Có lỗi xảy ra khi xóa đơn!", "error");
+  }
+}
+
+// =====================
+function loadOrders() {
+  loadOrdersAdmin();
+}
+function renderOrders() {
+  loadOrdersAdmin();
+}
 
 document.addEventListener("DOMContentLoaded", loadOrdersAdmin);
+

@@ -75,7 +75,7 @@ districtSelect.addEventListener("change", async () => {
   }
 });
 
-//CHECKOUT ITEMS TỪ LOCALSTORAGE
+// CHECKOUT ITEMS TỪ LOCALSTORAGE
 let checkoutItems = JSON.parse(localStorage.getItem("checkoutItems")) || [];
 
 // Render danh sách sản phẩm + tổng tiền
@@ -96,19 +96,19 @@ function renderOrderItems() {
     totalQuantity += item.quantity;
 
     container.innerHTML += `
-      <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
-        <div class="d-flex align-items-center">
-          <img src="${item.image}" class="rounded me-3" width="60" height="60">
-          <div>
-            <strong>${item.name}</strong>
-            <p class="mb-0 text-muted">
-              ${Number(item.price).toLocaleString()}₫ x ${item.quantity}
-            </p>
+        <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+          <div class="d-flex align-items-center">
+            <img src="${item.image}" class="rounded me-3" width="60" height="60">
+            <div>
+              <strong>${item.name}</strong>
+              <p class="mb-0 text-muted">
+                ${Number(item.price).toLocaleString()}₫ x ${item.quantity}
+              </p>
+            </div>
           </div>
+          <strong>${itemTotal.toLocaleString()}₫</strong>
         </div>
-        <strong>${itemTotal.toLocaleString()}₫</strong>
-      </div>
-    `;
+      `;
   });
 
   itemCount.textContent = totalQuantity; // tổng số lượng sản phẩm
@@ -116,7 +116,7 @@ function renderOrderItems() {
   totalEl.textContent = subtotal.toLocaleString() + "₫";
 }
 
-//CHỌN PHƯƠNG THỨC THANH TOÁN (COD / BANK + VNPAY)
+// ĐẶT HÀNG + THANH TOÁN
 async function placeOrder() {
   if (checkoutItems.length === 0) {
     alert("Chưa có sản phẩm để thanh toán!");
@@ -153,7 +153,7 @@ async function placeOrder() {
     return;
   }
 
-  // CHỈ CÒN VNPAY
+  // CHỈ CÒN VNPAY cho nhánh bank
   let paymentChannel = null;
   if (paymentMethod === "bank") {
     const bankMethod = document.querySelector(
@@ -176,7 +176,7 @@ async function placeOrder() {
     0
   );
 
-  // chỉ gửi product_id + quantity cho backend (dùng id đang có trong checkoutItems)
+  // Chỉ gửi product_id + quantity cho backend
   const orderItemsForBackend = checkoutItems.map((item) => ({
     product_id: item.product_id ?? item.productId ?? item.id,
     quantity: item.quantity,
@@ -208,7 +208,7 @@ async function placeOrder() {
   try {
     const token = localStorage.getItem("token");
 
-    // 1. Gửi đơn hàng
+    // Gửi đơn hàng
     const res = await fetch(`${API_BASE_URL}/orders`, {
       method: "POST",
       headers: {
@@ -224,13 +224,13 @@ async function placeOrder() {
       alert("Tạo đơn hàng thất bại!");
       return;
     }
-
     const data = await res.json();
     console.log("Order created:", data);
-
+    const orderId = data.order_id || data.id || data.order?.id;
     const itemIds = checkoutItems.map((item) => item.cart_item_id ?? item.id);
 
-    // ==== THANH TOÁN VNPAY ====
+    // THANH TOÁN VNPAY
+
     if (paymentMethod === "bank") {
       // Xoá giỏ trên DB
       if (itemIds.length > 0) {
@@ -255,7 +255,7 @@ async function placeOrder() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          order_id: data.order_id,
+          order_id: orderId,
           amount: totalNumber,
         }),
       });
@@ -291,12 +291,22 @@ async function placeOrder() {
       const payUrl = vnpData.payment_url;
       console.log("Đi tới VNPay:", payUrl);
 
-      // Redirect chắc chắn
-      window.location.href = payUrl;
+      // Thử mở VNPay trong tab mới
+      const win = window.open(payUrl, "_blank");
+
+      // Nếu trình duyệt chặn popup => hiện link để m copy / bấm
+      if (!win) {
+        alert(
+          "Trình duyệt đang chặn mở VNPay tự động.\n\n" +
+          "Hãy copy link sau và dán vào 1 tab mới để thanh toán:\n\n" +
+          payUrl
+        );
+      }
+
       return;
     }
 
-    // ==== COD ====
+    //COD
     if (itemIds.length > 0) {
       await fetch(`${API_BASE_URL}/cart/remove-multiple`, {
         method: "POST",
@@ -310,7 +320,7 @@ async function placeOrder() {
 
     localStorage.removeItem("checkoutItems");
 
-    alert("Đặt hàng thành công! Mã đơn: " + data.order_id);
+    alert("Đặt hàng thành công! Mã đơn: " + orderId);
   } catch (err) {
     console.error("Lỗi đặt hàng:", err);
     alert("Có lỗi xảy ra, vui lòng thử lại!");

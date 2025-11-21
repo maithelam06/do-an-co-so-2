@@ -2,7 +2,7 @@
 // 🧩 TOGGLE SIDEBAR
 // ==========================
 function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
+  const sidebar = document.getElementById("sidebar");a
   const mainContent = document.getElementById("mainContent");
   sidebar.classList.toggle("collapsed");
   mainContent.classList.toggle("expanded");

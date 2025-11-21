@@ -1,50 +1,50 @@
-    <!DOCTYPE html>
-    <html lang="vi">
+<!DOCTYPE html>
+<html lang="vi">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>TechStore - Quản Trị | Đơn hàng</title>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechStore - Quản Trị | Đơn hàng</title>
 
-        <!-- Bootstrap + Icon + CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-        <link rel="stylesheet" href="/frontend/css/admin.css" />
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </head>
+    <!-- Bootstrap + Icon + CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/frontend/css/admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 
-    <body>
-        <!-- Header -->
-        <header class="admin-header">
-            <div class="header-content">
-                <div class="header-left">
-                    <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
-                    <div class="brand">
-                        <i class="fas fa-bolt"></i>
-                        <span>TechStore Admin</span>
-                    </div>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="header-left">
+                <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+                <div class="brand">
+                    <i class="fas fa-bolt"></i>
+                    <span>TechStore Admin</span>
                 </div>
-                <div class="header-right">
-                    <div class="header-icon"><i class="fas fa-search"></i></div>
-                    <div class="header-icon">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">5</span>
+            </div>
+            <div class="header-right">
+                <div class="header-icon"><i class="fas fa-search"></i></div>
+                <div class="header-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">5</span>
+                </div>
+                <div class="header-icon">
+                    <i class="fas fa-envelope"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="admin-profile dropdown">
+                    <img id="admin-avatar" src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar" />
+                    <div class="admin-info">
+                        <span id="admin-name" class="admin-name">Người dùng</span>
+                        <span id="admin-role" class="admin-role">Quản trị viên</span>
                     </div>
-                    <div class="header-icon">
-                        <i class="fas fa-envelope"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div class="admin-profile dropdown">
-                        <img id="admin-avatar" src="https://via.placeholder.com/40" alt="Admin" class="admin-avatar" />
-                        <div class="admin-info">
-                            <span id="admin-name" class="admin-name">Người dùng</span>
-                            <span id="admin-role" class="admin-role">Quản trị viên</span>
-                        </div>
-                        <i class="fas fa-chevron-down" id="profileDropdownToggle"
-                            style="color: #7f8c8d; font-size: 0.8rem; cursor:pointer;"></i>
+                    <i class="fas fa-chevron-down" id="profileDropdownToggle"
+                        style="color: #7f8c8d; font-size: 0.8rem; cursor:pointer;"></i>
 
-                        <!-- Dropdown menu -->
-                        <div id="profileDropdown" class="dropdown-menu" style="
+                    <!-- Dropdown menu -->
+                    <div id="profileDropdown" class="dropdown-menu" style="
                             display:none;
                             position:absolute;
                             right:10px;
@@ -55,204 +55,204 @@
                             padding:10px;
                             z-index:1000;
                         ">
-                            <a href="#" id="logoutBtn" class="dropdown-item text-danger" style="text-decoration:none;">
-                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <ul class="sidebar-menu">
-                <li class="menu-item">
-                    <a href="/frontend/Admin/admin.html" class="menu-link">
-                        <i class="fas fa-home menu-icon"></i>
-                        <span class="menu-text">Tổng quan</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/frontend/Admin/productmanagement.html" class="menu-link">
-                        <i class="fas fa-box menu-icon"></i>
-                        <span class="menu-text">Quản lý sản phẩm</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/frontend/Admin/order.html" class="menu-link active">
-                        <i class="fas fa-shopping-cart menu-icon"></i>
-                        <span class="menu-text">Đơn hàng</span>
-                        <span class="menu-badge" id="orderCountBadge">0</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-users menu-icon"></i>
-                        <span class="menu-text">Khách hàng</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-chart-line menu-icon"></i>
-                        <span class="menu-text">Thống kê</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-percent menu-icon"></i>
-                        <span class="menu-text">Khuyến mãi</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-star menu-icon"></i>
-                        <span class="menu-text">Đánh giá</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-comment menu-icon"></i>
-                        <span class="menu-text">Tin nhắn</span>
-                        <span class="menu-badge">8</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-cog menu-icon"></i>
-                        <span class="menu-text">Cài đặt</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content" id="mainContent">
-            <div class="container-fluid">
-                <!-- Tiêu đề trang -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h1 class="h3 mb-1">Quản lý đơn hàng</h1>
-                        <p class="text-muted mb-0">
-                            Xem thông tin đơn hàng khách đã thanh toán.
-                        </p>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="loadOrders()">
-                            <i class="fas fa-rotate-right"></i> Tải lại
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Bộ lọc & tìm kiếm -->
-                <div class="card mb-3">
-                    <div class="card-body row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Tìm kiếm</label>
-                            <input type="text" id="searchInput" class="form-control" placeholder="Tên khách, SĐT, mã đơn..."
-                                oninput="renderOrders()" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Trạng thái</label>
-                            <select id="statusFilter" class="form-select" onchange="renderOrders()">
-                                <option value="">Tất cả</option>
-                                <option value="pending">Chờ xử lý</option>
-                                <option value="processing">Đang giao</option>
-                                <option value="completed">Hoàn thành</option>
-                                <option value="cancelled">Đã hủy</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bảng đơn hàng -->
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-list"></i> Danh sách đơn hàng</span>
-                        <span class="text-muted small" id="orderTotalText"></span>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Mã đơn</th>
-                                        <th>Khách hàng</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Địa chỉ</th>
-                                        <th>Phương thức thanh toán</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="orderTableBody">
-                                    <!-- JS render -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Modal chi tiết đơn hàng -->
-        <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="orderDetailLabel">Chi tiết đơn hàng</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <h6>Thông tin khách hàng</h6>
-                            <p class="mb-1"><strong>Tên khách hàng:</strong> <span id="detailCustomerName"></span></p>
-                            <p class="mb-1"><strong>Số điện thoại:</strong> <span id="detailCustomerPhone"></span></p>
-                            <p class="mb-1"><strong>Địa chỉ:</strong> <span id="detailCustomerAddress"></span></p>
-                            <p class="mb-1"><strong>Phương thức thanh toán:</strong> <span id="detailPaymentMethod"></span>
-                            </p>
-                            <p class="mb-1"><strong>Ghi chú:</strong> <span id="detailNote"></span></p>
-                        </div>
-
-                        <hr>
-
-                        <h6>Sản phẩm trong đơn</h6>
-                        <div class="table-responsive mb-3">
-                            <table class="table table-sm align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Số lượng</th>
-                                        <th>Đơn giá</th>
-                                        <th>Thành tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="detailProductBody">
-                                    <!-- JS render -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="text-end">
-                            <h5>Tổng tiền: <span id="detailTotalAmount" class="text-danger fw-bold"></span></h5>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <a href="#" id="logoutBtn" class="dropdown-item text-danger" style="text-decoration:none;">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+    </header>
 
-        <!-- JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../js/admin.js"></script>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li class="menu-item">
+                <a href="/frontend/Admin/admin.html" class="menu-link">
+                    <i class="fas fa-home menu-icon"></i>
+                    <span class="menu-text">Tổng quan</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/frontend/Admin/productmanagement.html" class="menu-link">
+                    <i class="fas fa-box menu-icon"></i>
+                    <span class="menu-text">Quản lý sản phẩm</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/frontend/Admin/order.html" class="menu-link active">
+                    <i class="fas fa-shopping-cart menu-icon"></i>
+                    <span class="menu-text">Đơn hàng</span>
+                    <span class="menu-badge" id="orderCountBadge">0</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-users menu-icon"></i>
+                    <span class="menu-text">Khách hàng</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-chart-line menu-icon"></i>
+                    <span class="menu-text">Thống kê</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-percent menu-icon"></i>
+                    <span class="menu-text">Khuyến mãi</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-star menu-icon"></i>
+                    <span class="menu-text">Đánh giá</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-comment menu-icon"></i>
+                    <span class="menu-text">Tin nhắn</span>
+                    <span class="menu-badge">8</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-cog menu-icon"></i>
+                    <span class="menu-text">Cài đặt</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
 
-        <script src="../js/order.js"></script>
-    </body>
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container-fluid">
+            <!-- Tiêu đề trang -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-1">Quản lý đơn hàng</h1>
+                    <p class="text-muted mb-0">
+                        Xem thông tin đơn hàng khách đã thanh toán.
+                    </p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="loadOrders()">
+                        <i class="fas fa-rotate-right"></i> Tải lại
+                    </button>
+                </div>
+            </div>
 
-    </html>
+            <!-- Bộ lọc & tìm kiếm -->
+            <div class="card mb-3">
+                <div class="card-body row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Tìm kiếm</label>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Tên khách, SĐT, mã đơn..."
+                            oninput="renderOrders()" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select id="statusFilter" class="form-select" onchange="renderOrders()">
+                            <option value="">Tất cả</option>
+                            <option value="pending">Chờ xử lý</option>
+                            <option value="processing">Đang giao</option>
+                            <option value="completed">Hoàn thành</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng đơn hàng -->
+            <div class="card">
+                <div class="card-header d-flex justify-content_between align-items-center">
+                    <span><i class="fas fa-list"></i> Danh sách đơn hàng</span>
+                    <span class="text-muted small" id="orderTotalText"></span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Mã đơn</th>
+                                    <th>Khách hàng</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Phương thức thanh toán</th>
+                                    <th>Tổng tiền</th>
+                                    <th>TT thanh toán</th>
+                                    <th>TT giao hàng</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody">
+                                <!-- JS render -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal chi tiết đơn hàng -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailLabel">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <h6>Thông tin khách hàng</h6>
+                        <p class="mb-1"><strong>Tên khách hàng:</strong> <span id="detailCustomerName"></span></p>
+                        <p class="mb-1"><strong>Số điện thoại:</strong> <span id="detailCustomerPhone"></span></p>
+                        <p class="mb-1"><strong>Địa chỉ:</strong> <span id="detailCustomerAddress"></span></p>
+                        <p class="mb-1"><strong>Phương thức thanh toán:</strong> <span id="detailPaymentMethod"></span>
+                        </p>
+                        <p class="mb-1"><strong>Ghi chú:</strong> <span id="detailNote"></span></p>
+                    </div>
+
+                    <hr>
+
+                    <h6>Sản phẩm trong đơn</h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailProductBody">
+                                <!-- JS render -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="text-end">
+                        <h5>Tổng tiền: <span id="detailTotalAmount" class="text-danger fw-bold"></span></h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin.js"></script>
+    <script src="../js/order.js"></script>
+</body>
+
+</html>
