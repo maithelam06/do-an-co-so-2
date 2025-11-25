@@ -15,25 +15,15 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/frontend/trangchu.html">
                 <i class="fas fa-bolt"></i> TechStore
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/frontend/trangchu.html">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Khuyến mãi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Liên hệ</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
+
+                <div class="d-flex align-items-center ms-auto">
                     <!-- Giỏ hàng -->
                     <div class="position-relative me-3">
                         <a href="./tranggiohang.html" class="text-white position-relative" onclick="toggleCart(event)">
@@ -57,20 +47,18 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <!-- Khi chưa đăng nhập -->
                             <li class="not-logged-in"><a class="dropdown-item" href="#" onclick="showLogin(event)"><i
-                                class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
+                                        class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
 
                             <!-- Khi đã đăng nhập -->
                             <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
-                                class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
+                                        class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
                             <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
-                                class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
-                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
-                                class="fas fa-heart me-2"></i>Yêu thích</a></li>
+                                        class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
                             <li class="logged-in d-none">
                                 <hr class="dropdown-divider">
                             </li>
                             <li class="logged-in d-none"><a class="dropdown-item text-danger" href="#"
-                                onclick="logout(event)"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                                    onclick="logout(event)"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
                         </ul>
                     </div>
                 </div>
@@ -153,7 +141,7 @@
 
                     <!-- Đặc điểm -->
                     <div class="row g-3 bg-light p-3 rounded">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="fas fa-shield-alt text-primary fs-3"></i>
                                 <div>
@@ -162,21 +150,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="fas fa-truck text-success fs-3"></i>
                                 <div>
                                     <div class="fw-semibold small">Miễn phí vận chuyển</div>
                                     <div class="text-muted small">Toàn quốc</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="fas fa-sync-alt text-info fs-3"></i>
-                                <div>
-                                    <div class="fw-semibold small">Đổi trả trong 7 ngày</div>
-                                    <div class="text-muted small">Nếu có lỗi</div>
                                 </div>
                             </div>
                         </div>

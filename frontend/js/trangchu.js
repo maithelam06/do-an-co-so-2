@@ -55,7 +55,7 @@ async function loadCategories() {
 
     renderCategories(categories);
   } catch (error) {
-    console.warn('⚠️ Lỗi khi load categories, dùng demo:', error);
+    console.warn('Lỗi khi load categories, dùng demo:', error);
     loadDemoCategories();
   }
 }
@@ -115,7 +115,7 @@ async function loadProducts(category = 'all') {
 
     renderProducts(products);
   } catch (error) {
-    console.error('❌ Lỗi khi load sản phẩm:', error);
+    console.error('Lỗi khi load sản phẩm:', error);
     document.getElementById('products-container').innerHTML =
       `<p class="text-center text-danger mt-4">Không thể tải sản phẩm.</p>`;
   }
@@ -193,20 +193,7 @@ function showLogin(event) {
   window.location.href = "/frontend/index.html";
 }
 
-async function logout(event) {
-  event.preventDefault();
-  if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
-  try {
-    await fetch(`${API_BASE_URL}/logout`, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-    });
-  } catch {}
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  updateAuthUI();
-  window.location.href = '/frontend/index.html';
-}
+
 
 
 // ===============================

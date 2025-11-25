@@ -1,20 +1,4 @@
-/* Breadcrumb */
-.breadcrumb {
-  background: white;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-}
 
-.breadcrumb-item a {
-  color: #0d6efd;
-  text-decoration: none;
-}
-
-.breadcrumb-item a:hover {
-  color: #dc3545;
-  text-decoration: underline;
-}
 
 /* Section Card */
 .section-card {
@@ -146,7 +130,7 @@
 
 /* Button */
 .btn-danger {
-  background-color: #dc3545;
+  background-color: #2563eb;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -156,10 +140,20 @@
   background-color: #c82333;
 }
 
+.btn-danger:hover:not(:disabled) {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
+}
+
+.btn-danger:active:not(:disabled) {
+    transform: translateY(0);
+}
+
 /* Total */
 #total {
   font-size: 1.75rem;
-  color: #dc3545;
+  color: #2563eb;
   font-weight: 700;
 }
 

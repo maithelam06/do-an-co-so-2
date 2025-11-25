@@ -15,25 +15,15 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/frontend/trangchu.html">
                 <i class="fas fa-bolt"></i> TechStore
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/frontend/trangchu.html">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Khuyến mãi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Liên hệ</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
+
+                <div class="d-flex align-items-center ms-auto">
                     <!-- Giỏ hàng -->
                     <div class="position-relative me-3">
                         <a href="./tranggiohang.html" class="text-white position-relative" onclick="toggleCart(event)">
@@ -64,8 +54,6 @@
                                         class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
                             <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
                                         class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
-                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
-                                        class="fas fa-heart me-2"></i>Yêu thích</a></li>
                             <li class="logged-in d-none">
                                 <hr class="dropdown-divider">
                             </li>
@@ -80,15 +68,7 @@
 
     <!-- Main Content -->
     <div class="container py-4">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
-                <li class="breadcrumb-item"><a href="index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="tranggiohang.html"><i class="fas fa-shopping-cart"></i> Giỏ
-                        hàng</a></li>
-                <li class="breadcrumb-item active">Thanh toán</li>
-            </ol>
-        </nav>
+        
 
         <div class="row g-4">
 
@@ -116,7 +96,7 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">Tổng cộng:</h5>
-                            <h4 class="mb-0 text-danger" id="total">0₫</h4>
+                            <h4 class="mb-0 " id="total">0₫</h4>
                         </div>
                     </div>
                 </div>
