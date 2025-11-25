@@ -36,7 +36,7 @@ async function loadCart() {
   updateTotalItems(items.length);
 }
 
-//  Render giỏ hàng
+//  Render giỏ hàng - CẬP NHẬT CHO TABLE
 function renderCart(items) {
   const cartItemsDiv = document.getElementById("cartItems");
   const cartContent = document.getElementById("cartContent");
@@ -45,60 +45,57 @@ function renderCart(items) {
   cartItemsDiv.innerHTML = "";
 
   if (items.length === 0) {
-    cartContent.style.display = "none";
+    cartContent.classList.add("hide");
     emptyCart.style.display = "block";
     return;
   }
 
-  cartContent.style.display = "flex";
+  cartContent.classList.remove("hide");
   emptyCart.style.display = "none";
 
   items.forEach((item) => {
     const itemHtml = `
-      <div class="cart-item"
+      <tr class="cart-item"
            data-id="${item.id}"
            data-product-id="${item.product.id}"
            data-image="${item.product.image || ""}">
-        <div class="row align-items-center g-2">
-          <div class="col-auto">
-            <input type="checkbox" class="form-check-input product-checkbox" onchange="updateSelected()" />
-          </div>
-          <div class="col-auto">
-            <img src="${item.product.image}" alt="${
-      item.product.name
-    }" class="product-image">
-          </div>
-          <div class="col">
-            <div class="product-name">${item.product.name}</div>
-            <div class="product-details">${item.product.variant || ""}</div>
-          </div>
-          <div class="col-auto">
-            <div class="price-text" data-price="${item.product.price}">
-              ${formatPrice(item.product.price)}
+        <td>
+          <input type="checkbox" class="form-check-input product-checkbox" onchange="updateSelected()" />
+        </td>
+        <td>
+          <div class="item-product">
+            <img src="${item.product.image}" alt="${item.product.name}">
+            <div class="item-product-info">
+              <div class="item-product-name">${item.product.name}</div>
+              <div class="item-product-variant">${item.product.variant || ""}</div>
             </div>
           </div>
-          <div class="col-auto">
-            <div class="quantity-control">
-              <button class="quantity-btn" onclick="decreaseQuantity(${
-                item.id
-              })">-</button>
-              <input type="number" class="quantity-input" value="${
-                item.quantity
-              }" readonly>
-              <button class="quantity-btn" onclick="increaseQuantity(${
-                item.id
-              })">+</button>
-            </div>
+        </td>
+        <td>
+          <div class="item-price" data-price="${item.product.price}">
+            ${formatPrice(item.product.price)}
           </div>
-          <div class="col-auto">
-            <button class="btn btn-link text-danger btn-remove p-1" onclick="removeItem(${
-              item.id
-            })">
-              <i class="fas fa-trash"></i>
+        </td>
+        <td>
+          <div class="quantity-control">
+            <button type="button" onclick="decreaseQuantity(${item.id})">-</button>
+            <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+            <button type="button" onclick="increaseQuantity(${item.id})">+</button>
+          </div>
+        </td>
+        <td>
+          <div class="item-total" data-unit-price="${item.product.price}">
+            ${formatPrice(item.product.price * item.quantity)}
+          </div>
+        </td>
+        <td>
+          <div class="item-delete">
+            <button type="button" onclick="removeItem(${item.id})">
+              <i class="fas fa-trash-alt"></i>
             </button>
           </div>
-        </div>
-      </div>
+        </td>
+      </tr>
     `;
     cartItemsDiv.innerHTML += itemHtml;
   });
@@ -109,8 +106,13 @@ function renderCart(items) {
 // Update tổng số sản phẩm
 function updateTotalItems(count) {
   const totalItemsEl = document.getElementById("totalItems");
+  const totalItemsBottomEl = document.getElementById("totalItemsBottom");
+  
   if (totalItemsEl) {
     totalItemsEl.textContent = count;
+  }
+  if (totalItemsBottomEl) {
+    totalItemsBottomEl.textContent = count;
   }
 }
 
@@ -136,34 +138,37 @@ function updateCartCount(items) {
 
 // Tăng / giảm số lượng
 function decreaseQuantity(itemId) {
-  const qtyInput = document.querySelector(
-    `.cart-item[data-id="${itemId}"] .quantity-input`
-  );
-  if (!qtyInput) return;
+  const row = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+  if (!row) return;
+  
+  const qtyInput = row.querySelector(".quantity-input");
   const newQty = parseInt(qtyInput.value) - 1;
   if (newQty < 1) return;
+  
   qtyInput.value = newQty;
   updateQuantity(itemId, newQty);
 }
 
 function increaseQuantity(itemId) {
-  const qtyInput = document.querySelector(
-    `.cart-item[data-id="${itemId}"] .quantity-input`
-  );
-  if (!qtyInput) return;
+  const row = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+  if (!row) return;
+  
+  const qtyInput = row.querySelector(".quantity-input");
   const newQty = parseInt(qtyInput.value) + 1;
   if (newQty > 99) return;
+  
   qtyInput.value = newQty;
   updateQuantity(itemId, newQty);
 }
 
 async function updateQuantity(itemId, newQuantity) {
   const token = localStorage.getItem("token");
-  const itemDiv = document.querySelector(`.cart-item[data-id="${itemId}"]`);
-  const priceEl = itemDiv.querySelector(".price-text");
-  const unitPrice = parseInt(priceEl.dataset.price);
+  const row = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+  const itemTotalEl = row.querySelector(".item-total");
+  const unitPrice = parseInt(itemTotalEl.dataset.unitPrice);
 
-  priceEl.textContent = formatPrice(unitPrice * newQuantity);
+  // Cập nhật số tiền của sản phẩm này
+  itemTotalEl.textContent = formatPrice(unitPrice * newQuantity);
 
   if (token) {
     try {
@@ -197,7 +202,7 @@ async function removeItem(itemId) {
   if (!confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
 
   const token = localStorage.getItem("token");
-  const itemDiv = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+  const row = document.querySelector(`.cart-item[data-id="${itemId}"]`);
 
   if (token) {
     try {
@@ -215,12 +220,12 @@ async function removeItem(itemId) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
-  itemDiv.remove();
+  row.remove();
 
   // Kiểm tra nếu giỏ hàng trống
   const remainingItems = document.querySelectorAll(".cart-item");
   if (remainingItems.length === 0) {
-    document.getElementById("cartContent").style.display = "none";
+    document.getElementById("cartContent").classList.add("hide");
     document.getElementById("emptyCart").style.display = "block";
   }
 
@@ -233,16 +238,17 @@ async function removeItem(itemId) {
 function updateSelected() {
   const checkboxes = document.querySelectorAll(".cart-item .product-checkbox");
   const selectAll = document.getElementById("selectAll");
+  const selectAllBottom = document.getElementById("selectAllBottom");
+  
   let subtotal = 0;
   let selectedCount = 0;
   const totalCount = checkboxes.length;
 
   checkboxes.forEach((box) => {
-    const itemDiv = box.closest(".cart-item");
-    const qty = parseInt(itemDiv.querySelector(".quantity-input").value);
-    const unitPrice = parseInt(
-      itemDiv.querySelector(".price-text").dataset.price
-    );
+    const row = box.closest(".cart-item");
+    const qty = parseInt(row.querySelector(".quantity-input").value);
+    const itemTotalEl = row.querySelector(".item-total");
+    const unitPrice = parseInt(itemTotalEl.dataset.unitPrice);
 
     if (box.checked) {
       subtotal += qty * unitPrice;
@@ -253,23 +259,40 @@ function updateSelected() {
   document.getElementById("subtotal").textContent = formatPrice(subtotal);
   document.getElementById("total").textContent = formatPrice(subtotal);
   document.getElementById("selectedCount").textContent = selectedCount;
+  
+  const selectedCountBtn = document.getElementById("selectedCountBtn");
+  if (selectedCountBtn) {
+    selectedCountBtn.textContent = selectedCount;
+  }
 
   const buyNowBtn = document.getElementById("buyNowBtn");
   buyNowBtn.disabled = selectedCount === 0;
 
   // Nếu tất cả checkbox được chọn → tick chọn tất cả
+  const allChecked = selectedCount === totalCount && totalCount > 0;
   if (selectAll) {
-    selectAll.checked = selectedCount === totalCount && totalCount > 0;
+    selectAll.checked = allChecked;
+  }
+  if (selectAllBottom) {
+    selectAllBottom.checked = allChecked;
   }
 }
 
 // Toggle chọn tất cả
 function toggleSelectAll() {
   const selectAll = document.getElementById("selectAll");
+  const selectAllBottom = document.getElementById("selectAllBottom");
   const checkboxes = document.querySelectorAll(".cart-item .product-checkbox");
 
+  // Lấy trạng thái từ checkbox nào được click
+  const isChecked = selectAll?.checked || selectAllBottom?.checked || false;
+  
+  // Đồng bộ cả 2 checkbox
+  if (selectAll) selectAll.checked = isChecked;
+  if (selectAllBottom) selectAllBottom.checked = isChecked;
+
   checkboxes.forEach((box) => {
-    box.checked = selectAll.checked;
+    box.checked = isChecked;
   });
 
   updateSelected();
@@ -288,18 +311,16 @@ function buyNow() {
   }
 
   checkboxes.forEach((box) => {
-    const itemDiv = box.closest(".cart-item");
+    const row = box.closest(".cart-item");
 
-    const cartItemId = parseInt(itemDiv.dataset.id); // id trong bảng cart_items
-    const productId = parseInt(itemDiv.dataset.productId); // id trong bảng products
-    const image = itemDiv.dataset.image;
+    const cartItemId = parseInt(row.dataset.id); // id trong bảng cart_items
+    const productId = parseInt(row.dataset.productId); // id trong bảng products
+    const image = row.dataset.image;
 
-    const qty = parseInt(itemDiv.querySelector(".quantity-input").value);
-    const productName =
-      itemDiv.querySelector(".product-name").textContent || "";
-    const unitPrice = parseInt(
-      itemDiv.querySelector(".price-text").dataset.price
-    );
+    const qty = parseInt(row.querySelector(".quantity-input").value);
+    const productName = row.querySelector(".item-product-name").textContent || "";
+    const itemTotalEl = row.querySelector(".item-total");
+    const unitPrice = parseInt(itemTotalEl.dataset.unitPrice);
 
     selectedItems.push({
       cart_item_id: cartItemId, // dùng để xoá giỏ trên DB

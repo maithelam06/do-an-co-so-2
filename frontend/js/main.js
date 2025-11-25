@@ -15,6 +15,21 @@ async function updateCartCount() {
 }
 
 
+async function logout(event) {
+  event.preventDefault();
+  if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+  try {
+    await fetch(`${API_BASE_URL}/logout`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+    });
+  } catch {}
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  updateAuthUI();
+  window.location.href = '/frontend/index.html';
+}
+
 
 // 👤 AUTH UI
 

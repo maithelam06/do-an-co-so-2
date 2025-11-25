@@ -11,28 +11,18 @@
     <link rel="stylesheet" href="./css/main.css">
 </head>
 
-<body class="bg-light">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/frontend/trangchu.html">
                 <i class="fas fa-bolt"></i> TechStore
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/frontend/trangchu.html">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Khuyến mãi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Liên hệ</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
+
+                <div class="d-flex align-items-center ms-auto">
                     <!-- Giỏ hàng -->
                     <div class="position-relative me-3">
                         <a href="./tranggiohang.html" class="text-white position-relative" onclick="toggleCart(event)">
@@ -63,8 +53,6 @@
                                         class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
                             <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
                                         class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
-                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
-                                        class="fas fa-heart me-2"></i>Yêu thích</a></li>
                             <li class="logged-in d-none">
                                 <hr class="dropdown-divider">
                             </li>
@@ -78,55 +66,70 @@
     </nav>
 
     <div class="container my-4">
-        <h5 class="mb-3"><i class="fas fa-shopping-cart"></i> Giỏ Hàng</h5>
+        <div class="breadcrumb-section">
+            <h5><i class="fas fa-shopping-cart me-2"></i>Giỏ Hàng</h5>
+        </div>
 
-        <div id="cartContent" class="row">
-            <div class="left-cart">
-                <div class="select-all-section">
-                    <div class="form-check">
-                        <input class="form-check-input product-checkbox" type="checkbox" id="selectAll"
-                            onchange="toggleSelectAll()">
-                        <label class="form-check-label" for="selectAll">
-                            Chọn tất cả (<span id="totalItems">0</span> sản phẩm)
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Danh sách sản phẩm -->
-                <div id="cartItems"></div>
-            </div>
-
-            <!-- Cột phải -->
-            <div class="right-summary">
-                <div class="summary-box">
-                    <div class="summary-title">Thông tin đơn hàng</div>
-                    <div class="summary-row">
-                        <span>Tạm tính (<span id="selectedCount">0</span> sản phẩm):</span>
-                        <span id="subtotal" class="price-text">0₫</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Phí vận chuyển:</span>
-                        <span id="shipping">Miễn phí</span>
-                    </div>
-                    <div class="summary-total">
-                        <span>Tổng cộng:</span>
-                        <span id="total" class="price-text">0₫</span>
-                    </div>
-                    <button class="btn btn-primary btn-buy-now w-100 mt-3" id="buyNowBtn" onclick="buyNow()" disabled>
-                        <i class="fas fa-shopping-bag"></i> Mua Ngay
-                    </button>
-                    <p class="text-muted text-center mt-2 mb-0" style="font-size: 12px;">Vui lòng chọn sản phẩm để mua
-                    </p>
-                </div>
-            </div>
+        <div id="cartContent">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input class="form-check-input product-checkbox" type="checkbox" id="selectAll"
+                                onchange="toggleSelectAll()">
+                        </th>
+                        <th>Sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Số tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="cartItems">
+                    <!-- Cart items will be inserted here dynamically -->
+                </tbody>
+            </table>
         </div>
 
         <div id="emptyCart" class="empty-cart" style="display: none;">
             <i class="fas fa-shopping-cart"></i>
-            <h6>Giỏ hàng trống</h6>
-            <p class="text-muted" style="font-size: 13px;">Thêm sản phẩm vào giỏ hàng để tiếp tục</p>
+            <h6>Giỏ hàng của bạn còn trống</h6>
+            <p class="text-muted" style="font-size: 0.9rem;">Hãy chọn thêm sản phẩm để mua sắm nhé</p>
         </div>
     </div>
+
+    <!-- Summary Box - Fixed at Bottom -->
+    <div class="right-summary">
+        <div class="summary-box">
+            <div class="summary-left">
+                <div class="select-all-checkout">
+                    <input class="form-check-input" type="checkbox" id="selectAllBottom" onchange="toggleSelectAll()">
+                    <label for="selectAllBottom">
+                        Chọn tất cả (<span id="totalItems">0</span>)
+                    </label>
+                </div>
+                <div class="summary-info">
+                    <div class="summary-item">
+                        <label>Tổng thanh toán (<span id="selectedCount">0</span> Sản phẩm):</label>
+                        <span id="subtotal" class="price-text">0₫</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="summary-right">
+                <div class="summary-total-section">
+                    <div class="summary-total-label">Tổng thanh toán</div>
+                    <div class="summary-total-price" id="total">0₫</div>
+                </div>
+                <button class="btn btn-primary btn-buy-now" id="buyNowBtn" onclick="buyNow()" disabled>
+                    Mua Hàng (<span id="selectedCountBtn">0</span>)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden element for shipping fee -->
+    <span id="shipping" style="display: none;">Miễn phí</span>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/giohang.js"></script>
