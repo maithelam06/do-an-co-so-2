@@ -7,10 +7,14 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VnpayController;
+use App\Http\Controllers\CustomerController;
 
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
+// Khách hàng
+Route::get('/customers', [CustomerController::class, 'index']);
+Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus']);
 
 // 🛒 Products
 Route::get('/products', [ProductController::class, 'index']);          // Lấy tất cả (có thể lọc theo ?category=)
@@ -41,10 +45,14 @@ Route::get('/orders/{id}', [OrderController::class, 'show']);
 Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus']);
 // Cập nhật TRẠNG THÁI GIAO HÀNG (dùng cho nút "Cập nhật giao hàng")
 Route::patch('/orders/{id}/shipping-status', [OrderController::class, 'updateShippingStatus']);
-Route::delete('/orders/{id}', [OrderController::class, 'destroy']); // xóa
+Route::delete('/orders/{id}', [OrderController::class, 'destroy']); //xóa
 
 
-//vnpay
+
+Route::get('/customers', [CustomerController::class, 'index']);
+Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus']);
+
+
 Route::post('/vnpay/create', [VnpayController::class, 'createPayment']);
 Route::get('/vnpay/return', [VnpayController::class, 'return'])->name('vnpay.return');
 

@@ -7,7 +7,7 @@ formLogin.addEventListener('submit', async (event) => {
     const password = document.getElementById('passwordLog').value;
 
     try {
-        const e = await fetch('http://localhost:8000/api/login', {
+        const res = await fetch('http://localhost:8000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,20 +16,64 @@ formLogin.addEventListener('submit', async (event) => {
             body: JSON.stringify({ email, password })
         });
 
-        const data = await e.json();
+        let data = null;
+        try {
+            data = await res.json();
+        } catch (e) {
+            // nếu backend không trả JSON thì vẫn tránh app crash
+        }
 
-        if (data.status === 'success') {
-            //Lưu thông tin đăng nhập để dùng sau
+        // ❌ Nếu response không OK (4xx / 5xx)
+        if (!res.ok) {
+            // 403: tài khoản bị khóa
+            if (res.status === 403) {
+                await Swal.fire({
+                    scrollbarPadding: false,
+                    heightAuto: false,
+                    icon: 'error',
+                    title: 'Tài khoản bị khóa!',
+                    text: (data && data.message) || 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.',
+                    confirmButtonText: 'Đóng'
+                });
+                return;
+            }
 
+            // 401: sai email / mật khẩu
+            if (res.status === 401) {
+                await Swal.fire({
+                    scrollbarPadding: false,
+                    heightAuto: false,
+                    icon: 'error',
+                    title: 'Đăng nhập thất bại!',
+                    text: (data && data.message) || 'Sai email hoặc mật khẩu.',
+                    confirmButtonText: 'Thử lại'
+                });
+                return;
+            }
+
+            // các lỗi khác
+            await Swal.fire({
+                scrollbarPadding: false,
+                heightAuto: false,
+                icon: 'error',
+                title: 'Lỗi hệ thống!',
+                text: (data && data.message) || 'Có lỗi xảy ra, vui lòng thử lại sau.',
+                confirmButtonText: 'Đóng'
+            });
+            return;
+        }
+
+        // ✅ Trường hợp response OK (2xx)
+        if (data && data.status === 'success') {
             const user = {
                 name: data.user.name,
                 role: data.role,
                 avatar: data.user.avatar,
                 token: data.token
-            }
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(user)); // lưu cả user object
+            };
 
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(user));
 
             await Swal.fire({
                 scrollbarPadding: false,
@@ -45,14 +89,14 @@ formLogin.addEventListener('submit', async (event) => {
             } else {
                 window.location.href = '/frontend/trangchu.html';
             }
-
         } else {
+            // phòng trường hợp backend trả 200 nhưng status != success
             await Swal.fire({
                 scrollbarPadding: false,
                 heightAuto: false,
                 icon: 'error',
                 title: 'Đăng nhập thất bại!',
-                text: data.message || 'Sai email hoặc mật khẩu.',
+                text: (data && data.message) || 'Sai email hoặc mật khẩu.',
                 confirmButtonText: 'Thử lại'
             });
         }

@@ -2,7 +2,7 @@
 // 🧩 TOGGLE SIDEBAR
 // ==========================
 function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");a
+  const sidebar = document.getElementById("sidebar");
   const mainContent = document.getElementById("mainContent");
   sidebar.classList.toggle("collapsed");
   mainContent.classList.toggle("expanded");
@@ -59,6 +59,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = "/frontend/trangchu.html";
     return;
   }
+
+  // =====================================================
+  // 🔥 CHECK USER BỊ KHÓA SAU KHI ADMIN ẤN KHÓA
+  // =====================================================
+  try {
+    const checkRes = await fetch("http://localhost:8000/api/customers", {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    });
+
+    if (checkRes.status === 401 || checkRes.status === 403) {
+      await Swal.fire({
+        icon: "error",
+        title: "Tài khoản đã bị khóa!",
+        text: "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.",
+        confirmButtonText: "Đăng nhập lại"
+      });
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      window.location.href = "/frontend/login.html";
+      return;
+    }
+  } catch (err) {
+    console.error("Lỗi check khóa tài khoản:", err);
+  }
+  // =====================================================
 
   // ==========================
   //  LOAD THÔNG TIN NGƯỜI DÙNG

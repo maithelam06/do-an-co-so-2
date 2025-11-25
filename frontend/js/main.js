@@ -6,6 +6,24 @@ async function updateCartCount() {
     const res = await fetch(`${API_BASE_URL}/cart/count`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
+
+    console.log('cart/count status =', res.status); // log để nhìn Console
+
+    // CHECK USER BỊ KHÓA (token bị xóa)
+    if (res.status === 401 || res.status === 403) {
+      await Swal.fire({
+        icon: "error",
+        title: "Tài khoản của bạn đã bị khóa!",
+        text: "Vui lòng liên hệ quản trị viên.",
+        confirmButtonText: "Đăng nhập lại"
+      });
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/frontend/login.html";
+      return;
+    }
+
     const data = await res.json();
     const el = document.getElementById('cart-count');
     if (el) el.textContent = data.count || 0;
@@ -15,9 +33,7 @@ async function updateCartCount() {
 }
 
 
-
 // 👤 AUTH UI
-
 function updateAuthUI() {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -41,7 +57,8 @@ function updateAuthUI() {
   }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
   updateAuthUI();
-  updateCartCount();
+  updateCartCount();   //TRANG NÀO CẬP NHẬT CART → TỰ BẮT 401 → VĂNG RA
 });

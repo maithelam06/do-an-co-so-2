@@ -1,11 +1,53 @@
-
 // CẤU HÌNH API
-
 const API_BASE_URL = 'http://localhost:8000/api';
 
 
-// LOAD DANH MỤC
+// ===============================
+// 🔥 CHECK TÀI KHOẢN BỊ KHÓA 🔥
+// ===============================
+async function checkUserLocked() {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
 
+  // Nếu chưa đăng nhập thì không cần check
+  if (!token || !user) return;
+
+  try {
+    // Gọi API cần token (cart) để kiểm tra token còn hợp lệ không
+    const res = await fetch(`${API_BASE_URL}/cart`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + token,
+      }
+    });
+
+    // Nếu BE trả 401/403 → token bị revoke (do admin khóa user)
+    if (res.status === 401 || res.status === 403) {
+      await Swal.fire({
+        icon: "error",
+        title: "Tài khoản bị khóa!",
+        text: "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.",
+        confirmButtonText: "Đăng nhập lại"
+      });
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      window.location.href = "/frontend/login.html";
+      return;
+    }
+
+  } catch (error) {
+    console.error("Lỗi kiểm tra tài khoản bị khóa:", error);
+  }
+}
+
+
+
+
+// ===============================
+// LOAD DANH MỤC
+// ===============================
 async function loadCategories() {
   try {
     const response = await fetch(`${API_BASE_URL}/categories`);
@@ -54,8 +96,9 @@ function loadDemoCategories() {
 }
 
 
+// ===============================
 // LOAD PRODUCTS
-
+// ===============================
 let allProducts = [];
 let currentCategory = 'all';
 
@@ -80,7 +123,6 @@ async function loadProducts(category = 'all') {
 
 
 // RENDER PRODUCTS (CLICK CARD = XEM CHI TIẾT)
-
 function renderProducts(products) {
   const container = document.getElementById("products-container");
   if (!container) return;
@@ -113,21 +155,18 @@ function renderProducts(products) {
 }
 
 
+// ===============================
 // XEM CHI TIẾT SẢN PHẨM
-
+// ===============================
 function viewProductDetail(productId) {
-  // Lưu productId vào localStorage
   localStorage.setItem('selectedProductId', productId);
-  
-  // Chuyển hướng đến trang chi tiết
   window.location.href = `chitiet.html?id=${productId}`;
 }
 
 
-
-
+// ===============================
 // TÌM KIẾM SẢN PHẨM
-
+// ===============================
 function filterProducts(keyword) {
   const filtered = allProducts.filter(p =>
     p.name.toLowerCase().includes(keyword)
@@ -136,8 +175,9 @@ function filterProducts(keyword) {
 }
 
 
+// ===============================
 // LỌC THEO DANH MỤC
-
+// ===============================
 function filterByCategory(category, event) {
   document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
   event.target.closest('.category-item').classList.add('active');
@@ -145,9 +185,11 @@ function filterByCategory(category, event) {
 }
 
 
-
+// ===============================
+// LOGIN & LOGOUT
+// ===============================
 function showLogin(event) {
-  event.preventDefault(); // tránh reload
+  event.preventDefault();
   window.location.href = "/frontend/index.html";
 }
 
@@ -167,16 +209,23 @@ async function logout(event) {
 }
 
 
+// ===============================
 // SEARCH EVENT
-
+// ===============================
 document.getElementById('searchInput')?.addEventListener('input', e => {
   const term = e.target.value.toLowerCase();
   filterProducts(term);
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
+// ===============================
+// DOM READY
+// ===============================
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // 🔥 CHECK TÀI KHOẢN BỊ KHÓA
+  await checkUserLocked();
+
   loadCategories();
   loadProducts();
-  
 });
