@@ -37,6 +37,9 @@ function renderProductDetail(product) {
   document.getElementById("product-price").textContent = product.price.toLocaleString() + "₫";
   document.getElementById("product-description").textContent = product.description || "Không có mô tả.";
 
+  // Hiển thị số lượng đã bán
+  document.getElementById("product-sold-count").textContent = product.sold_count || 0;
+
   // Breadcrumb
   document.getElementById("breadcrumb-product").textContent = product.name;
   document.getElementById("breadcrumb-category").textContent = product.category?.name || "Danh mục";

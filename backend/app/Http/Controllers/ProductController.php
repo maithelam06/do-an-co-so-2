@@ -152,6 +152,10 @@ class ProductController extends Controller
         return response()->json(['message' => 'Sản phẩm không tồn tại'], 404);
     }
 
+    // Tính số lượng đã bán và gắn vào sản phẩm
+    $soldMap = $this->getSoldCountMap();
+    $product->sold_count = $soldMap[$product->id] ?? 0;
+
     return response()->json($product);
 }
 
