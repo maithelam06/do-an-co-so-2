@@ -4,21 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     // Lấy tất cả sản phẩm (Admin)
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $query = Product::with('category');
+        
+        // Lọc theo tên danh mục nếu có query parameter 'category'
+        if ($request->has('category')) {
+            $categoryName = $request->query('category');
+            $query->whereHas('category', function ($q) use ($categoryName) {
+                $q->where('name', $categoryName);
+            });
+        }
+        
+        $products = $query->get();
+
+        // Tính số lượng đã bán và gắn vào từng sản phẩm
+        $soldMap = $this->getSoldCountMap();
+        $products->transform(function ($p) use ($soldMap) {
+            $p->sold_count = $soldMap[$p->id] ?? 0;
+            return $p;
+        });
+
         return response()->json($products);
     }
 
     // Lấy sản phẩm đang bật (User)
-    public function active()
+    public function active(Request $request)
     {
-        $products = Product::where('status', 1)->get();
+        $query = Product::with('category')->where('status', 1);
+        
+        // Lọc theo tên danh mục nếu có query parameter 'category'
+        if ($request->has('category')) {
+            $categoryName = $request->query('category');
+            $query->whereHas('category', function ($q) use ($categoryName) {
+                $q->where('name', $categoryName);
+            });
+        }
+        
+        $products = $query->get();
+
+        // Tính số lượng đã bán và gắn vào từng sản phẩm
+        $soldMap = $this->getSoldCountMap();
+        $products->transform(function ($p) use ($soldMap) {
+            $p->sold_count = $soldMap[$p->id] ?? 0;
+            return $p;
+        });
+
         return response()->json($products);
     }
 
@@ -27,10 +64,10 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'nullable|string|max:100',
+            'category_id' => 'nullable|integer|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
 
         $path = null;
@@ -40,7 +77,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             'name' => $validated['name'],
-            'category' => $validated['category'] ?? null,
+            'category_id' => $validated['category_id'] ?? null,
             'price' => $validated['price'],
             'description' => $validated['description'] ?? null,
             'image' => $path,
@@ -60,7 +97,7 @@ class ProductController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'category' => 'nullable|string|max:100',
+            'category_id' => 'nullable|integer|exists:categories,id',
             'price' => 'sometimes|numeric|min:0',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -109,7 +146,7 @@ class ProductController extends Controller
     }
     public function show($id)
 {
-    $product = Product::find($id);
+    $product = Product::with('category')->find($id);
 
     if (!$product) {
         return response()->json(['message' => 'Sản phẩm không tồn tại'], 404);
@@ -117,4 +154,28 @@ class ProductController extends Controller
 
     return response()->json($product);
 }
+
+    /**
+     * Lấy map product_id => tổng quantity đã bán từ order_items
+     * Chỉ tính các đơn hàng hợp lệ (ví dụ: status = 'completed').
+     */
+    protected function getSoldCountMap(): array
+    {
+        // Theo migration: orders.status: pending|processing|completed|cancelled
+        // Có thêm shipping_status: pending|shipping|completed|cancelled
+        // Ở đây mặc định chỉ tính những đơn đã completed. Có thể bổ sung điều kiện shipping_status nếu cần.
+        $rows = DB::table('order_items as oi')
+            ->join('orders as o', 'o.id', '=', 'oi.order_id')
+            ->where('o.status', 'completed')
+            // ->where('o.shipping_status', 'completed') // bật nếu muốn tính khi giao hàng hoàn tất
+            ->groupBy('oi.product_id')
+            ->select('oi.product_id', DB::raw('COALESCE(SUM(oi.quantity),0) as total_sold'))
+            ->get();
+
+        $map = [];
+        foreach ($rows as $r) {
+            $map[$r->product_id] = (int) $r->total_sold;
+        }
+        return $map;
+    }
 }

@@ -26,7 +26,7 @@ async function checkUserLocked() {
       await Swal.fire({
         icon: "error",
         title: "Tài khoản bị khóa!",
-        text: "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.",
+        text: "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị vi��n.",
         confirmButtonText: "Đăng nhập lại"
       });
 
@@ -50,17 +50,20 @@ async function checkUserLocked() {
 // ===============================
 async function loadCategories() {
   try {
-    const response = await fetch(`${API_BASE_URL}/categories`);
-    const categories = await response.json();
-
+    const res = await fetch('http://localhost:8000/api/categories', {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!res.ok) throw new Error('Không thể tải danh mục');
+    const categories = await res.json();
     renderCategories(categories);
-  } catch (error) {
-    console.warn('Lỗi khi load categories, dùng demo:', error);
+  } catch (e) {
+    console.error('Lỗi load danh mục:', e);
+    // Fallback: load demo categories nếu API lỗi
     loadDemoCategories();
   }
 }
 
-// Render categories từ API hoặc fallback demo
+// Render categories vào sidebar
 function renderCategories(categories) {
   const list = document.getElementById('categories-list');
   if (!list) return;
@@ -73,27 +76,13 @@ function renderCategories(categories) {
 
   categories.forEach(cat => {
     list.innerHTML += `
-      <div class="category-item" onclick="filterByCategory('${cat.slug}', event)">
-        <i class="${cat.icon || 'fas fa-tag'}"></i> ${cat.name}
+      <div class="category-item" onclick="filterByCategory('${cat.name}', event)">
+        <i class="fas fa-tag"></i> ${cat.name}
       </div>
     `;
   });
 }
 
-// Categories mẫu khi API lỗi
-function loadDemoCategories() {
-  const demoCategories = [
-    { name: 'Tất cả', icon: 'fas fa-th', slug: 'all' },
-    { name: 'Laptop', icon: 'fas fa-laptop', slug: 'Laptop' },
-    { name: 'Điện thoại', icon: 'fas fa-mobile-alt', slug: 'Điện thoại' },
-    { name: 'Tablet', icon: 'fas fa-tablet-alt', slug: 'Tablet' },
-    { name: 'Tai nghe', icon: 'fas fa-headphones', slug: 'Tai nghe' },
-    { name: 'Đồng hồ', icon: 'fas fa-clock', slug: 'Đồng hồ' },
-    { name: 'Camera', icon: 'fas fa-camera', slug: 'Camera' },
-    { name: 'Phụ kiện', icon: 'fas fa-plug', slug: 'Phụ kiện' }
-  ];
-  renderCategories(demoCategories);
-}
 
 
 // ===============================
@@ -136,17 +125,25 @@ function renderProducts(products) {
   }
   
   products.forEach(p => {
+    // Lấy số lượng đã bán từ sold_count, mặc định 0 nếu không có
+    const soldCount = p.sold_count || 0;
+    
     container.innerHTML += `
-      <div class="col-12 col-md-6 col-lg-3">
+      <div class="col-12 col-md-6 col-lg-5-per-row">
         <div class="card product-card h-100 shadow-sm" onclick="viewProductDetail(${p.id})" style="cursor: pointer;">
           <div class="product-img-wrapper">
-            <img src="${p.image}" alt="${p.name}" class="card-img-top">
+            <img src="${p.image ? 'http://localhost:8000/storage/' + p.image : 'https://via.placeholder.com/300'}" alt="${p.name}" class="card-img-top">
             ${p.discount ? `<span class="badge bg-danger position-absolute top-0 end-0 m-2">-${p.discount}%</span>` : ''}
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="product-title">${p.name}</h5>
-            <p class="product-price text-danger fw-bold mb-1">${p.price.toLocaleString()}₫</p>
-            ${p.oldPrice ? `<p class="text-decoration-line-through text-muted small mb-2">${p.oldPrice.toLocaleString()}₫</p>` : ''}
+            <p class="product-price text-danger fw-bold mb-1">${Number(p.price).toLocaleString()}₫</p>
+            ${p.oldPrice ? `<p class="text-decoration-line-through text-muted small mb-2">${Number(p.oldPrice).toLocaleString()}₫</p>` : ''}
+            <div class="mt-auto pt-2">
+              <span class="badge bg-info text-white">
+                <i class="fas fa-shopping-bag me-1"></i>Đã bán: ${soldCount.toLocaleString()}
+              </span>
+            </div>
           </div>
         </div>
       </div>

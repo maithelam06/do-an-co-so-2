@@ -1,20 +1,14 @@
 const API_URL = "http://localhost:8000/api/products";
+const CATEGORIES_API_URL = "http://localhost:8000/api/categories";
+
+let allCategories = [];
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadCategories();
   loadProducts();
 
-  document.getElementById("addProductForm").addEventListener("submit", addProduct);
-
-  const categoryLinks = document.querySelectorAll(".category-link");
-  categoryLinks.forEach(link => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const category = e.target.dataset.category;
-      categoryLinks.forEach(l => l.classList.remove("active"));
-      e.target.classList.add("active");
-      loadProducts(category);
-    });
-  });
+  document.getElementById("addProductForm").addEventListener("submit", addProduct);  // Event listeners cho category links sẽ được setup sau khi load categories
+  // setupCategoryEventListeners() sẽ được gọi trong renderCategoriesInSidebar()
   
   // Xử lý hiển thị tên file khi chọn
   const fileInput = document.getElementById("image");
@@ -34,6 +28,96 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+// ===============================
+// LOAD CATEGORIES FROM API
+// ===============================
+async function loadCategories() {
+  try {
+    const res = await fetch(CATEGORIES_API_URL, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!res.ok) throw new Error('Không thể tải danh mục');
+    
+    allCategories = await res.json();
+    renderCategoriesInSidebar();
+    renderCategoriesInSelect();
+  } catch (error) {
+    console.error('Lỗi load danh mục:', error);
+    // Fallback: sử dụng categories mặc định nếu API lỗi
+    loadFallbackCategories();
+  }
+}
+
+// Render categories vào sidebar
+function renderCategoriesInSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+
+  // Tìm container cho categories hoặc tạo mới
+  let categoriesContainer = sidebar.querySelector('.categories-container');
+  if (!categoriesContainer) {
+    categoriesContainer = document.createElement('div');
+    categoriesContainer.className = 'categories-container';
+    sidebar.appendChild(categoriesContainer);
+  }
+
+  categoriesContainer.innerHTML = `
+    <a href="#" class="category-link active" data-category=""><i class="fas fa-th"></i> Tất cả</a>
+  `;
+
+  allCategories.forEach(cat => {
+    categoriesContainer.innerHTML += `
+      <a href="#" class="category-link" data-category="${cat.name}">
+        <i class="fas fa-tag"></i> ${cat.name}
+      </a>
+    `;
+  });
+
+  // Thêm lại event listeners cho các category links mới
+  setupCategoryEventListeners();
+}
+
+// Render categories vào dropdown select
+function renderCategoriesInSelect() {
+  const categorySelect = document.getElementById('category');
+  if (!categorySelect) return;
+
+  categorySelect.innerHTML = '<option value="">-- Chọn danh mục --</option>';
+  
+  allCategories.forEach(cat => {
+    categorySelect.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+  });
+}
+
+// Setup event listeners cho category links
+function setupCategoryEventListeners() {
+  const categoryLinks = document.querySelectorAll(".category-link");
+  categoryLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const category = e.target.closest('.category-link').dataset.category;
+      categoryLinks.forEach(l => l.classList.remove("active"));
+      e.target.closest('.category-link').classList.add("active");
+      loadProducts(category);
+    });
+  });
+}
+
+// Fallback categories nếu API lỗi
+function loadFallbackCategories() {
+  allCategories = [
+    { id: 1, name: 'Laptop' },
+    { id: 2, name: 'Điện thoại' },
+    { id: 3, name: 'Tablet' },
+    { id: 4, name: 'Tai nghe' },
+    { id: 5, name: 'Đồng hồ' },
+    { id: 6, name: 'Camera' },
+    { id: 7, name: 'Phụ kiện' }
+  ];
+  renderCategoriesInSidebar();
+  renderCategoriesInSelect();
+}
 
 //load san pham sang user
 async function loadProducts(category = "") {
@@ -63,7 +147,7 @@ async function loadProducts(category = "") {
         <tr>
           <td>${index + 1}</td>
           <td>${p.name}</td>
-          <td>${p.category ?? "—"}</td>
+          <td>${p.category ? p.category.name : "—"}</td>
           <td>${Number(p.price).toLocaleString()}₫</td>
           <td>
             ${p.image
@@ -134,7 +218,7 @@ async function editProduct(id) {
     document.getElementById("name").value = p.name;
     document.getElementById("price").value = p.price;
     document.getElementById("description").value = p.description ?? "";
-    document.getElementById("category").value = p.category ?? "";
+    document.getElementById("category").value = p.category_id ?? "";
 
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Cập nhật sản phẩm</span>';

@@ -39,7 +39,7 @@ function renderProductDetail(product) {
 
   // Breadcrumb
   document.getElementById("breadcrumb-product").textContent = product.name;
-  document.getElementById("breadcrumb-category").textContent = product.category || "Danh mục";
+  document.getElementById("breadcrumb-category").textContent = product.category?.name || "Danh mục";
 }
 
 

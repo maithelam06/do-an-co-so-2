@@ -14,17 +14,9 @@
   <div class="container-fluid py-4">
     <div class="row">
       <!-- Sidebar danh mục -->
-      <div class="col-md-3 col-lg-2">
-        <div class="sidebar">
+      <div class="col-md-3 col-lg-2">        <div class="sidebar">
           <h5><i class="fas fa-bars"></i> Danh Mục</h5>
-          <a href="#" class="category-link active" data-category=""><i class="fas fa-th"></i> Tất cả</a>
-          <a href="#" class="category-link" data-category="Laptop"><i class="fas fa-laptop"></i> Laptop</a>
-          <a href="#" class="category-link" data-category="Điện thoại"><i class="fas fa-mobile-alt"></i> Điện thoại</a>
-          <a href="#" class="category-link" data-category="Tablet"><i class="fas fa-tablet-alt"></i> Tablet</a>
-          <a href="#" class="category-link" data-category="Tai nghe"><i class="fas fa-headphones"></i> Tai nghe</a>
-          <a href="#" class="category-link" data-category="Đồng hồ"><i class="fas fa-clock"></i> Đồng hồ</a>
-          <a href="#" class="category-link" data-category="Camera"><i class="fas fa-camera"></i> Camera</a>
-          <a href="#" class="category-link" data-category="Phụ kiện"><i class="fas fa-plug"></i> Phụ kiện</a>
+          <!-- Categories sẽ được load từ JS -->
         </div>
       </div>
 
@@ -44,20 +36,11 @@
             <div class="col-md-4">
               <label class="form-label">Giá</label>
               <input type="number" id="price" name="price" class="form-control" required>
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label">Danh mục</label>
-              <select id="category" name="category" class="form-select" required>
-                <option value="">-- Chọn danh mục --</option>
-                <option value="Laptop">Laptop</option>
-                <option value="Điện thoại">Điện thoại</option>
-                <option value="Tablet">Tablet</option>
-                <option value="Tai nghe">Tai nghe</option>
-                <option value="Đồng hồ">Đồng hồ</option>
-                <option value="Camera">Camera</option>
-                <option value="Phụ kiện">Phụ kiện</option>
-              </select>
+            </div>              <div class="col-md-4">
+                <label class="form-label">Danh mục</label>              <select id="category" name="category_id" class="form-select" required>
+                  <option value="">-- Chọn danh mục --</option>
+                  <!-- Categories sẽ được load từ JS -->
+                </select>
             </div>
 
             <div class="col-md-4">

@@ -81,37 +81,29 @@ let checkoutItems = JSON.parse(localStorage.getItem("checkoutItems")) || [];
 // Render danh sách sản phẩm + tổng tiền
 function renderOrderItems() {
   const container = document.getElementById("orderItems");
-  const itemCount = document.getElementById("itemCount");
   const subtotalEl = document.getElementById("subtotal");
   const totalEl = document.getElementById("total");
 
   container.innerHTML = "";
 
   let subtotal = 0;
-  let totalQuantity = 0;
 
   checkoutItems.forEach((item) => {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
-    totalQuantity += item.quantity;
 
     container.innerHTML += `
-        <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
-          <div class="d-flex align-items-center">
-            <img src="${item.image}" class="rounded me-3" width="60" height="60">
-            <div>
-              <strong>${item.name}</strong>
-              <p class="mb-0 text-muted">
-                ${Number(item.price).toLocaleString()}₫ x ${item.quantity}
-              </p>
-            </div>
-          </div>
-          <strong>${itemTotal.toLocaleString()}₫</strong>
+      <div class="order-item">
+        <img src="${item.image}" alt="${item.name}">
+        <div class="order-item-info">
+          <div class="order-item-name">${item.name}</div>
+          <div class="order-item-quantity">x${item.quantity}</div>
         </div>
-      `;
+        <div class="order-item-price">${itemTotal.toLocaleString()}₫</div>
+      </div>
+    `;
   });
 
-  itemCount.textContent = totalQuantity; // tổng số lượng sản phẩm
   subtotalEl.textContent = subtotal.toLocaleString() + "₫";
   totalEl.textContent = subtotal.toLocaleString() + "₫";
 }

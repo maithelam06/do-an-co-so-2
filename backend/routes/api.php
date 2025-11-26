@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VnpayController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CategoryController;
 
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
@@ -56,3 +57,6 @@ Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus
 Route::post('/vnpay/create', [VnpayController::class, 'createPayment']);
 Route::get('/vnpay/return', [VnpayController::class, 'return'])->name('vnpay.return');
 
+
+
+Route::get('/categories', [CategoryController::class, 'index']);
