@@ -43,9 +43,9 @@ function updateAuthUI() {
   if (token && user) {
     nameEl.textContent = user.name || 'Người dùng';
     if (avatarEl)
-      avatarEl.src = user.avatar
-        ? `${user.avatar.startsWith('http') ? user.avatar : 'http://localhost:8000/storage/' + user.avatar}`
-        : 'https://via.placeholder.com/30';
+      // avatarEl.src = user.avatar
+      //   ? `${user.avatar.startsWith('http') ? user.avatar : 'http://localhost:8000/storage/' + user.avatar}`
+      //   : 'https://via.placeholder.com/30';
 
     document.querySelectorAll('.not-logged-in').forEach(el => el.classList.add('d-none'));
     document.querySelectorAll('.logged-in').forEach(el => el.classList.remove('d-none'));

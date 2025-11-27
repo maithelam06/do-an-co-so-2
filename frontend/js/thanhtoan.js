@@ -91,10 +91,10 @@ function renderOrderItems() {
   checkoutItems.forEach((item) => {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
-
+    
     container.innerHTML += `
       <div class="order-item">
-        <img src="${item.image}" alt="${item.name}">
+        <img src="${item.image ? "http://localhost:8000/storage/" + item.image : "/frontend/img/box.png"}" alt="${item.name}">
         <div class="order-item-info">
           <div class="order-item-name">${item.name}</div>
           <div class="order-item-quantity">x${item.quantity}</div>

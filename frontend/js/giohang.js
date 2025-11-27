@@ -64,7 +64,7 @@ function renderCart(items) {
         </td>
         <td>
           <div class="item-product">
-            <img src="${item.product.image}" alt="${item.product.name}">
+            <img src="${item.product.image ? "http://localhost:8000/storage/" + item.product.image : "/frontend/img/box.png"}" alt="${item.product.name}">
             <div class="item-product-info">
               <div class="item-product-name">${item.product.name}</div>
               <div class="item-product-variant">${item.product.variant || ""}</div>

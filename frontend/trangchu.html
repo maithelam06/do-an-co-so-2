@@ -15,25 +15,15 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/frontend/trangchu.html">
                 <i class="fas fa-bolt"></i> TechStore
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Khuyến mãi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Liên hệ</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
+
+                <div class="d-flex align-items-center ms-auto">
                     <!-- Giỏ hàng -->
                     <div class="position-relative me-3">
                         <a href="./tranggiohang.html" class="text-white position-relative" onclick="toggleCart(event)">
@@ -50,7 +40,7 @@
                     <div class="dropdown">
                         <a href="#" class="text-white dropdown-toggle d-flex align-items-center"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img id="user-avatar" src="https://via.placeholder.com/30" alt="avatar"
+                            <img id="user-avatar" src="./img/avt.jpg" alt="avatar"
                                 class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
                             <span id="user-name">Tài khoản</span>
                         </a>
@@ -64,8 +54,6 @@
                                         class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
                             <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
                                         class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
-                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
-                                        class="fas fa-heart me-2"></i>Yêu thích</a></li>
                             <li class="logged-in d-none">
                                 <hr class="dropdown-divider">
                             </li>

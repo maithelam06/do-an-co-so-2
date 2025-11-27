@@ -132,7 +132,7 @@ function renderProducts(products) {
       <div class="col-12 col-md-6 col-lg-5-per-row">
         <div class="card product-card h-100 shadow-sm" onclick="viewProductDetail(${p.id})" style="cursor: pointer;">
           <div class="product-img-wrapper">
-            <img src="${p.image ? 'http://localhost:8000/storage/' + p.image : 'https://via.placeholder.com/300'}" alt="${p.name}" class="card-img-top">
+            <img src="${p.image ? 'http://localhost:8000/storage/' + p.image : '/frontend/img/box.png'}" alt="${p.name}" class="${p.image ? "":"p-2"} card-img-top">
             ${p.discount ? `<span class="badge bg-danger position-absolute top-0 end-0 m-2">-${p.discount}%</span>` : ''}
           </div>
           <div class="card-body d-flex flex-column">
@@ -213,3 +213,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadCategories();
   loadProducts();
 });
+
+

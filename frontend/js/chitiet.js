@@ -32,7 +32,7 @@ function renderProductDetail(product) {
   document.getElementById("product-name").textContent = product.name;
   document.getElementById("product-main-image").src = product.image
     ? `${API_BASE_URL.replace("/api","")}/storage/${product.image}`
-    : "https://via.placeholder.com/400";
+    : "/frontend/img/box.png";
 
   document.getElementById("product-price").textContent = product.price.toLocaleString() + "₫";
   document.getElementById("product-description").textContent = product.description || "Không có mô tả.";
