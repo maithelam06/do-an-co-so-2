@@ -137,6 +137,41 @@
             font-size: 0.75rem;
             color: #7f8c8d;
         }
+        #profileDropdown .dropdown-item {
+    color: #4a4a6a;
+    padding: 12px 16px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+#profileDropdown .dropdown-item:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+    color: #7c3aed;
+    transform: translateX(5px);
+}
+
+#profileDropdown .dropdown-item i {
+    width: 20px;
+    transition: all 0.3s ease;
+}
+
+#profileDropdown .dropdown-item:hover i {
+    color: #7c3aed;
+}
+
+#profileDropdown .dropdown-item.text-danger:hover {
+    background: rgba(255, 65, 108, 0.1);
+}
+
+#profileDropdown .dropdown-item.text-danger:hover i {
+    color: #ff416c;
+}
+
+#profileDropdown .dropdown-divider {
+    border-color: rgba(0, 0, 0, 0.08);
+    margin: 8px 0;
+}
 
         /* Sidebar */
         .sidebar {

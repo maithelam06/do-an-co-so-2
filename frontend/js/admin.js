@@ -20,11 +20,9 @@ document.querySelectorAll(".menu-link").forEach((link) => {
 
 // Responsive sidebar toggle
 if (window.innerWidth <= 768) {
-  document
-    .querySelector(".menu-toggle")
-    .addEventListener("click", function () {
-      document.getElementById("sidebar").classList.toggle("active");
-    });
+  document.querySelector(".menu-toggle").addEventListener("click", function () {
+    document.getElementById("sidebar").classList.toggle("active");
+  });
 }
 
 // ==========================
@@ -66,8 +64,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const checkRes = await fetch("http://localhost:8000/api/customers", {
       headers: {
-        "Authorization": "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
     });
 
     if (checkRes.status === 401 || checkRes.status === 403) {
@@ -75,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         icon: "error",
         title: "Tài khoản đã bị khóa!",
         text: "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.",
-        confirmButtonText: "Đăng nhập lại"
+        confirmButtonText: "Đăng nhập lại",
       });
 
       localStorage.removeItem("token");
@@ -95,18 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("admin-name").textContent = user.name || "Không rõ";
   document.getElementById("admin-role").textContent =
     user.role === "admin" ? "Quản trị viên" : "Người dùng";
-  document.getElementById("admin-avatar").src =
-    user.avatar || "https://via.placeholder.com/40";
-
-  // ==========================
-  // 🧩 DROPDOWN MENU
-  // ==========================
-  const toggle = document.getElementById("profileDropdownToggle");
-  const menu = document.getElementById("profileDropdown");
-
-  toggle.addEventListener("click", () => {
-    menu.style.display = menu.style.display === "none" ? "block" : "none";
-  });
+  document.getElementById("admin-avatar").src = "/frontend/img/avt.jpg";
 
   // ==========================
   // 🚪 XỬ LÝ ĐĂNG XUẤT
@@ -126,29 +113,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (confirmLogout.isConfirmed) {
-        try {
-          await fetch("http://localhost:8000/api/logout", {
-            method: "POST",
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          });
-        } catch (error) {
-          console.warn("API logout lỗi, vẫn tiến hành xóa token localStorage.");
-        } finally {
-          // Xóa token và user
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
+        // Xóa token và user
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
 
-          await Swal.fire({
-            icon: "success",
-            title: "Đã đăng xuất!",
-            text: "Hẹn gặp lại 👋",
-            confirmButtonText: "OK",
-          });
-
-          window.location.href = "/frontend/trangchu.html";
-        }
+        window.location.href = "/frontend/trangchu.html";
       }
     });
   }

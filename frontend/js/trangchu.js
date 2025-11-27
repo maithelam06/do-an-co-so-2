@@ -182,15 +182,6 @@ function filterByCategory(category, event) {
 }
 
 
-// ===============================
-// LOGIN & LOGOUT
-// ===============================
-function showLogin(event) {
-  event.preventDefault();
-  window.location.href = "/frontend/index.html";
-}
-
-
 
 
 // ===============================
@@ -207,9 +198,8 @@ document.getElementById('searchInput')?.addEventListener('input', e => {
 // ===============================
 document.addEventListener('DOMContentLoaded', async () => {
 
-  // 🔥 CHECK TÀI KHOẢN BỊ KHÓA
+  // CHECK TÀI KHOẢN BỊ KHÓA
   await checkUserLocked();
-
   loadCategories();
   loadProducts();
 });

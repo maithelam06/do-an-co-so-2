@@ -51,14 +51,33 @@ function updateAuthUI() {
     document.querySelectorAll('.logged-in').forEach(el => el.classList.remove('d-none'));
   } else {
     nameEl.textContent = 'Tài khoản';
-    if (avatarEl) avatarEl.src = 'https://via.placeholder.com/30';
+    if (avatarEl) avatarEl.src = '/frontend/img/avt.jpg';
     document.querySelectorAll('.not-logged-in').forEach(el => el.classList.remove('d-none'));
     document.querySelectorAll('.logged-in').forEach(el => el.classList.add('d-none'));
   }
 }
 
 
+// ===============================
+// LOGIN & LOGOUT
+// ===============================
+function showLogin(event) {
+  event.preventDefault();
+  window.location.href = "/frontend/index.html";
+}
+
+function logout(event) {
+  event.preventDefault();
+
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+
+  updateAuthUI();
+
+  window.location.href = "/frontend/trangchu.html";
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   updateAuthUI();
-  updateCartCount();   //TRANG NÀO CẬP NHẬT CART → TỰ BẮT 401 → VĂNG RA
+  updateCartCount();   
 });
