@@ -8,31 +8,41 @@ function toggleSidebar() {
   mainContent.classList.toggle("expanded");
 }
 
-// Active menu link
-document.querySelectorAll(".menu-link").forEach((link) => {
-  link.addEventListener("click", function () {
-    document
-      .querySelectorAll(".menu-link")
-      .forEach((l) => l.classList.remove("active"));
-    this.classList.add("active");
+// ==========================
+// ACTIVE MENU LINK
+// ==========================
+function initMenuLinks() {
+  document.querySelectorAll(".menu-link").forEach((link) => {
+    link.addEventListener("click", function () {
+      document
+        .querySelectorAll(".menu-link")
+        .forEach((l) => l.classList.remove("active"));
+      this.classList.add("active");
+    });
   });
-});
+}
 
-// Responsive sidebar toggle
-if (window.innerWidth <= 768) {
-  document.querySelector(".menu-toggle").addEventListener("click", function () {
-    document.getElementById("sidebar").classList.toggle("active");
-  });
+// ==========================
+// RESPONSIVE SIDEBAR TOGGLE
+// ==========================
+function initResponsiveSidebar() {
+  if (window.innerWidth <= 768) {
+    const menuToggle = document.querySelector(".menu-toggle");
+    if (menuToggle) {
+      menuToggle.addEventListener("click", function () {
+        document.getElementById("sidebar").classList.toggle("active");
+      });
+    }
+  }
 }
 
 // ==========================
 // 🔒 BẢO VỆ TRANG ADMIN
 // ==========================
-document.addEventListener("DOMContentLoaded", async () => {
+async function protectAdminPage() {
   const token = localStorage.getItem("token");
   const userData = localStorage.getItem("user");
 
-  // Nếu chưa đăng nhập
   if (!token || !userData) {
     await Swal.fire({
       icon: "warning",
@@ -41,12 +51,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       confirmButtonText: "Đăng nhập ngay",
     });
     window.location.href = "/frontend/login.html";
-    return;
+    return false;
   }
 
   const user = JSON.parse(userData);
 
-  // Nếu không phải admin
   if (user.role !== "admin") {
     await Swal.fire({
       icon: "error",
@@ -55,20 +64,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       confirmButtonText: "Quay lại trang chủ",
     });
     window.location.href = "/frontend/trangchu.html";
-    return;
+    return false;
   }
 
-  // =====================================================
-  // 🔥 CHECK USER BỊ KHÓA SAU KHI ADMIN ẤN KHÓA
-  // =====================================================
+  return user;
+}
+
+// ==========================
+// 🔥 CHECK USER BỊ KHÓA
+// ==========================
+async function checkUserLocked(token) {
   try {
-    const checkRes = await fetch("http://localhost:8000/api/customers", {
+    const response = await fetch("http://localhost:8000/api/customers", {
       headers: {
         Authorization: "Bearer " + token,
       },
     });
 
-    if (checkRes.status === 401 || checkRes.status === 403) {
+    if (response.status === 401 || response.status === 403) {
       await Swal.fire({
         icon: "error",
         title: "Tài khoản đã bị khóa!",
@@ -80,45 +93,73 @@ document.addEventListener("DOMContentLoaded", async () => {
       localStorage.removeItem("user");
 
       window.location.href = "/frontend/login.html";
-      return;
+      return true;
     }
   } catch (err) {
     console.error("Lỗi check khóa tài khoản:", err);
   }
-  // =====================================================
 
-  // ==========================
-  //  LOAD THÔNG TIN NGƯỜI DÙNG
-  // ==========================
+  return false;
+}
+
+// ==========================
+// 🔧 LOAD THÔNG TIN NGƯỜI DÙNG
+// ==========================
+function loadUserInfo(user) {
   document.getElementById("admin-name").textContent = user.name || "Không rõ";
   document.getElementById("admin-role").textContent =
     user.role === "admin" ? "Quản trị viên" : "Người dùng";
   document.getElementById("admin-avatar").src = "/frontend/img/avt.jpg";
+}
 
-  // ==========================
-  // 🚪 XỬ LÝ ĐĂNG XUẤT
-  // ==========================
+// ==========================
+// 🚪 XỬ LÝ ĐĂNG XUẤT
+// ==========================
+async function handleLogout(event) {
+  event.preventDefault();
+
+  const confirmLogout = await Swal.fire({
+    title: "Đăng xuất?",
+    text: "Bạn có chắc chắn muốn đăng xuất không?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Có, đăng xuất",
+    cancelButtonText: "Hủy",
+  });
+
+  if (confirmLogout.isConfirmed) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/frontend/trangchu.html";
+  }
+}
+
+function initLogoutButton() {
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-
-      const confirmLogout = await Swal.fire({
-        title: "Đăng xuất?",
-        text: "Bạn có chắc chắn muốn đăng xuất không?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Có, đăng xuất",
-        cancelButtonText: "Hủy",
-      });
-
-      if (confirmLogout.isConfirmed) {
-        // Xóa token và user
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-
-        window.location.href = "/frontend/trangchu.html";
-      }
-    });
+    logoutBtn.addEventListener("click", handleLogout);
   }
+}
+
+// ==========================
+// 🟢 INIT ALL
+// ==========================
+document.addEventListener("DOMContentLoaded", async () => {
+  // Sidebar & menu
+  initMenuLinks();
+  initResponsiveSidebar();
+
+  // Bảo vệ trang admin
+  const user = await protectAdminPage();
+  if (!user) return;
+
+  // Kiểm tra user bị khóa
+  const isLocked = await checkUserLocked(localStorage.getItem("token"));
+  if (isLocked) return;
+
+  // Load thông tin người dùng
+  loadUserInfo(user);
+
+  // Logout
+  initLogoutButton();
 });

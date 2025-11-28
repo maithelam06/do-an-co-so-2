@@ -1,3 +1,4 @@
+
 async function updateCartCount() {
   const token = localStorage.getItem('token');
   if (!token) return;
@@ -66,15 +67,22 @@ function showLogin(event) {
   window.location.href = "/frontend/index.html";
 }
 
-function logout(event) {
+async function logout(event) {
   event.preventDefault();
+  const confirmLogout = await Swal.fire({
+    title: "Đăng xuất?",
+    text: "Bạn có chắc chắn muốn đăng xuất không?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Có, đăng xuất",
+    cancelButtonText: "Hủy",
+  });
 
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-
-  updateAuthUI();
-
-  window.location.href = "/frontend/trangchu.html";
+  if (confirmLogout.isConfirmed) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/frontend/trangchu.html";
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

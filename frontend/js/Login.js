@@ -6,6 +6,18 @@ formLogin.addEventListener("submit", async (event) => {
   const email = document.getElementById("emailLog").value;
   const password = document.getElementById("passwordLog").value;
 
+  if(!email||password){
+    await Swal.fire({
+      scrollbarPadding: false,
+      heightAuto: false,
+      icon: "error",
+      title: "Đăng nhập thất bại!",
+      text: "Vui lòng nhập đầy đủ thông tin.",
+      confirmButtonText: "Đóng",
+    });
+    return;
+  }
+
   try {
     const res = await fetch("http://localhost:8000/api/login", {
       method: "POST",
@@ -20,10 +32,14 @@ formLogin.addEventListener("submit", async (event) => {
     try {
       data = await res.json();
     } catch (e) {
-      // nếu backend không trả JSON thì vẫn tránh app crash
+      await Swal.fire({
+        icon: "error",
+        title: "Lỗi hệ thống!",
+        text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+        confirmButtonText: "Đóng",
+      });
     }
 
-    // ❌ Nếu response không OK (4xx / 5xx)
     if (!res.ok) {
       // 403: tài khoản bị khóa
       if (res.status === 403) {
@@ -96,7 +112,11 @@ formLogin.addEventListener("submit", async (event) => {
           text: "Chào mừng trở lại 👋",
           confirmButtonText: "Vào trang chủ",
         });
-        window.location.href = "/frontend/trangchu.html";
+        const params = new URLSearchParams(window.location.search);
+        const redirectUrl = params.get("redirect") || "/frontend/trangchu.html";
+
+        // Chuyển hướng
+        window.location.href = redirectUrl;
       }
     } else {
       // phòng trường hợp backend trả 200 nhưng status != success

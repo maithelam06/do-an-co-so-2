@@ -14,11 +14,12 @@ formCreate.addEventListener("submit", async (e) => {
     };
 
     if (!userData.name || !userData.email || !userData.password) {
-        alertBox.innerHTML = `
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Vui lòng nhập đầy đủ thông tin!
-            </div>
-        `;
+        await Swal.fire({
+            icon: 'warning',
+            title: 'Thiếu thông tin',
+            text: 'Vui lòng nhập đầy đủ thông tin!',
+            confirmButtonText: 'Đóng'
+        });
         return;
     }
 

@@ -194,14 +194,24 @@ async function addProduct(e) {
     const data = await res.json();
 
     if (res.ok) {
-      alert("✅ " + data.message);
+      await Swal.fire({
+        icon: "success",
+        title: "Thành công!",
+        text: data.message,
+        confirmButtonText: "Đóng"
+      });
       form.reset();
       const submitBtn = document.getElementById("submitBtn");
       submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i><span>Thêm sản phẩm</span>';
       form.onsubmit = addProduct;
       loadProducts();
     } else {
-      alert("❌ Lỗi: " + JSON.stringify(data));
+      await Swal.fire({
+        icon: "error",
+        title: "Lỗi!",
+        text: JSON.stringify(data),
+        confirmButtonText: "Đóng"
+      });
     }
   } catch (error) {
     console.error("Lỗi thêm sản phẩm:", error);
@@ -245,14 +255,24 @@ async function updateProduct(e, id) {
     const data = await res.json();
 
     if (res.ok) {
-      alert("✅ " + data.message);
+      await Swal.fire({
+        icon: "success",
+        title: "Thành công!",
+        text: data.message,
+        confirmButtonText: "Đóng"
+      });
       form.reset();
       const submitBtn = document.getElementById("submitBtn");
       submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i><span>Thêm sản phẩm</span>';
       form.onsubmit = addProduct;
       loadProducts();
     } else {
-      alert("❌ Lỗi: " + JSON.stringify(data));
+      await Swal.fire({
+        icon: "error",
+        title: "Lỗi!",
+        text: JSON.stringify(data),
+        confirmButtonText: "Đóng"
+      });
     }
   } catch (error) {
     console.error("Lỗi cập nhật sản phẩm:", error);
@@ -266,7 +286,12 @@ async function deleteProduct(id) {
   try {
     const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
     const data = await res.json();
-    alert("🗑️ " + data.message);
+    await Swal.fire({
+        icon: "success",
+        title: "Thành công!",
+        text: data.message,
+        confirmButtonText: "Đóng"
+      });
     loadProducts();
   } catch (error) {
     console.error("Lỗi xóa sản phẩm:", error);
@@ -279,7 +304,11 @@ async function toggleProduct(id) {
       method: "PATCH",
     });
     const data = await res.json();
-    alert(data.message);
+    await Swal.fire({
+        icon: "success",
+        text: data.message,
+        confirmButtonText: "Đóng"
+      });
     loadProducts();
   } catch (error) {
     console.error("Lỗi bật/tắt sản phẩm:", error);

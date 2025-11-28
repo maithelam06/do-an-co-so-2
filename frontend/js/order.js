@@ -57,18 +57,37 @@ function renderPaymentMethod(order) {
 
 let ORDERS_CACHE = [];
 
-// ===================== LOAD LIST ORDERS =====================
-async function loadOrdersAdmin() {
+// ===================== FILTER ORDERS =====================
+function filterOrders() {
+  const searchTerm = document.getElementById("searchInput")?.value.toLowerCase().trim() || "";
+  const statusFilter = document.getElementById("statusFilter")?.value || "";
+
+  if (!searchTerm && !statusFilter) {
+    return ORDERS_CACHE;
+  }
+
+  return ORDERS_CACHE.filter(order => {
+    // Tìm kiếm theo tên khách, SĐT, mã đơn
+    const searchMatch = !searchTerm || 
+      order.full_name?.toLowerCase().includes(searchTerm) ||
+      order.phone?.toLowerCase().includes(searchTerm) ||
+      `DH${order.id}`.toLowerCase().includes(searchTerm) ||
+      order.address?.toLowerCase().includes(searchTerm);
+
+    // Lọc theo trạng thái
+    const statusMatch = !statusFilter || order.status === statusFilter;
+
+    return searchMatch && statusMatch;
+  });
+}
+
+// ===================== RENDER ORDERS TABLE =====================
+function renderOrdersTable(orders) {
   const tbody = document.getElementById("orderTableBody");
   const totalText = document.getElementById("orderTotalText");
   const badge = document.getElementById("orderCountBadge");
 
   tbody.innerHTML = "";
-
-  const res = await fetch(`${API_BASE_URL}/orders`);
-  const orders = await res.json();
-
-  ORDERS_CACHE = orders;
 
   orders.forEach((order, index) => {
     const tr = document.createElement("tr");
@@ -106,6 +125,21 @@ async function loadOrdersAdmin() {
   badge.textContent = orders.length;
 }
 
+// ===================== LOAD LIST ORDERS =====================
+async function loadOrdersAdmin() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders`);
+    const orders = await res.json();
+    
+    ORDERS_CACHE = orders;
+    renderOrders(); // Render sau khi load xong
+  } catch (error) {
+    console.error("Lỗi load orders:", error);
+    const tbody = document.getElementById("orderTableBody");
+    tbody.innerHTML = '<tr><td colspan="11" class="text-center text-danger">Lỗi tải dữ liệu đơn hàng</td></tr>';
+  }
+}
+
 // ===================== DETAIL ORDER =====================
 async function showOrderDetail(orderId) {
   try {
@@ -113,7 +147,12 @@ async function showOrderDetail(orderId) {
     if (!res.ok) {
       const txt = await res.text();
       console.error("Lỗi load chi tiết đơn:", txt);
-      alert("Không tải được chi tiết đơn hàng");
+      await Swal.fire({
+        icon: "error",
+        title: "Lỗi!",
+        text: "Không tải được chi tiết đơn hàng!",
+        confirmButtonText: "Đóng"
+      });
       return;
     }
 
@@ -159,7 +198,12 @@ async function showOrderDetail(orderId) {
     modal.show();
   } catch (err) {
     console.error("Exception showOrderDetail:", err);
-    alert("Có lỗi xảy ra khi tải chi tiết đơn hàng");
+    await Swal.fire({
+        icon: "error",
+        title: "Lỗi!",
+        text: "Có lỗi xảy ra khi tải chi tiết đơn hàng!",
+        confirmButtonText: "Đóng"
+      });
   }
 }
 
@@ -212,8 +256,8 @@ async function openShippingStatusModal(orderId) {
 }
 
 async function deleteOrder(orderId) {
-  const order = allOrders.find(o => o.id === orderId);
-  const code = order?.code || order?.order_code || `#${orderId}`;
+  const order = ORDERS_CACHE.find(o => o.id === orderId);
+  const code = order?.code || order?.order_code || `DH${orderId}`;
 
   const result = await Swal.fire({
     title: "Xóa đơn hàng?",
@@ -243,7 +287,7 @@ async function deleteOrder(orderId) {
     }
 
     // Xóa khỏi mảng và render lại
-    allOrders = allOrders.filter(o => o.id !== orderId);
+    ORDERS_CACHE = ORDERS_CACHE.filter(o => o.id !== orderId);
     renderOrders();
 
     await Swal.fire("Đã xóa!", `Đơn ${code} đã được xóa.`, "success");
@@ -258,7 +302,8 @@ function loadOrders() {
   loadOrdersAdmin();
 }
 function renderOrders() {
-  loadOrdersAdmin();
+  const filteredOrders = filterOrders();
+  renderOrdersTable(filteredOrders);
 }
 
 document.addEventListener("DOMContentLoaded", loadOrdersAdmin);

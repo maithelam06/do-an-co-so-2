@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -85,7 +86,7 @@ class OrderController extends Controller
                     $price = $product->price;
                 } else {
                     // Nếu không tìm được product vẫn tạo order_item
-                    \Log::warning('ORDER_STORE_PRODUCT_NOT_FOUND', [
+                    Log::warning('ORDER_STORE_PRODUCT_NOT_FOUND', [
                         'product_id' => $productId,
                         'item'       => $item,
                     ]);

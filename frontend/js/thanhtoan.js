@@ -111,7 +111,12 @@ function renderOrderItems() {
 // ĐẶT HÀNG + THANH TOÁN
 async function placeOrder() {
   if (checkoutItems.length === 0) {
-    alert("Chưa có sản phẩm để thanh toán!");
+    await Swal.fire({
+        icon: "error",
+        title: "Chưa có sản phẩm để thanh toán!",
+        text: "Vui lòng chọn sản phẩm!",
+        confirmButtonText: "Đóng"
+      });
     return;
   }
 
@@ -126,7 +131,12 @@ async function placeOrder() {
   const note = document.getElementById("note").value.trim();
 
   if (!fullName || !phone || !address) {
-    alert("Vui lòng nhập đầy đủ Họ và tên, Số điện thoại và Địa chỉ cụ thể.");
+    await Swal.fire({
+        icon: "error",
+        title: "Thông tin không hợp lệ!",
+        text: "Vui lòng nhập đầy đủ thông tin!",
+        confirmButtonText: "Đóng"
+      });
     return;
   }
 
@@ -141,7 +151,12 @@ async function placeOrder() {
   )?.value; // 'cod' | 'bank'
 
   if (!paymentMethod) {
-    alert("Vui lòng chọn phương thức thanh toán.");
+    await Swal.fire({
+        icon: "error",
+        title: "Chọn phương thức thanh toán!",
+        text: "Vui lòng chọn phương thức thanh toán!",
+        confirmButtonText: "Đóng"
+      });
     return;
   }
 
@@ -153,9 +168,12 @@ async function placeOrder() {
     );
 
     if (!bankMethod || bankMethod.value !== "vnpay") {
-      alert(
-        "Hiện tại hệ thống chỉ hỗ trợ thanh toán qua VNPAY. Vui lòng chọn lại 'Thanh toán qua VNPAY'."
-      );
+      await Swal.fire({
+        icon: "error",
+        title: "Phương thức thanh toán",
+        text: "Hiện tại hệ thống chỉ hỗ trợ thanh toán qua VNPAY. Vui lòng chọn lại 'Thanh toán qua VNPAY",
+        confirmButtonText: "Đóng"
+      });
       return;
     }
 
@@ -213,7 +231,12 @@ async function placeOrder() {
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
       console.error("Lỗi tạo đơn:", errData);
-      alert("Tạo đơn hàng thất bại!");
+      await Swal.fire({
+        icon: "error",
+        title: "Thất bại!",
+        text: "Tạo đơn hàng thất bại!",
+        confirmButtonText: "Đóng"
+      });
       return;
     }
     const data = await res.json();
@@ -255,9 +278,12 @@ async function placeOrder() {
       if (!vnpRes.ok) {
         const txt = await vnpRes.text();
         console.error("Lỗi tạo VNPay link:", txt);
-        alert(
-          "Không tạo được liên kết thanh toán VNPay. Đơn hàng sẽ ở trạng thái chờ thanh toán."
-        );
+        await Swal.fire({
+        icon: "error",
+        title: "Liên kết thất bại!",
+        text: "Không tạo được liên kết thanh toán VNPay. Đơn hàng sẽ ở trạng thái chờ thanh toán.",
+        confirmButtonText: "Đóng"
+      });
         return;
       }
 
@@ -267,16 +293,24 @@ async function placeOrder() {
       } catch (e) {
         const rawText = await vnpRes.text().catch(() => "");
         console.error("VNPay JSON parse error:", e, rawText);
-        alert("Phản hồi từ VNPay không đúng định dạng JSON.");
+        await Swal.fire({
+        icon: "error",
+        title: "Số lượng không hợp lệ!",
+        text: "Phản hồi từ VNPay không đúng định dạng JSON.",
+        confirmButtonText: "Đóng"
+      });
         return;
       }
 
       console.log("VNPay JSON:", vnpData);
 
       if (!vnpData.payment_url) {
-        alert(
-          "Backend không trả về payment_url của VNPay. Kiểm tra lại API /vnpay/create."
-        );
+        await Swal.fire({
+        icon: "error",
+        title: "Lỗi serve!",
+        text: "Lỗi",
+        confirmButtonText: "Đóng"
+      });
         return;
       }
 
@@ -288,11 +322,14 @@ async function placeOrder() {
 
       // Nếu trình duyệt chặn popup => hiện link để m copy / bấm
       if (!win) {
-        alert(
-          "Trình duyệt đang chặn mở VNPay tự động.\n\n" +
+        await Swal.fire({
+        icon: "error",
+        title: "Trình duyệt chặn popup!",
+        text: "Trình duyệt đang chặn mở VNPay tự động.\n\n" +
           "Hãy copy link sau và dán vào 1 tab mới để thanh toán:\n\n" +
-          payUrl
-        );
+          payUrl,
+        confirmButtonText: "Đóng"
+      });
       }
 
       return;
@@ -312,10 +349,20 @@ async function placeOrder() {
 
     localStorage.removeItem("checkoutItems");
 
-    alert("Đặt hàng thành công! Mã đơn: " + orderId);
+    await Swal.fire({
+        icon: "success",
+        title: "Số lượng không hợp lệ!",
+        text: "Đặt hàng thành công! Mã đơn: " + orderId,
+        confirmButtonText: "Đóng"
+      });
   } catch (err) {
     console.error("Lỗi đặt hàng:", err);
-    alert("Có lỗi xảy ra, vui lòng thử lại!");
+    await Swal.fire({
+        icon: "error",
+        title: "Lỗi!",
+        text: "Có lỗi xảy ra, vui lòng thử lại!",
+        confirmButtonText: "Đóng"
+      });
   }
 }
 

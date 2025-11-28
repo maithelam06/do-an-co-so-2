@@ -299,14 +299,19 @@ function toggleSelectAll() {
 }
 
 // Mua ngay
-function buyNow() {
+async function buyNow() {
   const selectedItems = [];
   const checkboxes = document.querySelectorAll(
     ".cart-item .product-checkbox:checked"
   );
 
   if (checkboxes.length === 0) {
-    alert("Vui lòng chọn sản phẩm để mua!");
+    await Swal.fire({
+        icon: "error",
+        title: "Bạn chưa chọn sản phẩm!",
+        text: "Vui lòng chọn sản phẩm để mua!",
+        confirmButtonText: "Đóng"
+      });
     return;
   }
 
