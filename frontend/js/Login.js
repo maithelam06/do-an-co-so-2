@@ -6,7 +6,7 @@ formLogin.addEventListener("submit", async (event) => {
   const email = document.getElementById("emailLog").value;
   const password = document.getElementById("passwordLog").value;
 
-  if(!email||password){
+  if(!email||!password){
     await Swal.fire({
       scrollbarPadding: false,
       heightAuto: false,

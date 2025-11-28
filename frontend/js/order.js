@@ -102,19 +102,24 @@ function renderOrdersTable(orders) {
       <td>${formatCurrency(order.total_amount)}</td>
       <td>${renderStatus(order.status)}</td>
       <td>${renderShippingStatus(order.shipping_status)}</td>
-      <td>${order.created_at}</td>
-      <td>
-        <button class="btn btn-sm btn-outline-primary"
-                onclick="showOrderDetail(${order.id})">
-          Chi tiết
-        </button>
-        <button class="btn btn-sm btn-outline-success ms-1"
-                onclick="openShippingStatusModal(${order.id})">
-          Cập nhật giao hàng
-        </button>
-
-        
-        
+      <td>${order.created_at}</td>      <td>
+        <div class="btn-group" role="group" aria-label="Thao tác đơn hàng">
+          <button class="btn btn-sm btn-outline-primary" 
+                  onclick="showOrderDetail(${order.id})"
+                  title="Xem chi tiết đơn hàng">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-success" 
+                  onclick="openShippingStatusModal(${order.id})"
+                  title="Cập nhật trạng thái giao hàng">
+            <i class="fas fa-truck"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-danger" 
+                  onclick="deleteOrder(${order.id})"
+                  title="Xóa đơn hàng">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
       </td>
     `;
 

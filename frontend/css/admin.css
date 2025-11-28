@@ -5,16 +5,88 @@
             --header-bg: #ffffff;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f6fa;
             overflow-x: hidden;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         /* Header */
@@ -29,6 +101,30 @@
             height: 70px;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .header-content {
             display: flex;
             justify-content: space-between;
@@ -37,10 +133,58 @@
             height: 100%;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .header-left {
             display: flex;
             align-items: center;
             gap: 1.5rem;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .menu-toggle {
@@ -50,8 +194,56 @@
             transition: all 0.3s;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .menu-toggle:hover {
             transform: scale(1.1);
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .brand {
@@ -66,10 +258,58 @@
             background-clip: text;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .header-right {
             display: flex;
             align-items: center;
             gap: 1.5rem;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .header-icon {
@@ -80,9 +320,57 @@
             transition: all 0.3s;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .header-icon:hover {
             color: #667eea;
             transform: translateY(-2px);
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .notification-badge {
@@ -100,6 +388,30 @@
             font-size: 0.7rem;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .admin-profile {
             display: flex;
             align-items: center;
@@ -110,8 +422,56 @@
             transition: all 0.3s;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .admin-profile:hover {
             background: #f0f0f0;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .admin-avatar {
@@ -122,9 +482,57 @@
             border: 2px solid #667eea;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .admin-info {
             display: flex;
             flex-direction: column;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .admin-name {
@@ -133,9 +541,57 @@
             font-size: 0.9rem;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .admin-role {
             font-size: 0.75rem;
             color: #7f8c8d;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
         #profileDropdown .dropdown-item {
     color: #4a4a6a;
@@ -186,8 +642,56 @@
             z-index: 999;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .sidebar.collapsed {
             width: 80px;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .sidebar-menu {
@@ -195,8 +699,56 @@
             padding: 1rem 0;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .menu-item {
             margin: 0.3rem 0;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .menu-link {
@@ -210,10 +762,58 @@
             position: relative;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .menu-link:hover,
         .menu-link.active {
             background: var(--sidebar-hover);
             color: #fff;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .menu-link.active::before {
@@ -226,10 +826,58 @@
             background: var(--primary-gradient);
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .menu-icon {
             font-size: 1.2rem;
             width: 20px;
             text-align: center;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .menu-text {
@@ -237,9 +885,57 @@
             transition: opacity 0.3s;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .sidebar.collapsed .menu-text {
             opacity: 0;
             width: 0;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .menu-badge {
@@ -251,8 +947,56 @@
             font-size: 0.75rem;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .sidebar.collapsed .menu-badge {
             display: none;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         /* Main Content */
@@ -264,8 +1008,56 @@
             min-height: calc(100vh - 70px);
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .main-content.expanded {
             margin-left: 80px;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         /* Dashboard Cards */
@@ -274,6 +1066,30 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .stat-card {
@@ -286,9 +1102,57 @@
             overflow: hidden;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .stat-card::before {
@@ -301,6 +1165,30 @@
             background: var(--primary-gradient);
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-header {
             display: flex;
             justify-content: space-between;
@@ -308,10 +1196,58 @@
             margin-bottom: 1rem;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-title {
             color: #7f8c8d;
             font-size: 0.9rem;
             font-weight: 500;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .stat-icon {
@@ -325,20 +1261,140 @@
             color: white;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-icon.blue {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .stat-icon.green {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-icon.orange {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-icon.purple {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .stat-value {
@@ -348,13 +1404,85 @@
             margin-bottom: 0.5rem;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-change {
             font-size: 0.85rem;
             color: #27ae60;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .stat-change.negative {
             color: #e74c3c;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         /* Welcome Section */
@@ -367,13 +1495,85 @@
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .welcome-title {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .welcome-text {
             opacity: 0.9;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         /* Responsive */
@@ -382,20 +1582,164 @@
                 transform: translateX(-100%);
             }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
             .sidebar.active {
                 transform: translateX(0);
             }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
 
             .main-content {
                 margin-left: 0;
             }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
             .admin-info {
                 display: none;
             }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
             .header-content {
                 padding: 0 1rem;
+            }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
             }
         }
 
@@ -404,11 +1748,83 @@
             width: 6px;
         }
 
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .sidebar::-webkit-scrollbar-track {
             background: #34495e;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }
 
         .sidebar::-webkit-scrollbar-thumb {
             background: #667eea;
             border-radius: 10px;
+        }
+
+        /* Button group styles for order actions */
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+
+        .btn-group .btn-sm i {
+            font-size: 0.8rem;
+        }
+
+        /* Ensure button group doesn't break on small screens */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            
+            .btn-group .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.75rem;
+            }
         }

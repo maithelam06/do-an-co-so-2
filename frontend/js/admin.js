@@ -50,7 +50,7 @@ async function protectAdminPage() {
       text: "Vui lòng đăng nhập để vào trang quản trị.",
       confirmButtonText: "Đăng nhập ngay",
     });
-    window.location.href = "/frontend/login.html";
+    window.location.href = "/frontend/index.html";
     return false;
   }
 
@@ -92,7 +92,7 @@ async function checkUserLocked(token) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
-      window.location.href = "/frontend/login.html";
+      window.location.href = "/frontend/trangchu.html";
       return true;
     }
   } catch (err) {
