@@ -29,7 +29,7 @@ function renderStatus(status) {
 function renderShippingStatus(status) {
   switch (status) {
     case "pending":
-      return '<span class="badge bg-warning text-dark">Chờ giao</span>';
+      return '<span class="badge bg-warning text-dark">Chờ xử lí</span>';
     case "processing":
       return '<span class="badge bg-primary">Đang giao</span>';
     case "completed":
@@ -218,7 +218,7 @@ async function openShippingStatusModal(orderId) {
   if (!order) return;
 
   const inputOptions = {
-    pending: "Chờ giao",
+    pending: "Chờ xử lí",
     processing: "Đang giao",
     completed: "Đã giao",
     cancelled: "Đã hủy",
@@ -228,7 +228,7 @@ async function openShippingStatusModal(orderId) {
     title: `Cập nhật giao hàng DH${order.id}`,
     input: "select",
     inputOptions,
-    inputValue: order.shipping_status || "pending",
+    inputValue: order.shipping_status,
     confirmButtonText: "Lưu",
     cancelButtonText: "Hủy",
     showCancelButton: true,
