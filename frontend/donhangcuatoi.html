@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn Hàng Của Tôi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/my-orders.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-store"></i> Đơn hàng của tôi<h2>
+            </div>
+            
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm đơn hàng...">
+                    </div>
+                </div>                <div class="top-bar-right">
+                    <div class="user-info">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600;">Xin chào</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);" id="userName"></div>
+                        </div>
+                        <!-- Bootstrap Dropdown for User Avatar -->
+                        <div class="dropdown">
+                            <div class="user-avatar dropdown-toggle" id="userAvatar" data-bs-toggle="dropdown" aria-expanded="false"></div>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userAvatar">
+                                <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-box"></i> Đơn Hàng Của Tôi</h1>
+                <p class="page-subtitle">Quản lý và theo dõi tất cả đơn hàng của bạn</p>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <div class="filter-group">
+                        <label>Trạng thái:</label>
+                        <button class="filter-btn active" onclick="filterByStatus('all')">Tất cả</button>
+                        <button class="filter-btn" onclick="filterByStatus('pending')">Chờ xử lí</button>
+                        <button class="filter-btn" onclick="filterByStatus('processing')">Đang giao</button>
+                        <button class="filter-btn" onclick="filterByStatus('completed')">Đã giao</button>
+                        <button class="filter-btn" onclick="filterByStatus('cancelled')">Đã hủy</button>
+                    </div>
+                </div>
+
+                <div class="controls" style="margin-top: 15px;">
+                    <div class="filter-group">
+                        <label>Sắp xếp:</label>
+                        <select class="sort-select" id="sortSelect" onchange="sortOrders()">
+                            <option value="newest">Mới nhất</option>
+                            <option value="oldest">Cũ nhất</option>
+                            <option value="highest">Giá cao nhất</option>
+                            <option value="lowest">Giá thấp nhất</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" style="margin-left: auto;">
+                        <label>Từ ngày:</label>
+                        <input type="date" class="date-filter" id="dateFilter" onchange="filterByDate()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Container -->
+            <div class="orders-container" id="ordersContainer">
+                <!-- Loading State -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </main>
+    </div>    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/donhangcuatoi.js"></script>
+</body>
+</html>

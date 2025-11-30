@@ -23,4 +23,9 @@ class Product extends Model
         // Liên kết với Model Category, sử dụng 'category_id' làm khóa ngoại
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

@@ -9,6 +9,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VnpayController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderShipmentController;
+use App\Http\Controllers\ReviewController;
+use Illuminate\Http\Request;
 
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
@@ -48,6 +51,14 @@ Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus']);
 Route::patch('/orders/{id}/shipping-status', [OrderController::class, 'updateShippingStatus']);
 Route::delete('/orders/{id}', [OrderController::class, 'destroy']); //xóa
 
+// USER
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/my-orders', [OrderController::class, 'myOrders']);
+    Route::post('/orders/{orderId}/cancel', [OrderController::class, 'cancelOrder']);
+});
+
+
+
 
 
 Route::get('/customers', [CustomerController::class, 'index']);
@@ -60,3 +71,6 @@ Route::get('/vnpay/return', [VnpayController::class, 'return'])->name('vnpay.ret
 
 
 Route::get('/categories', [CategoryController::class, 'index']);
+
+
+Route::middleware('auth:sanctum')->get('/orders/{orderId}/shipments', [OrderShipmentController::class, 'index']);

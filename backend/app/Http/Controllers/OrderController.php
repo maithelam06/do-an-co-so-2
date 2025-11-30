@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderShipment;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -107,6 +109,12 @@ class OrderController extends Controller
                 ]);
             }
 
+            OrderShipment::create([
+                'order_id'       => $order->id,
+                'status'         => $order->shipping_status,
+                'status_note'    => "Admin cập nhật trạng thái",
+            ]);
+
             return response()->json([
                 'message'  => 'Tạo đơn hàng thành công',
                 'order_id' => $order->id,
@@ -116,121 +124,90 @@ class OrderController extends Controller
 
     // Cập nhật trạng thái thanh toán + (optional) trạng thái giao hàng
     public function updateStatus(Request $request, $id)
-{
-    $order = Order::findOrFail($id);
+    {
+        $order = Order::findOrFail($id);
 
-    // Data từ FE gửi lên (có thể gửi 1 hoặc cả 2)
-    $newStatus   = $request->input('status');           // pending | processing | completed | cancelled | refund_pending
-    $newShipping = $request->input('shipping_status');  // pending | processing | completed | cancelled
+        // Data từ FE gửi lên (có thể gửi 1 hoặc cả 2)
+        $newStatus   = $request->input('status');           // pending | processing | completed | cancelled | refund_pending
+        $newShipping = $request->input('shipping_status');  // pending | processing | completed | cancelled
 
-    // 1. Cập nhật theo dữ liệu FE gửi lên
-    if (!is_null($newStatus)) {
-        $order->status = $newStatus;
-    }
-
-    if (!is_null($newShipping)) {
-        $order->shipping_status = $newShipping;
-    }
-
-    // ===== A. ĐƠN COD =====
-    if ($order->payment_method === 'cod') {
-
-        switch ($order->shipping_status) {
-            case 'completed':
-                // ĐÃ GIAO -> thanh toán HOÀN THÀNH
-                $order->status = 'completed';
-                break;
-
-            case 'cancelled':
-                // HỦY GIAO -> thanh toán ĐÃ HỦY
-                $order->status = 'cancelled';
-                break;
-
-            default:
-                // pending / processing ... -> luôn là CHỜ XỬ LÝ
-                $order->status = 'pending';
-                break;
-        }
-    }
-
-    // ===== B. ĐƠN CHUYỂN KHOẢN QUA VNPAY =====
-    if ($order->payment_method === 'bank' && $order->payment_channel === 'vnpay') {
-
-        // Nếu giao hàng bị HỦY => CHỜ HOÀN TIỀN
-        if ($order->shipping_status === 'cancelled') {
-            $order->status = 'refund_pending';   // trạng thái mới
+        // 1. Cập nhật theo dữ liệu FE gửi lên
+        if (!is_null($newStatus)) {
+            $order->status = $newStatus;
         }
 
-        // Nếu thanh toán đã bị admin set "cancelled" thì cho giao hàng = cancelled luôn
-        if ($order->status === 'cancelled') {
-            $order->shipping_status = 'cancelled';
+        if (!is_null($newShipping)) {
+            $order->shipping_status = $newShipping;
         }
+
+        // ===== A. ĐƠN COD =====
+        if ($order->payment_method === 'cod') {
+
+            switch ($order->shipping_status) {
+                case 'completed':
+                    // ĐÃ GIAO -> thanh toán HOÀN THÀNH
+                    $order->status = 'completed';
+                    break;
+
+                case 'cancelled':
+                    // HỦY GIAO -> thanh toán ĐÃ HỦY
+                    $order->status = 'cancelled';
+                    break;
+
+                default:
+                    // pending / processing ... -> luôn là CHỜ XỬ LÝ
+                    $order->status = 'pending';
+                    break;
+            }
+        }
+
+        // ===== B. ĐƠN CHUYỂN KHOẢN QUA VNPAY =====
+        if ($order->payment_method === 'bank' && $order->payment_channel === 'vnpay') {
+
+            // Nếu giao hàng bị HỦY => CHỜ HOÀN TIỀN
+            if ($order->shipping_status === 'cancelled') {
+                $order->status = 'refund_pending';   // trạng thái mới
+            }
+
+            // Nếu thanh toán đã bị admin set "cancelled" thì cho giao hàng = cancelled luôn
+            if ($order->status === 'cancelled') {
+                $order->shipping_status = 'cancelled';
+            }
+        }
+
+        $order->save();
+
+        OrderShipment::create([
+            'order_id'       => $order->id,
+            'status'         => $order->shipping_status,
+            'status_note'    => "Admin cập nhật trạng thái",
+        ]);
+
+        return response()->json($order);
     }
-
-    $order->save();
-
-    return response()->json($order);
-}
 
     // Cập nhật TRẠNG THÁI GIAO HÀNG (dùng cho nút trong admin)
-    public function updateShippingStatus(Request $request, $id)
-{
-    $request->validate([
-        'shipping_status' => 'required|in:pending,processing,completed,cancelled',
-    ]);
 
-    $order = Order::findOrFail($id);
-
-    $order->shipping_status = $request->shipping_status;
-
-    // ===== ĐƠN COD =====
-    if ($order->payment_method === 'cod') {
-        // Giao hàng hoàn thành -> thanh toán hoàn thành
-        if ($order->shipping_status === 'completed') {
-            $order->status = 'completed';
-        }
-
-        // Giao hàng hủy -> thanh toán hủy
-        if ($order->shipping_status === 'cancelled') {
-            $order->status = 'cancelled';
-        }
-    }
-
-    // ===== ĐƠN CHUYỂN KHOẢN QUA VNPAY =====
-    if ($order->payment_method === 'bank' && $order->payment_channel === 'vnpay') {
-        // Nếu giao hàng bị HỦY -> đang chờ hoàn tiền
-        if ($order->shipping_status === 'cancelled') {
-            $order->status = 'refund_pending'; // trạng thái mới
-        }
-    }
-
-    $order->save();
-
-    return response()->json([
-        'message' => 'Cập nhật trạng thái giao hàng thành công',
-        'order'   => $order,
-    ]);
-}
 
     //xóa
     public function destroy($id)
-{
-    $order = Order::with('items')->find($id);
+    {
+        $order = Order::with('items')->find($id);
 
-    if (!$order) {
-        return response()->json(['message' => 'Order not found'], 404);
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        DB::transaction(function () use ($order) {
+            // Xoá các order_item trước (nếu có ràng buộc FK)
+            $order->items()->delete();
+            $order->delete();
+        });
+
+        return response()->json([
+            'message' => 'Xóa đơn hàng thành công',
+        ]);
     }
-
-    DB::transaction(function () use ($order) {
-        // Xoá các order_item trước (nếu có ràng buộc FK)
-        $order->items()->delete();
-        $order->delete();
-    });
-
-    return response()->json([
-        'message' => 'Xóa đơn hàng thành công',
-    ]);
-}
 
 
     // API chi tiết đơn cho admin
@@ -247,6 +224,66 @@ class OrderController extends Controller
         return response()->json([
             'order' => $order,
             'items' => $order->items,
+        ]);
+    }
+
+    public function myOrders(Request $request)
+    {
+        // Lấy user từ request
+        $user = $request->user(); // hoặc Auth::user()
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Lấy đơn hàng của user, kèm items
+        $orders = Order::with('items.product')
+            ->where('user_id', $user->id)
+            ->orderByDesc('id')
+            ->get();
+
+        return response()->json($orders);
+    }
+
+
+    public function cancelOrder(Request $request, $orderId)
+    {
+        $user = $request->user(); // user đang login
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Tìm đơn hàng
+        $order = Order::where('id', $orderId)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        // Kiểm tra trạng thái đơn hàng
+        if ($order->shipping_status !== 'pending') {
+            return response()->json(['message' => 'Cannot cancel this order'], 400);
+        }
+
+        // Hủy đơn hàng
+        $order->shipping_status = 'cancelled'; // hoặc 'canceled' tùy bạn đặt
+        if ($order->status === 'completed') {
+            $order->status = 'refund_pending';
+        }
+        $order->save();
+
+
+        OrderShipment::create([
+            'order_id' => $order->id,
+            'status' => 'cancelled',
+            'status_note' => 'Người dùng hủy đơn',
+        ]);
+        return response()->json([
+            'message' => 'Order cancelled successfully',
+            'order' => $order
         ]);
     }
 }
