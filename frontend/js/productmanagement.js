@@ -155,6 +155,7 @@ async function loadProducts(category = "") {
               : "Không có ảnh"}
           </td>
           <td>${p.description ?? ""}</td>
+          <td>${p.specs ?? ""}</td>
           <td>
             <button class="toggle-btn ${p.status ? "active" : "inactive"}" onclick="toggleProduct(${p.id})">
               <i class="fas ${p.status ? "fa-toggle-on" : "fa-toggle-off"}"></i>

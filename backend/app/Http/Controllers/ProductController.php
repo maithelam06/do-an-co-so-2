@@ -67,6 +67,7 @@ class ProductController extends Controller
             'category_id' => 'nullable|integer|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'specs' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
 
@@ -80,6 +81,7 @@ class ProductController extends Controller
             'category_id' => $validated['category_id'] ?? null,
             'price' => $validated['price'],
             'description' => $validated['description'] ?? null,
+            'specs' => $validated['specs'] ?? null,
             'image' => $path,
             'status' => 1, // mặc định bật
         ]);
@@ -100,6 +102,7 @@ class ProductController extends Controller
             'category_id' => 'nullable|integer|exists:categories,id',
             'price' => 'sometimes|numeric|min:0',
             'description' => 'nullable|string',
+            'specs' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 

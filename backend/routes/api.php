@@ -74,3 +74,5 @@ Route::get('/categories', [CategoryController::class, 'index']);
 
 
 Route::middleware('auth:sanctum')->get('/orders/{orderId}/shipments', [OrderShipmentController::class, 'index']);
+Route::middleware('auth:sanctum')->post('/products/{product}/review', [ReviewController::class, 'store']);
+Route::get('/reviews/product/{productId}', [ReviewController::class, 'getReviews']);
