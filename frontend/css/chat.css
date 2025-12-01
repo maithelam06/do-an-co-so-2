@@ -1,0 +1,150 @@
+/* Vị trí widget */
+#chatWidget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    font-family: inherit;
+}
+
+/* Nút tròn ở góc */
+#chatButton {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #0d6efd;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#chatButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Hộp chat */
+#chatBox {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 320px;
+    max-height: 420px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    display: none;              /* Ẩn mặc định */
+    flex-direction: column;
+}
+
+/* Khi mở */
+#chatBox.open {
+    display: flex;
+}
+
+/* Header */
+#chatBox .chat-header {
+    padding: 10px 12px;
+    background: #0d6efd;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+}
+
+#chatBox .chat-header button {
+    border: none;
+    background: transparent;
+    color: #fff;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+/* Messages */
+#chatBox .chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f5f7fb;
+}
+
+#chatBox .message {
+    max-width: 80%;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+/* Tin nhắn từ user (bên phải) */
+#chatBox .message.user {
+    background: #0d6efd;
+    color: #fff;
+    margin-left: auto;
+}
+
+/* Tin nhắn từ admin (bên trái) */
+#chatBox .message.admin {
+    background: #ffffff;
+    border: 1px solid #d0d7e2;
+    color: #333;
+}
+
+/* Input */
+#chatBox .chat-input-area {
+    padding: 8px;
+    border-top: 1px solid #e1e4eb;
+    display: flex;
+    gap: 6px;
+    background: #fff;
+}
+
+#chatBox .chat-input-area input {
+    flex: 1;
+    border-radius: 999px;
+    border: 1px solid #ced4da;
+    padding: 6px 10px;
+}
+
+#chatBox .chat-input-area button {
+    border-radius: 50%;
+    border: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0d6efd;
+    color: #fff;
+}
+
+/* Badge số tin nhắn mới trên nút chat */
+#chatButton {
+    position: relative;
+}
+
+.chat-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #dc3545;
+    color: #fff;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-badge.d-none {
+    display: none;
+}
