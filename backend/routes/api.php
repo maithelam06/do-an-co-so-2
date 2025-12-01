@@ -9,9 +9,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VnpayController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\OrderShipmentController;
-use App\Http\Controllers\ReviewController;
-use Illuminate\Http\Request;
 
 use App\Http\Controllers\VnpayReportController;
 use App\Http\Controllers\StatsController;
@@ -19,7 +16,6 @@ use App\Http\Controllers\ChatController;
 
 use App\Http\Controllers\OrderShipmentController;
 use App\Http\Controllers\ReviewController;
-use Illuminate\Http\Request;
 
 
 // 🔐 Auth
