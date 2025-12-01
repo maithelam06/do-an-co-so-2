@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./css/trangchu.css">
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/chat.css">
 </head>
 
 <body class="bg-light">
@@ -151,6 +152,34 @@
                 </p>
             </div>
         </div>
+        <!-- Floating chat button -->
+<div id="chatWidget">
+    <div id="chatButton">
+        <i class="fas fa-comments"></i>
+        <!-- 🔴 Badge đếm tin nhắn mới -->
+        <span id="chatBadge" class="chat-badge d-none">0</span>
+    </div>
+
+    <div id="chatBox">
+        <div class="chat-header">
+            <span>Hỗ trợ khách hàng</span>
+
+            <div>
+                <button id="closeChat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages"></div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Nhập tin nhắn..." />
+            <button id="sendMsg"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
     </footer>
 
 
@@ -159,6 +188,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/trangchu.js"></script>
     <script src="./js/main.js"></script>
+    <script src="./js/chat.js"></script>
 
 </body>
 

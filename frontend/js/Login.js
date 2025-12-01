@@ -84,6 +84,7 @@ formLogin.addEventListener("submit", async (event) => {
     // ✅ Trường hợp response OK (2xx)
     if (data && data.status === "success") {
       const user = {
+        id: data.user.id, 
         name: data.user.name,
         role: data.role,
         avatar: data.user.avatar,

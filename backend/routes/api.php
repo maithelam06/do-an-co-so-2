@@ -13,6 +13,15 @@ use App\Http\Controllers\OrderShipmentController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\VnpayReportController;
+use App\Http\Controllers\StatsController;
+use App\Http\Controllers\ChatController;
+
+use App\Http\Controllers\OrderShipmentController;
+use App\Http\Controllers\ReviewController;
+use Illuminate\Http\Request;
+
+
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -66,7 +75,37 @@ Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus
 
 
 Route::post('/vnpay/create', [VnpayController::class, 'createPayment']);
-Route::get('/vnpay/return', [VnpayController::class, 'return'])->name('vnpay.return');
+Route::get('/vnpay/return', [VnpayController::class, 'return']);
+Route::match(['GET','POST'], '/vnpay/ipn', [VnpayController::class, 'ipnHandler']);
+
+
+//thống kê tổng quan
+Route::prefix('admin')->group(function () {
+    Route::get('/vnpay/summary', [VnpayReportController::class, 'summary']);
+    Route::get('/vnpay/orders',  [VnpayReportController::class, 'orders']);
+
+    Route::get('/cod/summary',   [VnpayReportController::class, 'codSummary']);
+    Route::get('/cod/orders',    [VnpayReportController::class, 'codOrders']);
+});
+
+// thống kê side band
+Route::prefix('admin/stats')->group(function () {
+    Route::get('/overview',        [StatsController::class, 'overview']);
+    Route::get('/revenue-by-date', [StatsController::class, 'revenueByDate']);
+    Route::get('/payment-method',  [StatsController::class, 'paymentMethod']);
+    Route::get('/top-products',    [StatsController::class, 'topProducts']);
+    Route::get('/top-customers',   [StatsController::class, 'topCustomers']);
+});
+
+
+// chat
+Route::prefix('chat')->group(function () {
+    Route::get('/users', [ChatController::class, 'users']); 
+    Route::get('/messages', [ChatController::class, 'messages']); 
+    Route::post('/send', [ChatController::class, 'send']);           // admin → user
+    Route::post('/user-send', [ChatController::class, 'userSend']); // user → admin
+    Route::post('/create-room', [ChatController::class, 'createRoom']);
+});
 
 
 
