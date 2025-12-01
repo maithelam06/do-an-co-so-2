@@ -40,8 +40,8 @@
                     <div class="dropdown">
                         <a href="#" class="text-white dropdown-toggle d-flex align-items-center"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img id="user-avatar" src="./img/avt.jpg" alt="avatar"
-                                class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
+                            <img id="user-avatar" src="./img/avt.jpg" alt="avatar" class="rounded-circle me-2"
+                                style="width:30px;height:30px;object-fit:cover;">
                             <span id="user-name">Tài khoản</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -71,7 +71,8 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
                 <li class="breadcrumb-item"><a href="trangchu.html" class="text-decoration-none">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="#" id="breadcrumb-category" class="text-decoration-none">Danh mục</a></li>
+                <li class="breadcrumb-item"><a href="#" id="breadcrumb-category" class="text-decoration-none">Danh
+                        mục</a></li>
                 <li class="breadcrumb-item active" aria-current="page" id="breadcrumb-product">Sản phẩm</li>
             </ol>
         </nav>
@@ -84,12 +85,10 @@
             <div class="col-lg-5">
                 <div class="bg-white p-4 rounded shadow-sm position-relative">
                     <div class="position-relative overflow-hidden rounded" style="padding-top: 100%;">
-                        <img id="product-main-image" 
-                             src="" 
-                             alt="Product" 
-                             class="position-absolute top-0 start-0 w-100 h-100"
-                             style="object-fit: cover;">
-                        <span class="badge bg-danger position-absolute top-0 end-0 m-3 fs-6 d-none" id="product-badge"></span>
+                        <img id="product-main-image" src="" alt="Product"
+                            class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover;">
+                        <span class="badge bg-danger position-absolute top-0 end-0 m-3 fs-6 d-none"
+                            id="product-badge"></span>
                     </div>
                 </div>
             </div>
@@ -98,22 +97,27 @@
             <div class="col-lg-7">
                 <div class="bg-white p-4 rounded shadow-sm h-100">
                     <!-- Tên sản phẩm -->
-                    <h2 id="product-name" class="fw-bold mb-3"></h2>                    <!-- Rating và Số lượng đã bán -->
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="text-warning" id="product-rating"></div>
-                        <span class="text-muted ms-2" id="product-reviews"></span>
-                        <span class="text-muted ms-3">|</span>
-                        <span class="text-muted ms-2">
+                    <h2 id="product-name" class="fw-bold mb-3"></h2> <!-- Rating và Số lượng đã bán -->
+                    <div class="d-flex align-items-center mb-3 gap-3 flex-wrap">
+                        
+                        <span class="text-muted">
                             <i class="fas fa-shopping-bag me-1"></i>
                             Đã bán: <span id="product-sold-count" class="fw-semibold text-success">0</span>
                         </span>
+                        <span class="text-muted">|</span>
+                        <div class="d-flex align-items-center">
+                            <div class="text-warning" id="product-rating"></div>
+                            <span class="text-muted ms-2" id="product-reviews"></span>
+                        </div>
+                        
                     </div>
 
                     <!-- Giá -->
                     <div class="border-top border-bottom py-3 mb-4">
                         <div class="d-flex align-items-center gap-3 flex-wrap">
                             <h3 class="text-danger mb-0 fw-bold" id="product-price"></h3>
-                            <span class="text-decoration-line-through text-muted fs-5 d-none" id="product-old-price"></span>
+                            <span class="text-decoration-line-through text-muted fs-5 d-none"
+                                id="product-old-price"></span>
                             <span class="badge bg-danger fs-6 d-none" id="product-discount"></span>
                         </div>
                     </div>
@@ -122,11 +126,14 @@
                     <div class="mb-4">
                         <label for="quantity" class="form-label fw-semibold">Số lượng:</label>
                         <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-outline-secondary" onclick="decreaseQuantity()" style="width: 40px; height: 40px;">
+                            <button class="btn btn-outline-secondary" onclick="decreaseQuantity()"
+                                style="width: 40px; height: 40px;">
                                 <i class="fas fa-minus"></i>
                             </button>
-                            <input type="number" id="quantity" class="form-control text-center fw-semibold" value="1" min="1" max="99" style="width: 80px; height: 40px;">
-                            <button class="btn btn-outline-secondary" onclick="increaseQuantity()" style="width: 40px; height: 40px;">
+                            <input type="number" id="quantity" class="form-control text-center fw-semibold" value="1"
+                                min="1" max="99" style="width: 80px; height: 40px;">
+                            <button class="btn btn-outline-secondary" onclick="increaseQuantity()"
+                                style="width: 40px; height: 40px;">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -185,6 +192,17 @@
                         <p id="product-specs" class="list-unstyled mb-0">
                             <!-- Specs sẽ được load từ JS -->
                         </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-4">
+                <div class="col-12">
+                    <div class="bg-white p-4 rounded shadow-sm">
+                        <h4 class="fw-bold mb-4"><i class="fas fa-comments text-info me-2"></i>Đánh giá sản phẩm</h4>
+                        <div id="reviews-container">
+                            <!-- Reviews sẽ được load từ JS -->
+                        </div>
                     </div>
                 </div>
             </div>

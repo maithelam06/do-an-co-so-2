@@ -31,4 +31,14 @@ class ReviewController extends Controller
             'data' => $review
         ], 201);
     }
+
+    public function getReviews($productId)
+    {
+        $reviews = Review::with('user') // lấy thông tin người dùng
+            ->where('product_id', $productId)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return response()->json($reviews);
+    }
 }
