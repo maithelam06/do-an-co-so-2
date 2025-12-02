@@ -46,24 +46,62 @@ class VnpayReportController extends Controller
     // Tổng quan VNPay
     public function summary(Request $request)
     {
-        $query = $this->buildBaseQuery($request, 'vnpay');
-        $base  = clone $query;
+        $query = Order::query()
+            ->where('payment_channel', 'vnpay'); // chỉ đơn VNPAY
 
-        $totalOrders     = (clone $base)->count();
-        $paidOrders      = (clone $base)->where('status', 'completed')->count();
-        $cancelledOrders = (clone $base)->where('status', 'cancelled')->count();
-        $pendingOrders   = (clone $base)->where('status', 'pending')->count();
+        // Bộ lọc ngày
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->from);
+        }
+
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->to);
+        }
+
+        // Bộ lọc trạng thái (optional)
+        if ($request->filled('status')) {
+            if ($request->status === 'cancelled') {
+                // ĐÃ HỦY = cancelled + refunded
+                $query->whereIn('status', ['cancelled', 'refunded']);
+            } elseif ($request->status === 'pending') {
+                // ĐANG CHỜ = pending + refund_pending
+                $query->whereIn('status', ['pending', 'refund_pending']);
+            } else {
+                $query->where('status', $request->status);
+            }
+        }
+
+        // Clone query để đếm / tính riêng
+        $base = clone $query;
+
+        $totalOrders      = (clone $base)->count();
+        $paidOrders       = (clone $base)->where('status', 'completed')->count();
+        $cancelledOrders  = (clone $base)->whereIn('status', ['cancelled', 'refunded'])->count();
+        $pendingOrders    = (clone $base)->whereIn('status', ['pending', 'refund_pending'])->count();
 
         $totalRevenue = (clone $base)
             ->where('status', 'completed')
             ->sum('total_amount');
 
         $today = Carbon::today();
-
         $todayRevenue = (clone $base)
             ->where('status', 'completed')
             ->whereDate('created_at', $today)
             ->sum('total_amount');
+
+        // Lấy danh sách để render bảng
+        $orders = $query
+            ->orderByDesc('id')
+            ->get([
+                'id',
+                'full_name',
+                'phone',
+                'total_amount',
+                'payment_method',
+                'payment_channel',
+                'status',
+                'created_at',
+            ]);
 
         return response()->json([
             'total_orders'     => $totalOrders,
@@ -72,8 +110,10 @@ class VnpayReportController extends Controller
             'pending_orders'   => $pendingOrders,
             'total_revenue'    => $totalRevenue,
             'today_revenue'    => $todayRevenue,
+            'orders'           => $orders,
         ]);
     }
+
 
     // Danh sách đơn VNPay
     public function orders(Request $request)

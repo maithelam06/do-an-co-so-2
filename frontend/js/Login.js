@@ -86,6 +86,7 @@ formLogin.addEventListener("submit", async (event) => {
       const user = {
         id: data.user.id, 
         name: data.user.name,
+        email: data.user.email,   
         role: data.role,
         avatar: data.user.avatar,
         token: data.token,
