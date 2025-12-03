@@ -6,6 +6,7 @@ return [
     'url'         => env('VNPAY_URL', 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'),
     'return_url'  => env('VNPAY_RETURN_URL', ''),
     'ipn_url'     => env('VNPAY_IPN_URL', ''), // IPN URL
+    'refund_url' => env('VNPAY_REFUND_URL'),
 ];
 
 

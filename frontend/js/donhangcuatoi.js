@@ -865,7 +865,7 @@ function showEmptyState() {
           <div class="empty-icon">📦</div>
           <h2 class="empty-title">Không có đơn hàng</h2>
           <p class="empty-text">Bạn chưa có đơn hàng nào. Hãy bắt đầu mua sắm ngay!</p>
-          <button class="btn-empty" onclick="window.location.href='/'">
+          <button class="btn-empty" onclick="window.location.href='/">
               <i class="fas fa-shopping-cart"></i> Tiếp tục mua sắm
           </button>
       </div>

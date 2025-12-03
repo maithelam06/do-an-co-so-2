@@ -18,6 +18,8 @@ function renderStatus(status) {
       return '<span class="badge bg-success">Hoàn thành</span>';
     case "refund_pending":
       return '<span class="badge bg-warning text-dark">Chờ hoàn tiền</span>';
+    case "refunded":
+      return '<span class="badge bg-info text-dark">Đã hoàn tiền</span>';
     case "cancelled":
       return '<span class="badge bg-danger">Đã hủy</span>';
     default:
@@ -57,7 +59,7 @@ function renderPaymentMethod(order) {
 
 let ORDERS_CACHE = [];
 
-// ===================== FILTER ORDERS =====================
+//  FILTER ORDERS 
 function filterOrders() {
   const searchTerm = document.getElementById("searchInput")?.value.toLowerCase().trim() || "";
   const statusFilter = document.getElementById("statusFilter")?.value || "";
@@ -68,7 +70,7 @@ function filterOrders() {
 
   return ORDERS_CACHE.filter(order => {
     // Tìm kiếm theo tên khách, SĐT, mã đơn
-    const searchMatch = !searchTerm || 
+    const searchMatch = !searchTerm ||
       order.full_name?.toLowerCase().includes(searchTerm) ||
       order.phone?.toLowerCase().includes(searchTerm) ||
       `DH${order.id}`.toLowerCase().includes(searchTerm) ||
@@ -81,7 +83,7 @@ function filterOrders() {
   });
 }
 
-// ===================== RENDER ORDERS TABLE =====================
+//  RENDER ORDERS TABLE 
 function renderOrdersTable(orders) {
   const tbody = document.getElementById("orderTableBody");
   const totalText = document.getElementById("orderTotalText");
@@ -91,6 +93,21 @@ function renderOrdersTable(orders) {
 
   orders.forEach((order, index) => {
     const tr = document.createElement("tr");
+
+    const canApproveRefund =
+      order.payment_method === "bank" &&
+      order.payment_channel === "vnpay" &&
+      order.status === "refund_pending";
+
+    const refundBtnHtml = canApproveRefund
+      ? `
+        <button class="btn btn-sm btn-outline-warning"
+                onclick="approveRefund(${order.id})"
+                title="Xác nhận đã hoàn tiền VNPay">
+          <i class="fas fa-undo"></i>
+        </button>
+      `
+      : "";
 
     tr.innerHTML = `
       <td>${index + 1}</td>
@@ -102,7 +119,8 @@ function renderOrdersTable(orders) {
       <td>${formatCurrency(order.total_amount)}</td>
       <td>${renderStatus(order.status)}</td>
       <td>${renderShippingStatus(order.shipping_status)}</td>
-      <td>${order.created_at}</td>      <td>
+      <td>${order.created_at}</td>
+      <td>
         <div class="btn-group" role="group" aria-label="Thao tác đơn hàng">
           <button class="btn btn-sm btn-outline-primary" 
                   onclick="showOrderDetail(${order.id})"
@@ -114,6 +132,7 @@ function renderOrdersTable(orders) {
                   title="Cập nhật trạng thái giao hàng">
             <i class="fas fa-truck"></i>
           </button>
+          ${refundBtnHtml}
           <button class="btn btn-sm btn-outline-danger" 
                   onclick="deleteOrder(${order.id})"
                   title="Xóa đơn hàng">
@@ -130,12 +149,13 @@ function renderOrdersTable(orders) {
   badge.textContent = orders.length;
 }
 
-// ===================== LOAD LIST ORDERS =====================
+
+//  LOAD LIST ORDERS 
 async function loadOrdersAdmin() {
   try {
     const res = await fetch(`${API_BASE_URL}/orders`);
     const orders = await res.json();
-    
+
     ORDERS_CACHE = orders;
     renderOrders(); // Render sau khi load xong
   } catch (error) {
@@ -145,7 +165,7 @@ async function loadOrdersAdmin() {
   }
 }
 
-// ===================== DETAIL ORDER =====================
+//  DETAIL ORDER 
 async function showOrderDetail(orderId) {
   try {
     const res = await fetch(`${API_BASE_URL}/orders/${orderId}`);
@@ -204,15 +224,15 @@ async function showOrderDetail(orderId) {
   } catch (err) {
     console.error("Exception showOrderDetail:", err);
     await Swal.fire({
-        icon: "error",
-        title: "Lỗi!",
-        text: "Có lỗi xảy ra khi tải chi tiết đơn hàng!",
-        confirmButtonText: "Đóng"
-      });
+      icon: "error",
+      title: "Lỗi!",
+      text: "Có lỗi xảy ra khi tải chi tiết đơn hàng!",
+      confirmButtonText: "Đóng"
+    });
   }
 }
 
-// ===================== UPDATE SHIPPING =====================
+//  UPDATE SHIPPING 
 async function openShippingStatusModal(orderId) {
   const order = ORDERS_CACHE.find((o) => o.id === orderId);
   if (!order) return;
@@ -302,7 +322,66 @@ async function deleteOrder(orderId) {
   }
 }
 
-// =====================
+
+//  APPROVE REFUND (VNPAY) 
+async function approveRefund(orderId) {
+  const order = ORDERS_CACHE.find(o => o.id === orderId);
+
+  if (!order) return;
+
+  const result = await Swal.fire({
+    title: `Duyệt hoàn tiền DH${order.id}?`,
+    text: "Hãy đảm bảo bạn đã hoàn tiền trên cổng VNPay rồi. Hệ thống sẽ đánh dấu đơn là 'Đã hoàn tiền'.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Đã hoàn tiền, cập nhật",
+    cancelButtonText: "Hủy",
+    confirmButtonColor: "#f39c12"
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders/${orderId}/approve-refund`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      console.error("Lỗi duyệt hoàn tiền:", data);
+      await Swal.fire({
+        icon: "error",
+        title: "Không thể duyệt hoàn tiền",
+        text: data.message || "Vui lòng thử lại sau!",
+        confirmButtonText: "Đóng",
+      });
+      return;
+    }
+
+    await Swal.fire({
+      icon: "success",
+      title: "Đã cập nhật",
+      text: "Đơn hàng đã được đánh dấu 'Đã hoàn tiền'.",
+      confirmButtonText: "Đóng",
+    });
+
+    // Reload lại danh sách
+    loadOrdersAdmin();
+  } catch (err) {
+    console.error("Exception approveRefund:", err);
+    await Swal.fire({
+      icon: "error",
+      title: "Lỗi hệ thống!",
+      text: "Có lỗi xảy ra khi duyệt hoàn tiền.",
+      confirmButtonText: "Đóng",
+    });
+  }
+}
+
 function loadOrders() {
   loadOrdersAdmin();
 }

@@ -47,6 +47,25 @@ const provinceSelect = document.getElementById("province");
 const districtSelect = document.getElementById("district");
 const wardSelect = document.getElementById("ward");
 
+// === PREFILL EMAIL TỪ TÀI KHOẢN ĐÃ ĐĂNG NHẬP ===
+function prefillEmailFromUser() {
+  const userStr = localStorage.getItem("user");
+  if (!userStr) return;
+
+  try {
+    const user = JSON.parse(userStr);
+
+    if (user.email) {
+      const emailInput = document.getElementById("email");
+      emailInput.value = user.email;
+      emailInput.readOnly = true;      // khóa lại
+      emailInput.classList.add("bg-light");
+    }
+  } catch (err) {
+    console.error("Không parse được user:", err);
+  }
+}
+
 // 1. Lấy danh sách tỉnh
 async function loadProvinces() {
   try {
@@ -668,4 +687,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   await renderAddressModal();
 
   console.log("Trang thanh toán đã sẵn sàng");
+  prefillEmailFromUser(); // 👈 THÊM DÒNG NÀY
+
 });

@@ -58,6 +58,9 @@ Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus']);
 // Cập nhật TRẠNG THÁI GIAO HÀNG (dùng cho nút "Cập nhật giao hàng")
 Route::patch('/orders/{id}/shipping-status', [OrderController::class, 'updateShippingStatus']);
 Route::delete('/orders/{id}', [OrderController::class, 'destroy']); //xóa
+Route::post('/orders/{id}/vnpay-refund', [OrderController::class, 'markVnpayRefund']);//hoantien
+//Duyệt hoàn tiền thủ công
+Route::post('/orders/{id}/approve-refund', [OrderController::class, 'approveRefund']);
 
 // USER
 Route::middleware('auth:sanctum')->group(function () {
@@ -73,9 +76,14 @@ Route::get('/customers', [CustomerController::class, 'index']);
 Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus']);
 
 
+
+
+
 Route::post('/vnpay/create', [VnpayController::class, 'createPayment']);
 Route::get('/vnpay/return', [VnpayController::class, 'return']);
 Route::match(['GET','POST'], '/vnpay/ipn', [VnpayController::class, 'ipnHandler']);
+Route::post('/vnpay/refund-test', [VnpayController::class, 'refund']);
+
 
 
 //thống kê tổng quan
