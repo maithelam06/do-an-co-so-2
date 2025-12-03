@@ -22,7 +22,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -52,7 +52,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -82,7 +82,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -118,7 +118,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -150,7 +150,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -180,7 +180,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -211,7 +211,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -239,7 +239,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -275,7 +275,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -305,7 +305,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -337,7 +337,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -366,7 +366,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -405,7 +405,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -439,7 +439,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -467,7 +467,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -499,7 +499,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -528,7 +528,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -558,7 +558,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -587,47 +587,48 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
             }
         }
+
         #profileDropdown .dropdown-item {
-    color: #4a4a6a;
-    padding: 12px 16px;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-}
+            color: #4a4a6a;
+            padding: 12px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
 
-#profileDropdown .dropdown-item:hover {
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
-    color: #7c3aed;
-    transform: translateX(5px);
-}
+        #profileDropdown .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            color: #7c3aed;
+            transform: translateX(5px);
+        }
 
-#profileDropdown .dropdown-item i {
-    width: 20px;
-    transition: all 0.3s ease;
-}
+        #profileDropdown .dropdown-item i {
+            width: 20px;
+            transition: all 0.3s ease;
+        }
 
-#profileDropdown .dropdown-item:hover i {
-    color: #7c3aed;
-}
+        #profileDropdown .dropdown-item:hover i {
+            color: #7c3aed;
+        }
 
-#profileDropdown .dropdown-item.text-danger:hover {
-    background: rgba(255, 65, 108, 0.1);
-}
+        #profileDropdown .dropdown-item.text-danger:hover {
+            background: rgba(255, 65, 108, 0.1);
+        }
 
-#profileDropdown .dropdown-item.text-danger:hover i {
-    color: #ff416c;
-}
+        #profileDropdown .dropdown-item.text-danger:hover i {
+            color: #ff416c;
+        }
 
-#profileDropdown .dropdown-divider {
-    border-color: rgba(0, 0, 0, 0.08);
-    margin: 8px 0;
-}
+        #profileDropdown .dropdown-divider {
+            border-color: rgba(0, 0, 0, 0.08);
+            margin: 8px 0;
+        }
 
         /* Sidebar */
         .sidebar {
@@ -659,7 +660,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -687,7 +688,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -716,7 +717,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -744,7 +745,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -779,7 +780,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -809,7 +810,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -843,7 +844,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -873,7 +874,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -902,7 +903,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -931,7 +932,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -964,7 +965,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -992,7 +993,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1025,7 +1026,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1053,7 +1054,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1085,7 +1086,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1119,7 +1120,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1148,7 +1149,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1182,7 +1183,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1213,7 +1214,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1243,7 +1244,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1278,7 +1279,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1306,7 +1307,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1334,7 +1335,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1362,7 +1363,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1390,7 +1391,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1421,7 +1422,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1450,7 +1451,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1478,7 +1479,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1487,12 +1488,28 @@
 
         /* Welcome Section */
         .welcome-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
+            background: #f8f9fc;
+            /* Màu nền sáng tinh tế */
+            border-radius: 12px;
             padding: 2rem;
-            color: white;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+            border: 1px solid #e5e7eb;
+            /* Viền nhẹ */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            /* Đổ bóng nhẹ chuyên nghiệp */
+        }
+
+        .welcome-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1f2937;
+            /* Text đậm nhưng không quá tối */
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text {
+            font-size: 1rem;
+            color: #4b5563;
+            /* Text phụ nhẹ nhàng */
         }
 
         /* Button group styles for order actions */
@@ -1512,7 +1529,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1541,7 +1558,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1569,7 +1586,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1582,141 +1599,141 @@
                 transform: translateX(-100%);
             }
 
-        /* Button group styles for order actions */
-        .btn-group .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            border-radius: 0.2rem;
-        }
-
-        .btn-group .btn-sm i {
-            font-size: 0.8rem;
-        }
-
-        /* Ensure button group doesn't break on small screens */
-        @media (max-width: 768px) {
-            .btn-group {
-                display: flex;
-                flex-wrap: nowrap;
-            }
-            
+            /* Button group styles for order actions */
             .btn-group .btn-sm {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+                border-radius: 0.2rem;
             }
-        }
+
+            .btn-group .btn-sm i {
+                font-size: 0.8rem;
+            }
+
+            /* Ensure button group doesn't break on small screens */
+            @media (max-width: 768px) {
+                .btn-group {
+                    display: flex;
+                    flex-wrap: nowrap;
+                }
+
+                .btn-group .btn-sm {
+                    padding: 0.2rem 0.4rem;
+                    font-size: 0.75rem;
+                }
+            }
 
             .sidebar.active {
                 transform: translateX(0);
             }
 
-        /* Button group styles for order actions */
-        .btn-group .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            border-radius: 0.2rem;
-        }
-
-        .btn-group .btn-sm i {
-            font-size: 0.8rem;
-        }
-
-        /* Ensure button group doesn't break on small screens */
-        @media (max-width: 768px) {
-            .btn-group {
-                display: flex;
-                flex-wrap: nowrap;
-            }
-            
+            /* Button group styles for order actions */
             .btn-group .btn-sm {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+                border-radius: 0.2rem;
             }
-        }
+
+            .btn-group .btn-sm i {
+                font-size: 0.8rem;
+            }
+
+            /* Ensure button group doesn't break on small screens */
+            @media (max-width: 768px) {
+                .btn-group {
+                    display: flex;
+                    flex-wrap: nowrap;
+                }
+
+                .btn-group .btn-sm {
+                    padding: 0.2rem 0.4rem;
+                    font-size: 0.75rem;
+                }
+            }
 
             .main-content {
                 margin-left: 0;
             }
 
-        /* Button group styles for order actions */
-        .btn-group .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            border-radius: 0.2rem;
-        }
-
-        .btn-group .btn-sm i {
-            font-size: 0.8rem;
-        }
-
-        /* Ensure button group doesn't break on small screens */
-        @media (max-width: 768px) {
-            .btn-group {
-                display: flex;
-                flex-wrap: nowrap;
-            }
-            
+            /* Button group styles for order actions */
             .btn-group .btn-sm {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+                border-radius: 0.2rem;
             }
-        }
+
+            .btn-group .btn-sm i {
+                font-size: 0.8rem;
+            }
+
+            /* Ensure button group doesn't break on small screens */
+            @media (max-width: 768px) {
+                .btn-group {
+                    display: flex;
+                    flex-wrap: nowrap;
+                }
+
+                .btn-group .btn-sm {
+                    padding: 0.2rem 0.4rem;
+                    font-size: 0.75rem;
+                }
+            }
 
             .admin-info {
                 display: none;
             }
 
-        /* Button group styles for order actions */
-        .btn-group .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            border-radius: 0.2rem;
-        }
-
-        .btn-group .btn-sm i {
-            font-size: 0.8rem;
-        }
-
-        /* Ensure button group doesn't break on small screens */
-        @media (max-width: 768px) {
-            .btn-group {
-                display: flex;
-                flex-wrap: nowrap;
-            }
-            
+            /* Button group styles for order actions */
             .btn-group .btn-sm {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+                border-radius: 0.2rem;
             }
-        }
+
+            .btn-group .btn-sm i {
+                font-size: 0.8rem;
+            }
+
+            /* Ensure button group doesn't break on small screens */
+            @media (max-width: 768px) {
+                .btn-group {
+                    display: flex;
+                    flex-wrap: nowrap;
+                }
+
+                .btn-group .btn-sm {
+                    padding: 0.2rem 0.4rem;
+                    font-size: 0.75rem;
+                }
+            }
 
             .header-content {
                 padding: 0 1rem;
             }
 
-        /* Button group styles for order actions */
-        .btn-group .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            border-radius: 0.2rem;
-        }
-
-        .btn-group .btn-sm i {
-            font-size: 0.8rem;
-        }
-
-        /* Ensure button group doesn't break on small screens */
-        @media (max-width: 768px) {
-            .btn-group {
-                display: flex;
-                flex-wrap: nowrap;
-            }
-            
+            /* Button group styles for order actions */
             .btn-group .btn-sm {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+                border-radius: 0.2rem;
             }
-        }
+
+            .btn-group .btn-sm i {
+                font-size: 0.8rem;
+            }
+
+            /* Ensure button group doesn't break on small screens */
+            @media (max-width: 768px) {
+                .btn-group {
+                    display: flex;
+                    flex-wrap: nowrap;
+                }
+
+                .btn-group .btn-sm {
+                    padding: 0.2rem 0.4rem;
+                    font-size: 0.75rem;
+                }
+            }
         }
 
         /* Button group styles for order actions */
@@ -1736,7 +1753,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1765,7 +1782,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1793,7 +1810,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;
@@ -1822,7 +1839,7 @@
                 display: flex;
                 flex-wrap: nowrap;
             }
-            
+
             .btn-group .btn-sm {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.75rem;

@@ -1,3 +1,4 @@
+
 const formLogin = document.getElementById("login");
 
 formLogin.addEventListener("submit", async (event) => {
@@ -81,7 +82,7 @@ formLogin.addEventListener("submit", async (event) => {
       return;
     }
 
-    // ✅ Trường hợp response OK (2xx)
+    // Trường hợp response OK (2xx)
     if (data && data.status === "success") {
       const user = {
         id: data.user.id, 

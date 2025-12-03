@@ -51,7 +51,7 @@
                                         class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
 
                             <!-- Khi đã đăng nhập -->
-                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
+                            <li class="logged-in d-none"><a class="dropdown-item" href="/frontend/profile.html"><i
                                         class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
                             <li class="logged-in d-none"><a class="dropdown-item" href="/frontend/donhangcuatoi.html"><i
                                         class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
@@ -102,7 +102,8 @@
                                 <div class="col-12">
                                     <label class="form-label">Email <span class="required">*</span></label>
                                     <input type="email" class="form-control" name="email" id="email"
-                                        placeholder="example@gmail.com" required readonly style="background-color: #e9ecef; color: #495057;">
+                                        placeholder="example@gmail.com" required readonly
+                                        style="background-color: #e9ecef; color: #495057;">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Tỉnh/Thành phố <span class="required">*</span></label>
@@ -185,6 +186,19 @@
                             </div>
                         </div>
 
+                        <!-- Mã giảm giá -->
+                        <div class="mb-3">
+                            <label class="form-label">Mã giảm giá</label>
+                            <div class="input-group">
+                                <input type="text" id="couponInput" class="form-control"
+                                    placeholder="Nhập mã giảm giá...">
+                                <button type="button" id="applyCouponBtn" class="btn btn-primary">
+                                    Áp dụng
+                                </button>
+                            </div>
+                            <small id="couponMessage" class="mt-2 d-block" style="display: none;"></small>
+                        </div>
+
                         <!-- Tính toán -->
                         <div class="summary-calculation">
                             <div class="calc-row">
@@ -194,6 +208,10 @@
                             <div class="calc-row">
                                 <span>Phí vận chuyển:</span>
                                 <span id="shippingFee">Miễn phí</span>
+                            </div>
+                            <div class="calc-row">
+                                <span>Giảm giá:</span>
+                                <span id="discount">0₫</span>
                             </div>
                             <div class="calc-row total">
                                 <span>Tổng cộng:</span>

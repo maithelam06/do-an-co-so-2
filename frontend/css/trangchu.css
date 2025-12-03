@@ -55,7 +55,7 @@ body {
     border-bottom: none;
 }
 
-.category-item:hover, 
+.category-item:hover,
 .category-item.active {
     background: #f0f7ff;
     color: var(--primary-color);
@@ -74,10 +74,11 @@ body {
 
 /* ========== BANNER ========== */
 .banner {
-    background: #0d6efd;
+    background: #f5f7fa;                /* nền sáng sang trọng */
+    border: 1px solid #e2e8f0;          /* viền mảnh kiểu doanh nghiệp */
     border-radius: 8px;
     padding: 1.5rem 2rem;
-    color: white;
+    color: #1a202c;                     /* text đen sang */
     margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
@@ -95,12 +96,21 @@ body {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.3rem;
+    color: #1a202c;                     
 }
 
 .banner p {
     font-size: 0.9rem;
     margin-bottom: 0;
-    opacity: 0.95;
+    opacity: 0.85;
+    color: #4a5568;                     
+}
+
+/* Nếu m muốn search box đẹp hơn */
+.banner .form-control {
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    padding: 0.55rem 0.9rem;
 }
 
 /* ========== SEARCH BOX ========== */
@@ -283,54 +293,73 @@ body {
 footer {
     background: #34495e;
     color: white;
-    padding: 2rem 0 1rem;
-    margin-top: 2rem;
-    font-size: 0.85rem;
+    padding: 0.45rem 0 0.15rem;   /* giảm tiếp chiều cao footer */
+    margin-top: 0.5rem;           /* bớt khoảng cách với content */
+    font-size: 0.8rem;
+    line-height: 1.2;             /* chữ sít lại chút xíu */
 }
 
+/* Bố cục */
+footer .row {
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Tiêu đề cột */
 footer h5 {
-    font-size: 0.95rem;
-    margin-bottom: 0.9rem;
+    font-size: 0.86rem;
+    margin-bottom: 0.25rem;
     font-weight: 600;
 }
 
-footer a {
-    color: rgba(255, 255, 255, 0.7);
+footer p {
+    margin-bottom: 0.18rem !important;
+}
+
+
+/* Danh sách link (không chấm tròn) */
+footer ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+footer ul li {
+    margin-bottom: 0.2rem;
+}
+
+/* Link trong footer */
+footer a,
+footer a:visited {
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
 }
 
 footer a:hover {
-    color: white;
+    color: #ffffff;
+    text-decoration: underline;
 }
 
-footer ul {
-    list-style: none;
-    padding: 0;
-}
-
-footer ul li {
-    margin-bottom: 0.4rem;
-}
-
-/* Social Icons */
+/* Social icons */
 .social-icons a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    margin-right: 0.4rem;
+    width: 24px;
+    height: 24px;
+    margin-right: 0.25rem;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 0.7rem;
 }
 
 .social-icons a:hover {
-    background: var(--primary-color);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 /* Contact Info */
 .contact-info p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem !important;
 }
 
 .contact-info i {
@@ -339,9 +368,22 @@ footer ul li {
     color: var(--primary-color);
 }
 
+/* Đường gạch ngăn cách */
+footer hr {
+    margin: 0.4rem 0 !important;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Dòng © cuối */
+footer .text-center p {
+    padding: 0.15rem 0;
+    margin: 0;
+    font-size: 0.75rem;
+}
+
 /* ========== MAIN CONTENT ========== */
 .main-content {
-    padding: 1.25rem 0;
+    padding: 1.25rem 0 0.3rem; 
 }
 
 /* ========== CUSTOM GRID FOR 5 PRODUCTS PER ROW ========== */
@@ -356,8 +398,7 @@ footer ul li {
         flex: 0 0 20%;
         max-width: 20%;
     }
-    
-    /* Ensure 5 products per row on large screens */
+
     .col-lg-5-per-row {
         flex: 0 0 20%;
         max-width: 20%;
@@ -369,21 +410,20 @@ footer ul li {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .search-box {
         width: 100%;
     }
-    
+
     .search-box input {
         width: 100%;
         min-width: unset;
     }
-    
+
     .sidebar {
         margin-bottom: 1rem;
     }
-    
-    /* Mobile: 1 product per row */
+
     .col-lg-5-per-row {
         flex: 0 0 100%;
         max-width: 100%;
@@ -391,7 +431,6 @@ footer ul li {
 }
 
 @media (min-width: 769px) and (max-width: 991px) {
-    /* Tablet: 2 products per row */
     .col-lg-5-per-row {
         flex: 0 0 50%;
         max-width: 50%;

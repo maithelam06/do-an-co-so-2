@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechStore - Quản Trị</title>
+    <title>TechStore - Quản lý khuyến mãi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="/frontend/css/admin.css" />
@@ -32,16 +32,17 @@
                     <i class="fas fa-envelope"></i>
                     <span class="notification-badge">3</span>
                 </div>
-                <div id="profileDropdownToggle" class="admin-profile dropdown d-flex align-items-center dropdown-toggle"
+
+                <div id="profileDropdownToggle"
+                    class="admin-profile dropdown d-flex align-items-center dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
                     <img id="admin-avatar" src="/frontend/img/avt.jpg" alt="Admin" class="admin-avatar" />
                     <div class="admin-info">
                         <span id="admin-name" class="admin-name">Người dùng</span>
-                        <span id="admin-role" class="admin-role">Vai trò</span>
+                        <span id="admin-role" class="admin-role">Quản trị viên</span>
                     </div>
                     <i class="fas fa-chevron-down ms-2" style="color: #7f8c8d; font-size: 0.8rem;"></i>
 
-                    <!-- Dropdown menu -->
                     <ul id="profileDropdown" class="dropdown-menu dropdown-menu-end"
                         aria-labelledby="profileDropdownToggle">
                         <li>
@@ -59,7 +60,7 @@
     <aside class="sidebar" id="sidebar">
         <ul class="sidebar-menu">
             <li class="menu-item">
-                <a href="#" class="menu-link active">
+                <a href="/frontend/Admin/admin.html" class="menu-link">
                     <i class="fas fa-home menu-icon"></i>
                     <span class="menu-text">Tổng quan</span>
                 </a>
@@ -90,12 +91,14 @@
                 </a>
             </li>
 
+            <!-- Khuyến mãi đang ACTIVE -->
             <li class="menu-item">
-                <a href="/frontend/Admin/" class="menu-link">
+                <a href="/frontend/Admin/khuyenmai.html" class="menu-link active">
                     <i class="fas fa-percent menu-icon"></i>
                     <span class="menu-text">Khuyến mãi</span>
                 </a>
             </li>
+
             <li class="menu-item">
                 <a href="#" class="menu-link">
                     <i class="fas fa-star menu-icon"></i>
@@ -120,119 +123,110 @@
 
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
-        <!-- Welcome -->
+        <!-- Tiêu đề -->
         <div class="welcome-section mb-4">
-            <h1 class="welcome-title">Xin chào, Quản trị viên! 👋</h1>
+            <h1 class="welcome-title">Quản lý mã giảm giá 🎟️</h1>
             <p class="welcome-text">
-                Chào mừng bạn quay trở lại với bảng điều khiển TechStore
+                Thêm, chỉnh sửa và quản lý các mã khuyến mãi áp dụng cho đơn hàng của khách.
             </p>
         </div>
 
-        <!-- Bộ lọc -->
+        <!-- Form thêm / sửa mã giảm giá -->
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-filter me-2"></i>Bộ lọc thống kê thanh toán</span>
-                <small class="text-muted">
-                    Chọn khoảng thời gian, trạng thái và loại thanh toán để xem thống kê
-                </small>
+                <span><i class="fas fa-plus-circle me-2"></i>Thêm mã giảm giá</span>
+                <small class="text-muted">Admin tự tạo mã, khách chỉ nhập và sử dụng</small>
             </div>
-            <div class="card-body row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Từ ngày</label>
-                    <input type="date" id="fromDate" class="form-control" />
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Đến ngày</label>
-                    <input type="date" id="toDate" class="form-control" />
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Trạng thái đơn</label>
-                    <select id="statusFilter" class="form-select">
-                        <option value="">Tất cả</option>
-                        <option value="completed">Hoàn thành</option>
-                        <option value="pending">Chờ xử lý</option>
-                        <option value="cancelled">Đã hủy</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Loại thanh toán</label>
-                    <select id="paymentMethodFilter" class="form-select">
-                        <option value="vnpay" selected>VNPay</option>
-                        <option value="cod">COD (Thanh toán khi nhận hàng)</option>
-                    </select>
-                </div>
-                <div class="col-12 d-flex justify-content-end">
-                    <button id="filterBtn" class="btn btn-primary">
-                        <i class="fas fa-filter me-2"></i>Áp dụng bộ lọc
-                    </button>
-                </div>
+            <div class="card-body">
+                <form id="couponForm" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Mã giảm giá <span class="text-danger">*</span></label>
+                        <input type="text" id="code" class="form-control" placeholder="VD: GIAM10, FREESHIP..."
+                            required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Loại giảm</label>
+                        <select id="type" class="form-select">
+                            <option value="percent">Giảm theo %</option>
+                            <option value="fixed">Giảm số tiền cố định (VND)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Giá trị giảm <span class="text-danger">*</span></label>
+                        <input type="number" id="discount" class="form-control" placeholder="VD: 10 hoặc 50000"
+                            min="1" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Ngày bắt đầu</label>
+                        <input type="date" id="startDate" class="form-control" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Ngày hết hạn <span class="text-danger">*</span></label>
+                        <input type="date" id="expiresAt" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Trạng thái</label>
+                        <select id="status" class="form-select">
+                            <option value="active">Đang áp dụng</option>
+                            <option value="inactive">Tạm dừng</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Mô tả (ghi chú nội bộ)</label>
+                        <textarea id="description" class="form-control" rows="2"
+                            placeholder="VD: Áp dụng cho khách mới, chỉ dùng 1 lần..."></textarea>
+                    </div>
+
+                    <!-- Áp dụng cho sản phẩm nào -->
+                    <div class="col-12">
+                        <label class="form-label">Áp dụng cho</label>
+                        <select id="applyScope" class="form-select mb-2">
+                            <option value="all">Tất cả sản phẩm</option>
+                            <option value="specific">Chỉ sản phẩm được chọn</option>
+                        </select>
+
+                        <div id="productSelection" class="border rounded p-2"
+                            style="max-height: 220px; overflow-y: auto; display: none;">
+                            <small class="text-muted d-block mb-2">
+                                Chọn sản phẩm áp dụng mã giảm giá:
+                            </small>
+                            <div id="productList" class="row g-2">
+                                <!-- JS render checkbox sản phẩm -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="reset" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-undo me-1"></i>Nhập lại
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Lưu mã giảm giá
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <!-- Cards tổng quan -->
-        <div class="row g-3 mb-4" id="summaryCards">
-            <div class="col-md-3">
-                <div class="card text-bg-primary">
-                    <div class="card-body">
-                        <h6 class="card-title">Tổng số đơn</h6>
-                        <h3 id="totalOrders" class="mb-0 fw-bold display-6">0</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-bg-success">
-                    <div class="card-body">
-                        <h6 class="card-title">Đơn đã thanh toán</h6>
-                        <h3 id="paidOrders" class="mb-0 fw-bold display-6">0</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-bg-danger">
-                    <div class="card-body">
-                        <h6 class="card-title">Đơn đã hủy</h6>
-                        <h3 id="cancelledOrders" class="mb-0 fw-bold display-6">0</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-bg-warning">
-                    <div class="card-body">
-                        <h6 class="card-title">Đơn đang chờ</h6>
-                        <h3 id="pendingOrders" class="mb-0 fw-bold display-6">0</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Doanh thu -->
-        <div class="row g-3 mb-4">
-            <div class="col-md-6">
-                <div class="card border-success">
-                    <div class="card-body">
-                        <h6 class="card-title">Tổng doanh thu</h6>
-                        <h3 id="totalRevenue" class="mb-0 fw-semibold fs-3">0 ₫</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-info">
-                    <div class="card-body">
-                        <h6 class="card-title">Doanh thu hôm nay</h6>
-                        <h3 id="todayRevenue" class="mb-0 fw-semibold fs-3">0 ₫</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bảng đơn -->
+        <!-- Bộ lọc + bảng danh sách mã -->
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span>
-                    <i class="fas fa-list me-2"></i>
-                    Danh sách đơn thanh toán -
-                    <strong id="currentPaymentLabel">VNPay</strong>
-                </span>
+                <span><i class="fas fa-tags me-2"></i>Danh sách mã giảm giá</span>
+                <div class="d-flex gap-2">
+                    <input id="searchCoupon" type="text" class="form-control form-control-sm"
+                        placeholder="Tìm theo mã, mô tả..." />
+                    <select id="statusFilter" class="form-select form-select-sm" style="width: 150px;">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="active">Đang áp dụng</option>
+                        <option value="inactive">Tạm dừng</option>
+                    </select>
+                </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -240,15 +234,18 @@
                         <thead class="table-light">
                             <tr>
                                 <th>#</th>
-                                <th>Khách hàng</th>
-                                <th>SĐT</th>
-                                <th>Tổng tiền</th>
-                                <th>Hình thức thanh toán</th>
+                                <th>Mã</th>
+                                <th>Loại</th>
+                                <th>Giá trị</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày hết hạn</th>
                                 <th>Trạng thái</th>
-                                <th>Ngày tạo</th>
+                                <th>Áp dụng cho</th>
+                                <th>Ghi chú</th>
+                                <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody id="orderTableBody">
+                        <tbody id="couponTableBody">
                             <!-- Render bằng JS -->
                         </tbody>
                     </table>
@@ -257,11 +254,10 @@
         </div>
     </main>
 
+    <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/admin.js"></script>
-    <script src="../js/vnpay-dashboard.js"></script>
-
+    <script src="../js/promotion.js"></script>
 </body>
 
 </html>

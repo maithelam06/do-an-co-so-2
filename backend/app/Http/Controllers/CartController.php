@@ -40,7 +40,7 @@ class CartController extends Controller
         return response()->json($cart);
     }
 
-    // 🔴 Xóa 1 sản phẩm khỏi giỏ
+    // Xóa 1 sản phẩm khỏi giỏ
     public function removeItem($itemId)
     {
         CartItem::findOrFail($itemId)->delete();

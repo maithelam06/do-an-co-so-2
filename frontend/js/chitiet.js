@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8000/api"; // chỉnh theo backend
+const API_BASE_URL = "http://localhost:8000/api";
 
 // Lấy productId từ URL
 const params = new URLSearchParams(window.location.search);
@@ -44,11 +44,13 @@ function renderProductDetail(product) {
     ? `${API_BASE_URL.replace("/api", "")}/storage/${product.image}`
     : "/frontend/img/box.png";
 
+  // dùng formatCurrencyVND thay vì toLocaleString thô
   document.getElementById("product-price").textContent =
-    product.price.toLocaleString() + "₫";
-  document.getElementById("product-description").innerHTML  =
+    formatCurrencyVND(product.price);
+
+  document.getElementById("product-description").innerHTML =
     (product.description || "Không có mô tả.").replace(/\n/g, "<br>");
-  document.getElementById("product-specs").innerHTML  =
+  document.getElementById("product-specs").innerHTML =
     (product.specs || "Không có thông tin chi tiết.").replace(/\n/g, "<br>");
 
   // Hiển thị số lượng đã bán
@@ -133,8 +135,8 @@ async function addToCart() {
       await Swal.fire({
         icon: "error",
         title: "Lỗi!",
-        text: (data.message || "Không thể thêm sản phẩm."),
-        confirmButtonText: "Đóng"
+        text: data.message || "Không thể thêm sản phẩm.",
+        confirmButtonText: "Đóng",
       });
     }
   } catch (error) {
@@ -210,27 +212,44 @@ async function loadProductReviews() {
   }
 }
 
-
 // Render danh sách đánh giá
 // Chỉ render từng đánh giá, không tính trung bình
 function renderReviews() {
   const reviewContainer = document.getElementById("reviews-container");
-  
+
   if (productReviews.length === 0) {
-    reviewContainer.innerHTML = '<div class="alert alert-info text-center">Chưa có đánh giá nào</div>';
+    reviewContainer.innerHTML =
+      '<div class="alert alert-info text-center">Chưa có đánh giá nào</div>';
     return;
   }
 
-  reviewContainer.innerHTML = productReviews.map(review => `
+  reviewContainer.innerHTML = productReviews
+    .map(
+      (review) => `
     <div class="review-card">
       <div class="review-header">
         <div class="reviewer-info">
           <div class="reviewer-avatar">
-            ${review.user?.avatar ? `<img src="${API_BASE_URL.replace('/api', '')}/storage/${review.user.avatar}" alt="${review.user.name}">` : '<i class="fas fa-user-circle"></i>'}
+            ${
+              review.user?.avatar
+                ? `<img src="${API_BASE_URL.replace(
+                    "/api",
+                    ""
+                  )}/storage/${review.user.avatar}" alt="${review.user.name}">`
+                : '<i class="fas fa-user-circle"></i>'
+            }
           </div>
           <div class="reviewer-details">
-            <div class="reviewer-name fw-bold">${review.user?.name || "Người dùng ẩn danh"}</div>
-            <div class="review-date text-muted small">${new Date(review.created_at).toLocaleDateString('vi-VN', {year: 'numeric', month: 'long', day: 'numeric'})}</div>
+            <div class="reviewer-name fw-bold">${
+              review.user?.name || "Người dùng ẩn danh"
+            }</div>
+            <div class="review-date text-muted small">${new Date(
+              review.created_at
+            ).toLocaleDateString("vi-VN", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}</div>
           </div>
         </div>
       </div>
@@ -241,15 +260,16 @@ function renderReviews() {
         ${review.comment}
       </div>
     </div>
-  `).join('');
+  `
+    )
+    .join("");
 }
-
 
 // Hàm tạo HTML sao
 function generateStars(rating) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 >= 0.5;
-  let starsHTML = '';
+  let starsHTML = "";
 
   for (let i = 0; i < 5; i++) {
     if (i < fullStars) {
@@ -263,21 +283,32 @@ function generateStars(rating) {
   return starsHTML;
 }
 
+function formatCurrencyVND(value) {
+  return Number(value || 0).toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  // Nếu muốn chữ "đ" thường:
+  // return Number(value || 0).toLocaleString("vi-VN") + " đ";
+}
 
 // Hàm hiển thị rating trung bình và số lượng đánh giá
 function renderRating() {
   if (productReviews.length === 0) {
-    document.getElementById("product-rating").innerHTML = '';
-    document.getElementById("product-reviews").innerHTML = '';
+    document.getElementById("product-rating").innerHTML = "";
+    document.getElementById("product-reviews").innerHTML = "";
     return;
   }
 
   // Tính trung bình sao
-  const avgRating = (productReviews.reduce((sum, r) => sum + r.rating, 0) / productReviews.length).toFixed(1);
+  const avgRating = (
+    productReviews.reduce((sum, r) => sum + r.rating, 0) /
+    productReviews.length
+  ).toFixed(1);
   const reviewCount = productReviews.length;
 
   // Render sao
-  let starsHTML = '';
+  let starsHTML = "";
   for (let i = 0; i < 5; i++) {
     if (i < Math.floor(avgRating)) {
       starsHTML += '<i class="fas fa-star text-warning"></i>';
@@ -288,6 +319,12 @@ function renderRating() {
     }
   }
 
-  document.getElementById("product-rating").innerHTML = starsHTML + ` <span class="text-dark ms-1 fw-semibold">${avgRating}</span>`;
-  document.getElementById("product-reviews").innerHTML = `(${reviewCount} đánh giá)`;
+  document.getElementById("product-rating").innerHTML =
+    starsHTML +
+    ` <span class="text-dark ms-1 fw-semibold">${avgRating}</span>`;
+
+
+  document.getElementById(
+    "product-reviews"
+  ).innerHTML = `(${reviewCount} đánh giá)`;
 }
