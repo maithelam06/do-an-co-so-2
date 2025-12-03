@@ -13,7 +13,7 @@ class ChatController extends Controller
      */
     public function users()
     {
-        // Bảng users của em có cột "name" (không phải full_name)
+
         $users = User::select('id', 'name')
             ->orderBy('name')
             ->get()

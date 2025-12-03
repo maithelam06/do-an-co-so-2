@@ -38,7 +38,7 @@ class LoginController extends Controller
                     'email'  => $user->email,
                     'avatar' => $user->avatar
                         ? asset('storage/' . $user->avatar)
-                        : asset('storage/avatars/default.png'),
+                        : asset('frontend/img/avt.jpg'),
                 ],
             ]);
         }

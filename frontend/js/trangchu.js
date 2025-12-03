@@ -183,7 +183,6 @@ function filterByCategory(category, event) {
 
 
 
-
 // ===============================
 // SEARCH EVENT
 // ===============================

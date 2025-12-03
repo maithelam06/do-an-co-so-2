@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\ChatController;
 
 use App\Http\Controllers\OrderShipmentController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserController;
+
 
 
 // 🔐 Auth
@@ -96,8 +99,8 @@ Route::prefix('admin/stats')->group(function () {
 
 // chat
 Route::prefix('chat')->group(function () {
-    Route::get('/users', [ChatController::class, 'users']); 
-    Route::get('/messages', [ChatController::class, 'messages']); 
+    Route::get('/users', [ChatController::class, 'users']);
+    Route::get('/messages', [ChatController::class, 'messages']);
     Route::post('/send', [ChatController::class, 'send']);           // admin → user
     Route::post('/user-send', [ChatController::class, 'userSend']); // user → admin
     Route::post('/create-room', [ChatController::class, 'createRoom']);
@@ -111,3 +114,21 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/orders/{orderId}/shipments', [OrderShipmentController::class, 'index']);
 Route::middleware('auth:sanctum')->post('/products/{product}/review', [ReviewController::class, 'store']);
 Route::get('/reviews/product/{productId}', [ReviewController::class, 'getReviews']);
+
+Route::middleware('auth:sanctum')->get('/user/profile', [UserController::class, 'profile']);
+
+Route::middleware('auth:sanctum')->post('/user/profile/update', [UserController::class, 'updateProfile']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/addresses/default', [AddressController::class, 'getDefault']);
+    Route::get('/addresses', [AddressController::class, 'index']);
+    Route::get('/addresses/{id}', [AddressController::class, 'show']);
+    Route::post('/addresses', [AddressController::class, 'store']);
+    Route::put('/addresses/{id}', [AddressController::class, 'update']);
+    Route::delete('/addresses/{id}', [AddressController::class, 'destroy']);
+    Route::put('/addresses/{id}/set-default', [AddressController::class, 'setDefault']);
+    
+});
+
+Route::middleware('auth:sanctum')->post('/user/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
+

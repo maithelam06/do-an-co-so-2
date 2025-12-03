@@ -169,7 +169,7 @@ async function showOrderDetail(orderId) {
       order.full_name || "";
     document.getElementById("detailCustomerPhone").textContent = order.phone || "";
     document.getElementById("detailCustomerAddress").textContent =
-      order.address || "";
+      `${order.address || ""}, ${order.ward || ""}, ${order.district || ""}, ${order.province || ""}`;
     document.getElementById("detailPaymentMethod").textContent =
       renderPaymentMethod(order);
     document.getElementById("detailNote").textContent =
