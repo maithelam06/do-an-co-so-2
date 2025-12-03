@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ của tôi - TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .profile-header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+            object-fit: cover;
+            background-color: #e9ecef;
+        }
+
+        .profile-header-info h2 {
+            margin: 0;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .profile-header-info p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .profile-tabs {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+
+
+        .tab-pane {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .address-card {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .address-card.default {
+            border-color: #007bff;
+            background-color: #f0f8ff;
+        }
+
+        .badge-default {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .order-card {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .tab-pane {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/frontend/trangchu.html">
+                <i class="fas fa-bolt"></i> TechStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <div class="d-flex align-items-center ms-auto">
+                    <!-- Giỏ hàng -->
+                    <div class="position-relative me-3">
+                        <a href="./tranggiohang.html" class="text-white position-relative" onclick="toggleCart(event)">
+                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                id="cart-count">
+                                0
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <a href="#" class="text-white dropdown-toggle d-flex align-items-center"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img id="user-avatar" alt="avatar" class="rounded-circle me-2"
+                                style="width:30px;height:30px;object-fit:cover;">
+                            <span id="user-name">Tài khoản</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <!-- Khi chưa đăng nhập -->
+                            <li class="not-logged-in"><a class="dropdown-item" href="#" onclick="showLogin(event)"><i
+                                        class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
+
+                            <!-- Khi đã đăng nhập -->
+                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
+                                        class="fas fa-user-circle me-2"></i>Tài khoản của tôi</a></li>
+                            <li class="logged-in d-none"><a class="dropdown-item" href="#"><i
+                                        class="fas fa-box me-2"></i>Đơn hàng của tôi</a></li>
+                            <li class="logged-in d-none">
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li class="logged-in d-none"><a class="dropdown-item text-danger" href="#"
+                                    onclick="logout(event)"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <div class="container mt-5 mb-4">
+        <div class="profile-header">
+            <img id="profile-avatar" src="./img/avt.jpg" alt="Avatar" class="profile-avatar">
+            <div class="profile-header-info">
+                <h2 id="profile-name"></h2>
+                <p id="profile-email"><i class="fas fa-envelope"></i></p>
+                <p id="profile-phone"><i class="fas fa-phone"></i></p>
+                <p id="profile-role" class="text-muted">Thành viên</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="container mb-5">
+        <div class="profile-tabs">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="thong-tin-tab" data-bs-toggle="tab" data-bs-target="#thong-tin"
+                        type="button" role="tab">
+                        <i class="fas fa-user me-2"></i>Thông tin cá nhân
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="dia-chi-tab" data-bs-toggle="tab" data-bs-target="#dia-chi"
+                        type="button" role="tab">
+                        <i class="fas fa-map-marker-alt me-2"></i>Địa chỉ
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="bao-mat-tab" data-bs-toggle="tab" data-bs-target="#bao-mat"
+                        type="button" role="tab">
+                        <i class="fas fa-lock me-2"></i>Bảo mật
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Thông tin cá nhân -->
+                <div class="tab-pane fade show active" id="thong-tin" role="tabpanel">
+                    <form id="profile-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Họ tên</label>
+                                    <input type="text" id="full-name" class="form-control" placeholder="Nhập họ tên">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" id="email" class="form-control" placeholder="Email" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input type="tel" pattern="[0-10]*" inputmode="numeric" id="phone"
+                                        class="form-control" placeholder="Nhập số điện thoại">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ảnh đại diện</label>
+                            <input type="file" id="avatar" class="form-control" accept="image/*">
+                        </div>
+                        <button type="submit" id="save-btn" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Lưu thay đổi
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Địa chỉ -->
+                <div class="tab-pane fade" id="dia-chi" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5>Địa chỉ giao hàng</h5>
+                        <button id="add-address-btn" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addressModal">
+                            <i class="fas fa-plus me-2"></i>Thêm địa chỉ
+                        </button>
+                    </div>
+                    <div id="addresses-container">
+                        <div class="empty-state">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>Chưa có địa chỉ nào</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Đơn hàng -->
+                <div class="tab-pane fade" id="don-hang" role="tabpanel">
+                    <h5 class="mb-4">Đơn hàng của tôi</h5>
+                    <div id="orders-container">
+                        <div class="empty-state">
+                            <i class="fas fa-shopping-bag"></i>
+                            <p>Bạn chưa có đơn hàng nào</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bảo mật -->
+                <div class="tab-pane fade" id="bao-mat" role="tabpanel">
+                    <form id="security-form" >
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu hiện tại</label>
+                            <input type="password" id="current-password" class="form-control"
+                                placeholder="Nhập mật khẩu hiện tại">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu mới</label>
+                            <input type="password" id="new-password" class="form-control"
+                                placeholder="Nhập mật khẩu mới">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Xác nhận mật khẩu mới</label>
+                            <input type="password" id="confirm-password" class="form-control"
+                                placeholder="Xác nhận mật khẩu mới">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-key me-2"></i>Đổi mật khẩu
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Địa chỉ -->
+    <div class="modal fade" id="addressModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm địa chỉ mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="address-form">
+                        <div class="form-group">
+                            <label class="form-label">Họ tên người nhận</label>
+                            <input type="text" id="recipient_name" class="form-control" placeholder="Nhập họ tên">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="tel" id="recipient_phone" class="form-control"
+                                placeholder="Nhập số điện thoại">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tỉnh/Thành phố</label>
+                            <select id="province" class="form-select" required>
+                                <option value="">Chọn Tỉnh/Thành phố</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Quận/Huyện</label>
+                            <select id="district" class="form-select" required>
+                                <option value="">Chọn Quận/Huyện</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Xã/Phường</label>
+                            <select id="ward" class="form-select" required>
+                                <option value="">Chọn Xã/Phường</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Địa chỉ chi tiết</label>
+                            <textarea id="address_detail" class="form-control" rows="3"
+                                placeholder="Nhập địa chỉ chi tiết"></textarea>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="is-default">
+                            <label class="form-check-label" for="is-default">
+                                Đặt làm địa chỉ mặc định
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="save-address-btn">Lưu địa chỉ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 TechStore. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/profile.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
