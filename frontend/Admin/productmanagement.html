@@ -1,3 +1,5 @@
+
+<!-- Improved Product Management UI (Variables & IDs Preserved) -->
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -6,117 +8,119 @@
   <title>Quản lý sản phẩm - TechStore Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../css/produc.css">
+  <link rel="stylesheet" href="/frontend/css/produc.css">
 </head>
 
-
 <body>
+  <div class="container-fluid py-4">
 
-  <body>
-    <div class="container-fluid py-4">
-      <div class="row">
-        <!-- Sidebar danh mục -->
-        <div class="col-md-3 col-lg-2">
-          <div class="sidebar">
-            <h5><i class="fas fa-bars"></i> Danh Mục</h5>
-            <!-- Categories sẽ được load từ JS -->
-          </div>
-        </div>
-
-        <!-- Nội dung chính -->
-        <div class="col-md-9 col-lg-10">
-          <h2 class="mb-4 text-center">Quản lý sản phẩm</h2>
-
-          <!-- Form thêm sản phẩm -->
-          <form id="addProductForm" class="mb-5 bg-white p-4 rounded shadow-sm">
-            <input type="hidden" id="productId" name="id">
-            <div class="row g-3">
-              <div class="col-md-4">
-                <label class="form-label">Tên sản phẩm</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-              </div>
-
-              <div class="col-md-4">
-                <label class="form-label">Giá</label>
-                <input type="number" id="price" name="price" class="form-control" required>
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Danh mục</label> <select id="category" name="category_id" class="form-select"
-                  required>
-                  <option value="">-- Chọn danh mục --</option>
-                  <!-- Categories sẽ được load từ JS -->
-                </select>
-              </div>
-
-              <div class="col-md-4">
-                <label class="form-label">Ảnh</label>
-                <div class="custom-file-upload">
-                  <input type="file" id="image" name="image" accept="image/*">
-                  <label class="file-upload-label" for="image">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <span class="file-text">Chọn ảnh sản phẩm</span>
-                  </label>
-                </div>
-                <div class="file-name" id="fileName">
-                  <i class="fas fa-check-circle"></i>
-                  <span></span>
-                </div>
-              </div>
-
-              <div class="col-md-8">
-                <label class="form-label">Mô tả</label>
-                <textarea id="description" name="description" class="form-control" rows="2"></textarea>
-              </div>
-              <div class="col-md-8">
-                <label class="form-label">Thông số kỹ thuật</label>
-                <textarea id="specs" name="specs" class="form-control" rows="2"></textarea>
-              </div>
-
-              <div class="col-12 text-end">
-                <button type="submit" id="submitBtn" class="btn btn-primary px-4">
-                  <i class="fas fa-plus-circle"></i>
-                  <span>Thêm sản phẩm</span>
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <div class="card-footer bg-white text-center">
-            <a href="../Admin/admin.html" class="btn-home">
-              <i class="fas fa-home"></i>
-              <span>Quay lại trang chủ</span>
-            </a>
-          </div>
-
-          <!-- Danh sách sản phẩm -->
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <table class="table table-bordered table-striped align-middle" id="productTable">
-                <thead class="table-dark">
-                  <tr>
-                    <th>#</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Danh mục</th>
-                    <th>Giá</th>
-                    <th>Ảnh</th>
-                    <th>Mô tả</th>
-                    <th>Thông số</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Dữ liệu sẽ được JS render -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+    <div class="page-header d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="section-title"><i class="fas fa-box"></i> Quản lý sản phẩm</h2>
+        <p class="text-muted">Thêm, chỉnh sửa và quản lý các sản phẩm trong cửa hàng.</p>
       </div>
+
+      <!-- Nút quay về trang chủ -->
+      <a href="/frontend/Admin/admin.html" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-1"></i> Quay về trang chủ
+      </a>
     </div>
 
-    <script src="../js/productmanagement.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </body>
+    <form id="addProductForm" class="bg-white p-4 form-section mb-4">
+      <input type="hidden" id="productId" name="id">
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Tên sản phẩm</label>
+          <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Giá</label>
+          <input type="number" id="price" name="price" class="form-control" required>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Danh mục</label>
+          <select id="category" name="category_id" class="form-select" required>
+            <option value="">-- Chọn danh mục --</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Ảnh</label>
+
+          <div class="border p-3 rounded text-center" style="cursor:pointer;">
+            <input type="file" id="image" name="image" accept="image/*" class="d-none">
+
+            <img id="previewImg" src=""
+              style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px; display:none; margin-bottom:10px;">
+
+            <div id="uploadBox" class="text-muted">
+              <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+              <p class="m-0">Nhấn để tải ảnh lên</p>
+            </div>
+          </div>
+
+          <span id="fileName" class="text-muted small">Chưa chọn ảnh</span>
+        </div>
+
+        <div class="col-md-8">
+          <label class="form-label fw-semibold">Mô tả</label>
+          <textarea id="description" name="description" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="col-md-12">
+          <label class="form-label fw-semibold">Thông số kỹ thuật</label>
+          <textarea id="specs" name="specs" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="col-12 text-end">
+          <button type="submit" id="submitBtn" class="btn btn-primary px-4"><i class="fas fa-save me-2"></i>Lưu sản
+            phẩm</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+          <h5 class="mb-0 fw-bold"><i class="fas fa-list me-2"></i>Danh sách sản phẩm</h5>
+
+          <!-- Bộ lọc danh mục -->
+          <select id="filterCategory" class="form-select form-select-sm ms-3" style="width:180px;">
+            <option value="">Lọc theo danh mục</option>
+          </select>
+        </div>
+
+        <!-- Nút sắp xếp -->
+        <button id="sortBtn" class="btn btn-outline-primary btn-sm">
+          <i class="fas fa-sort"></i> Sắp xếp giá
+        </button>
+      </div>
+
+      <div class="card-body p-0">
+        <table class="table table-striped table-hover align-middle text-center" id="productTable">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Tên sản phẩm</th>
+              <th>Danh mục</th>
+              <th>Giá</th>
+              <th>Ảnh</th>
+              <th>Mô tả</th>
+              <th>Thông số</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="../js/productmanagement.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
 
 </html>

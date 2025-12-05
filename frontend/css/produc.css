@@ -1,241 +1,49 @@
  body {
-     background-color: #f8f9fa;
- }
+      background: #f4f6f9;
+    }
 
- .sidebar {
-     background: white;
-     border-radius: 10px;
-     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-     padding: 15px;
-     height: 100%;
- }
+    .page-header {
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+    }
 
- .sidebar h5 {
-     color: #0d6efd;
-     font-weight: 700;
-     margin-bottom: 15px;
-     display: flex;
-     align-items: center;
- }
+    .form-section {
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
 
- .sidebar h5 i {
-     margin-right: 8px;
- }
+    .section-title {
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
- .category-link {
-     display: flex;
-     align-items: center;
-     gap: 10px;
-     padding: 8px 12px;
-     border-radius: 6px;
-     color: #333;
-     text-decoration: none;
-     transition: 0.2s;
- }
+    #productTable img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
 
- .category-link:hover {
-     background: #f1f5ff;
-     color: #0d6efd;
- }
+    .action-btn {
+      border: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
- .category-link.active {
-     background: #e7f0ff;
-     color: #0d6efd;
-     font-weight: 600;
- }
+    .action-btn.edit {
+      background: #d1e7ff;
+      color: #0d6efd;
+    }
 
- .table img {
-     border-radius: 8px;
-     object-fit: cover;
- }
-
- /* Nút bật/tắt đẹp với hiệu ứng toggle */
- .toggle-btn {
-     position: relative;
-     display: inline-flex;
-     align-items: center;
-     gap: 6px;
-     padding: 6px 12px;
-     border: none;
-     border-radius: 20px;
-     font-size: 13px;
-     font-weight: 500;
-     cursor: pointer;
-     transition: all 0.3s ease;
- }
-
- .toggle-btn.active {
-     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-     color: white;
-     box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
- }
-
- .toggle-btn.active:hover {
-     background: linear-gradient(135deg, #218838 0%, #1ba87e 100%);
-     box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
- }
-
- .toggle-btn.inactive {
-     background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-     color: white;
-     box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
- }
-
- .toggle-btn.inactive:hover {
-     background: linear-gradient(135deg, #5a6268 0%, #545b62 100%);
-     box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
- }
-
- .toggle-btn i {
-     font-size: 14px;
- }
-
- /* Nút hành động đẹp hơn */
- .action-btn {
-     display: inline-flex;
-     align-items: center;
-     gap: 5px;
-     padding: 6px 12px;
-     border: none;
-     border-radius: 6px;
-     font-size: 13px;
-     font-weight: 500;
-     cursor: pointer;
-     transition: all 0.2s ease;
- }
-
- .action-btn i {
-     font-size: 13px;
- }
-
- .btn-edit {
-     background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-     color: white;
-     box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
- }
-
- .btn-edit:hover {
-     background: linear-gradient(135deg, #e0a800 0%, #e68900 100%);
-     box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
-     transform: translateY(-1px);
- }
-
- .btn-delete {
-     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-     color: white;
-     box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
- }
-
- .btn-delete:hover {
-     background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
-     box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
-     transform: translateY(-1px);
- }
-
- /* Nút submit form */
- #submitBtn {
-     display: inline-flex;
-     align-items: center;
-     gap: 8px;
-     padding: 10px 24px;
-     background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-     border: none;
-     border-radius: 8px;
-     color: white;
-     font-weight: 600;
-     box-shadow: 0 3px 10px rgba(13, 110, 253, 0.3);
-     transition: all 0.3s ease;
- }
-
- #submitBtn:hover {
-     background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
-     box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
-     transform: translateY(-2px);
- }
-
- #submitBtn i {
-     font-size: 16px;
- }
-
- /* Input file đẹp hơn */
- .custom-file-upload {
-     position: relative;
-     display: inline-block;
-     width: 100%;
- }
-
- .custom-file-upload input[type="file"] {
-     position: absolute;
-     opacity: 0;
-     width: 100%;
-     height: 100%;
-     cursor: pointer;
-     z-index: 2;
- }
-
- .file-upload-label {
-     display: flex;
-     align-items: center;
-     gap: 10px;
-     padding: 10px 15px;
-     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-     border: 2px dashed #adb5bd;
-     border-radius: 8px;
-     cursor: pointer;
-     transition: all 0.3s ease;
-     color: #495057;
-     font-size: 14px;
- }
-
- .file-upload-label:hover {
-     background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-     border-color: #0d6efd;
-     color: #0d6efd;
- }
-
- .file-upload-label i {
-     font-size: 20px;
-     color: #0d6efd;
- }
-
- .file-name {
-     font-size: 13px;
-     color: #28a745;
-     margin-top: 5px;
-     display: none;
- }
-
- .file-name.show {
-     display: block;
- }
-
- .file-name i {
-     margin-right: 5px;
- }
-
- .btn-home {
-     display: inline-flex;
-     align-items: center;
-     gap: 8px;
-     padding: 10px 20px;
-     background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-     border: none;
-     border-radius: 8px;
-     color: white;
-     font-weight: 600;
-     text-decoration: none;
-     box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);
-     transition: all 0.3s ease;
-     margin-top: 15px;
- }
-
- .btn-home:hover {
-     background: linear-gradient(135deg, #5a6268 0%, #545b62 100%);
-     box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
-     transform: translateY(-2px);
-     color: white;
- }
-
- .btn-home i {
-     font-size: 16px;
- }
+    .action-btn.delete {
+      background: #ffe0e0;
+      color: #dc3545;
+    }
