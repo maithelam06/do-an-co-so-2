@@ -3,6 +3,7 @@ const CATEGORIES_API_URL = "http://localhost:8000/api/categories";
 
 let allCategories = [];
 let currentSortOrder = "asc"; // mặc định tăng dần
+let currentEditingId = null;  // null = đang ở chế độ "thêm", nếu có id => đang "cập nhật"
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCategories();
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // form thêm/sửa
   const addProductForm = document.getElementById("addProductForm");
-  if (addProductForm) addProductForm.addEventListener("submit", addProduct);
+  if (addProductForm) addProductForm.addEventListener("submit", handleFormSubmit);
 
   // Lọc theo danh mục trong dropdown
   const filterCategory = document.getElementById("filterCategory");
@@ -29,13 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
     fileInput.addEventListener("change", function() {
       if (this.files && this.files[0]) {
         const fileName = this.files[0].name;
-        if (fileNameDiv && fileNameDiv.querySelector("span")) {
-          fileNameDiv.querySelector("span").textContent = fileName;
+        if (fileNameDiv) {
+          // hỗ trợ trường hợp #fileName có hoặc không có span con
+          const innerSpan = fileNameDiv.querySelector("span");
+          if (innerSpan) innerSpan.textContent = fileName;
+          else fileNameDiv.textContent = fileName;
           fileNameDiv.classList.add("show");
         }
         if (fileText) fileText.textContent = "Đã chọn ảnh";
       } else {
-        if (fileNameDiv) fileNameDiv.classList.remove("show");
+        if (fileNameDiv) {
+          const innerSpan = fileNameDiv.querySelector("span");
+          if (innerSpan) innerSpan.textContent = "Chưa chọn ảnh";
+          else fileNameDiv.textContent = "Chưa chọn ảnh";
+          fileNameDiv.classList.remove("show");
+        }
         if (fileText) fileText.textContent = "Chọn ảnh sản phẩm";
       }
     });
@@ -55,7 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
     imageInput.addEventListener("change", function () {
       if (this.files && this.files[0]) {
         const file = this.files[0];
-        if (fileName) fileName.textContent = file.name;
+        if (fileName) {
+          const inner = fileName.querySelector("span");
+          if (inner) inner.textContent = file.name;
+          else fileName.textContent = file.name;
+        }
 
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -70,7 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         if (previewImg) previewImg.style.display = "none";
         if (uploadBox) uploadBox.style.display = "block";
-        if (fileName) fileName.textContent = "Chưa chọn ảnh";
+        if (fileName) {
+          const inner = fileName.querySelector("span");
+          if (inner) inner.textContent = "Chưa chọn ảnh";
+          else fileName.textContent = "Chưa chọn ảnh";
+        }
       }
     });
   }
@@ -85,7 +102,6 @@ async function loadCategories() {
     if (!res.ok) throw new Error(`Không thể tải danh mục. Status: ${res.status}`);
     
     allCategories = await res.json();
-    // đảm bảo allCategories là mảng
     if (!Array.isArray(allCategories)) throw new Error('Dữ liệu danh mục không hợp lệ');
 
     renderCategoriesInSidebar();
@@ -93,7 +109,6 @@ async function loadCategories() {
     renderCategoriesInFilter(); 
   } catch (error) {
     console.error('Lỗi load danh mục:', error);
-    // Fallback: sử dụng categories mặc định nếu API lỗi
     loadFallbackCategories();
   }
 }
@@ -109,17 +124,13 @@ function renderCategoriesInSidebar() {
     sidebar.appendChild(categoriesContainer);
   }
 
-  // Dùng data-id nếu backend xử lý theo id tốt hơn (ở đây vẫn để name - bạn có thể đổi thành id)
   let html = `<a href="#" class="category-link active" data-category=""><i class="fas fa-th"></i> Tất cả</a>`;
 
   allCategories.forEach(cat => {
-    // nếu muốn dùng id: data-category="${cat.id}" và gửi id lên API
     html += `<a href="#" class="category-link" data-category="${cat.name}"><i class="fas fa-tag"></i> ${cat.name}</a>`;
   });
 
   categoriesContainer.innerHTML = html;
-
-  // Thêm lại event listeners cho các category links mới
   setupCategoryEventListeners();
 }
 
@@ -161,18 +172,18 @@ function loadFallbackCategories() {
 function setupCategoryEventListeners() {
   const categoryLinks = document.querySelectorAll(".category-link");
   categoryLinks.forEach(link => {
-    // remove rồi add prevent duplicate
-    link.removeEventListener('click', link._catHandler);
+    // remove previous stored handler (an toàn khi re-render)
+    if (link._catHandler) link.removeEventListener('click', link._catHandler);
+
     const handler = (e) => {
       e.preventDefault();
-      // lấy dataset từ chính link
       const category = link.dataset.category ?? "";
       categoryLinks.forEach(l => l.classList.remove("active"));
       link.classList.add("active");
       loadProducts(category);
     };
     link.addEventListener("click", handler);
-    link._catHandler = handler; // lưu reference để có thể remove sau này nếu cần
+    link._catHandler = handler;
   });
 }
 
@@ -184,7 +195,6 @@ async function loadProducts(category = "") {
       : API_URL;
 
     const res = await fetch(url);
-    // kiểm tra status trước khi parse json
     if (!res.ok) {
       const text = await res.text();
       console.error(`Error loading products. Status ${res.status}:`, text);
@@ -222,16 +232,16 @@ async function loadProducts(category = "") {
       tableBody.innerHTML += `
         <tr>
           <td>${index + 1}</td>
-          <td>${p.name}</td>
-          <td>${p.category ? p.category.name : "—"}</td>
+          <td>${escapeHtml(p.name)}</td>
+          <td>${p.category ? escapeHtml(p.category.name) : "—"}</td>
           <td>${Number(p.price || 0).toLocaleString()}₫</td>
           <td>
             ${p.image
-              ? `<img src="http://localhost:8000/storage/${p.image}" alt="${p.name}" width="60" height="60" style="object-fit:cover;border-radius:8px;">`
+              ? `<img src="http://localhost:8000/storage/${encodeURI(p.image)}" alt="${escapeHtml(p.name)}" width="60" height="60" style="object-fit:cover;border-radius:8px;">`
               : "Không có ảnh"}
           </td>
-          <td>${p.description ?? ""}</td>
-          <td>${p.specs ?? ""}</td>
+          <td>${escapeHtml(p.description ?? "")}</td>
+          <td>${escapeHtml(p.specs ?? "")}</td>
           <td>
             <button class="toggle-btn ${p.status ? "active" : "inactive"}" onclick="toggleProduct(${p.id})">
               <i class="fas ${p.status ? "fa-toggle-on" : "fa-toggle-off"}"></i>
@@ -239,11 +249,11 @@ async function loadProducts(category = "") {
             </button>
           </td>
           <td>
-            <button class="action-btn btn-edit" onclick="editProduct(${p.id})">
+            <button class="action-btn edit" onclick="editProduct(${p.id})">
               <i class="fas fa-edit"></i>
               <span>Sửa</span>
             </button>
-            <button class="action-btn btn-delete" onclick="deleteProduct(${p.id})">
+            <button class="action-btn delete" onclick="deleteProduct(${p.id})">
               <i class="fas fa-trash-alt"></i>
               <span>Xóa</span>
             </button>
@@ -262,9 +272,31 @@ async function loadProducts(category = "") {
   }
 }
 
+// escape HTML to avoid XSS when injecting strings into template
+function escapeHtml(unsafe) {
+  if (unsafe === null || unsafe === undefined) return "";
+  return String(unsafe)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// ========== FORM SUBMIT HANDLER ==========
+async function handleFormSubmit(e) {
+  e.preventDefault();
+  if (currentEditingId) {
+    // đang ở chế độ cập nhật
+    await updateProduct(e, currentEditingId);
+  } else {
+    await addProduct(e);
+  }
+}
+
 // ========== CRUD FUNCTIONS ==========
 async function addProduct(e) {
-  e.preventDefault();
+  // e.preventDefault(); // đã xử lý ở handleFormSubmit
   const form = e.target;
   const formData = new FormData(form);
 
@@ -284,9 +316,7 @@ async function addProduct(e) {
         confirmButtonText: "Đóng"
       });
       form.reset();
-      const submitBtn = document.getElementById("submitBtn");
-      if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i><span>Thêm sản phẩm</span>';
-      form.onsubmit = addProduct;
+      resetFormState();
       loadProducts();
     } else {
       await Swal.fire({
@@ -320,8 +350,27 @@ async function editProduct(id) {
     document.getElementById("category").value = p.category_id ?? "";
 
     const submitBtn = document.getElementById("submitBtn");
-    if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Cập nhật sản phẩm</span>';
-    document.getElementById("addProductForm").onsubmit = (e) => updateProduct(e, id);
+    if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-sync-alt"></i><span> Cập nhật sản phẩm</span>';
+
+    // set chế độ editing
+    currentEditingId = id;
+
+    // nếu có preview ảnh, hiển thị (nếu API trả đường dẫn image)
+    const previewImg = document.getElementById("previewImg");
+    if (previewImg && p.image) {
+      previewImg.src = `http://localhost:8000/storage/${encodeURI(p.image)}`;
+      previewImg.style.display = "block";
+      const uploadBox = document.getElementById("uploadBox");
+      if (uploadBox) uploadBox.style.display = "none";
+      const fileName = document.getElementById("fileName");
+      if (fileName) {
+        const inner = fileName.querySelector("span");
+        if (inner) inner.textContent = p.image;
+        else fileName.textContent = p.image;
+      }
+    }
+    // scroll to form (nên UX)
+    document.getElementById("name").scrollIntoView({ behavior: "smooth", block: "center" });
   } catch (error) {
     console.error("Lỗi load sản phẩm để sửa:", error);
   }
@@ -332,38 +381,58 @@ async function updateProduct(e, id) {
 
   const form = e.target;
   const formData = new FormData(form);
-  formData.append("_method", "PUT");
+  // Không thêm "_method" và không dùng PUT/PATCH — backend của bạn dùng POST cho update
 
   try {
+    console.log("Sending POST (update) to", `${API_URL}/${id}`);
     const res = await fetch(`${API_URL}/${id}`, {
       method: "POST",
       body: formData,
+      headers: {
+        'Accept': 'application/json'
+        // nếu API yêu cầu Authorization, thêm header ở đây
+      }
     });
 
-    const data = await res.json();
+    console.log("Response status:", res.status);
+    const text = await res.text();
+    console.log("Response body:", text);
 
     if (res.ok) {
-      await Swal.fire({
-        icon: "success",
-        title: "Thành công!",
-        text: data.message,
-        confirmButtonText: "Đóng"
-      });
+      let data = {};
+      try { data = JSON.parse(text || "{}"); } catch (e) { data.message = text; }
+      await Swal.fire({ icon: "success", title: "Thành công!", text: data.message || "Cập nhật xong" });
       form.reset();
-      const submitBtn = document.getElementById("submitBtn");
-      if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i><span>Thêm sản phẩm</span>';
-      form.onsubmit = addProduct;
+      resetFormState();
       loadProducts();
     } else {
-      await Swal.fire({
-        icon: "error",
-        title: "Lỗi!",
-        text: JSON.stringify(data),
-        confirmButtonText: "Đóng"
-      });
+      await Swal.fire({ icon: "error", title: `Lỗi (status ${res.status})`, html: `<pre>${escapeHtml(text)}</pre>` });
     }
-  } catch (error) {
-    console.error("Lỗi cập nhật sản phẩm:", error);
+  } catch (err) {
+    console.error("Update exception:", err);
+    await Swal.fire({ icon: "error", title: "Lỗi!", text: "Có lỗi khi cập nhật. Xem console." });
+  }
+}
+
+
+
+
+function resetFormState() {
+  currentEditingId = null;
+  const submitBtn = document.getElementById("submitBtn");
+  if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i><span> Thêm sản phẩm</span>';
+  const previewImg = document.getElementById("previewImg");
+  if (previewImg) {
+    previewImg.src = "";
+    previewImg.style.display = "none";
+  }
+  const uploadBox = document.getElementById("uploadBox");
+  if (uploadBox) uploadBox.style.display = "block";
+  const fileName = document.getElementById("fileName");
+  if (fileName) {
+    const inner = fileName.querySelector("span");
+    if (inner) inner.textContent = "Chưa chọn ảnh";
+    else fileName.textContent = "Chưa chọn ảnh";
   }
 }
 
