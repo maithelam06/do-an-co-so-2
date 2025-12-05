@@ -8,9 +8,28 @@ let currentPage = 1;
 let itemsPerPage = 10;
 let currentUser = null;
 
+// thông báo
+function showNotification(message, type = "info") {
+  let title = "Thông báo";
+  if (type === "success") title = "Thành công";
+  if (type === "error") title = "Lỗi";
+
+  Swal.fire({
+    icon: type,
+    title: title,
+    text: message,
+    confirmButtonText: "OK",
+    buttonsStyling: false,
+    customClass: {
+      popup: "swal2-popup-custom",
+      confirmButton: "swal2-confirm-btn",
+    },
+  });
+}
+
 // Lấy token và thông tin người dùng từ localStorage
-const token = localStorage.getItem('token');
-const user = JSON.parse(localStorage.getItem('user') || '{}');
+const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user") || "{}");
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Update User UI
 function updateUserUI(user) {
   document.getElementById("userName").textContent = user.name || "Khách hàng";
-  const initial = (user.name).charAt(0).toUpperCase();
+  const initial = user.name.charAt(0).toUpperCase();
   document.getElementById("userAvatar").textContent = initial;
 }
 
@@ -44,7 +63,7 @@ async function loadOrders() {
       applyFilters();
       renderOrders();
     } else if (response.status === 401) {
-      window.location.href = '/login.html';
+      window.location.href = "/login.html";
     } else {
       showEmptyState();
     }
@@ -65,7 +84,7 @@ function filterByStatus(status) {
 
 // Hàm remove diacritics (loại bỏ dấu)
 function removeDiacritics(str) {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 // Apply all filters
@@ -74,7 +93,9 @@ function applyFilters() {
 
   // Filter by status
   if (currentFilter !== "all") {
-    filtered = filtered.filter((order) => order.shipping_status === currentFilter);
+    filtered = filtered.filter(
+      (order) => order.shipping_status === currentFilter
+    );
   }
 
   // Filter by date - Lọc từ ngày được chọn trở đi
@@ -90,23 +111,36 @@ function applyFilters() {
   }
 
   // Search - Tìm kiếm không dấu, không biệt hoa thường
-  const searchTerm = document.getElementById("searchInput")?.value.toLowerCase().trim();
+  const searchTerm = document
+    .getElementById("searchInput")
+    ?.value.toLowerCase()
+    .trim();
   if (searchTerm) {
     const normalizedSearch = removeDiacritics(searchTerm).toLowerCase();
     
     filtered = filtered.filter((order) => {
-      const orderNumber = removeDiacritics((order.order_number || "")).toLowerCase();
-      const orderId = removeDiacritics((order.id || "").toString()).toLowerCase();
-      
+      const orderNumber = removeDiacritics(
+        order.order_number || ""
+      ).toLowerCase();
+      const orderId = removeDiacritics(
+        (order.id || "").toString()
+      ).toLowerCase();
+
       // Tìm kiếm trong tên sản phẩm
-      const itemsMatch = order.items && order.items.some(item => {
-        const itemName = removeDiacritics((item.name || item.product_name || "")).toLowerCase();
-        return itemName.includes(normalizedSearch);
-      });
-      
-      return orderNumber.includes(normalizedSearch) || 
-             orderId.includes(normalizedSearch) || 
-             itemsMatch;
+      const itemsMatch =
+        order.items &&
+        order.items.some((item) => {
+          const itemName = removeDiacritics(
+            item.name || item.product_name || ""
+          ).toLowerCase();
+          return itemName.includes(normalizedSearch);
+        });
+
+      return (
+        orderNumber.includes(normalizedSearch) ||
+        orderId.includes(normalizedSearch) ||
+        itemsMatch
+      );
     });
   }
 
@@ -162,6 +196,9 @@ function renderOrders() {
 function createOrderCard(order) {
   const statusClass = `status-${order.shipping_status}`;
   const statusText = getStatusText(order.shipping_status);
+  const isReviewed =
+    order.is_reviewed ||
+    (window.reviewedOrders && reviewedOrders.has(order.id));
 
   // Kiểm tra và xử lý items
   const items = Array.isArray(order.items) ? order.items : [];
@@ -169,8 +206,7 @@ function createOrderCard(order) {
   const itemsHTML = items
     .map((item) => {
       // Lấy ảnh từ product object
-      let itemImage = '/frontend/img/box.png';
-      
+      let itemImage = "/frontend/img/box.png";
       if (item.product && item.product.image) {
         itemImage = `http://localhost:8000/storage/${item.product.image}`;
       }
@@ -185,14 +221,18 @@ function createOrderCard(order) {
             <div class="item-image">
                 <img src="${itemImage}" 
                      alt="${itemName}" 
-                     class="${item.product?.image ? '' : 'p-2'}"
+                     class="${item.product?.image ? "" : "p-2"}"
                      onerror="this.src='/frontend/img/box.png'">
             </div>
             <div class="item-details">
                 <div class="item-name">${itemName}</div>
                 <div class="item-price-row">
-                    <span class="item-price">${formatCurrency(itemPrice)} × ${itemQuantity}</span>
-                    <span class="item-quantity">= ${formatCurrency(itemTotal)}</span>
+                    <span class="item-price">${formatCurrency(
+                      itemPrice
+                    )} × ${itemQuantity}</span>
+                    <span class="item-quantity">= ${formatCurrency(
+                      itemTotal
+                    )}</span>
                 </div>
             </div>
         </div>
@@ -210,8 +250,12 @@ function createOrderCard(order) {
         <div class="order-card-header">
             <div class="order-info">
                 <div>
-                    <div class="order-number">Đơn hàng #${order.order_number || order.id}</div>
-                    <div class="order-date">${formatDate(order.created_at)}</div>
+                    <div class="order-number">Đơn hàng #${
+                      order.order_number || order.id
+                    }</div>
+                    <div class="order-date">${formatDate(
+                      order.created_at
+                    )}</div>
                 </div>
             </div>
             <div class="order-header-right">
@@ -233,12 +277,16 @@ function createOrderCard(order) {
                     <span>Phí vận chuyển:</span>
                     <span>${formatCurrency(shippingFee)}</span>
                 </div>
-                ${discount > 0 ? `
+                ${
+                  discount > 0
+                    ? `
                 <div class="summary-row">
                     <span>Giảm giá:</span>
                     <span>-${formatCurrency(discount)}</span>
                 </div>
-                ` : ""}
+                `
+                    : ""
+                }
                 <div class="summary-row total">
                     <span>Tổng cộng:</span>
                     <span>${formatCurrency(totalAmount)}</span>
@@ -247,22 +295,44 @@ function createOrderCard(order) {
         </div>
 
         <div class="order-card-footer">
-            <button class="btn btn-info" onclick="viewOrderDetailModal(${order.id})">
+            <button class="btn btn-info" onclick="viewOrderDetailModal(${
+              order.id
+            })">
                 <i class="fas fa-eye"></i> Xem chi tiết
             </button>
-            <button class="btn btn-success" onclick="openTrackingModal(${order.id})">
+            <button class="btn btn-success" onclick="openTrackingModal(${
+              order.id
+            })">
                 <i class="fas fa-map"></i> Theo dõi
             </button>
-            ${order.shipping_status === "pending" ? `
+            ${
+              order.shipping_status === "pending"
+                ? `
                 <button class="btn btn-danger" onclick="cancelOrder(${order.id})">
                     <i class="fas fa-times"></i> Hủy đơn
                 </button>
-            ` : ""}
-            ${order.shipping_status === "completed" ? `
-                <button class="btn btn-warning" onclick="openReviewModal(${order.id})">
-                    <i class="fas fa-star"></i> Đánh giá
-                </button>
-            ` : ""}
+            `
+                : ""
+            }
+            ${
+              order.shipping_status === "completed"
+                ? `
+    ${
+      isReviewed
+        ? `
+        <button class="btn btn-secondary" onclick="openReviewModal(${order.id}, true)">
+            <i class="fas fa-sync"></i> Đánh giá lại
+        </button>
+    `
+        : `
+        <button class="btn btn-warning" onclick="openReviewModal(${order.id}, false)">
+            <i class="fas fa-star"></i> Đánh giá
+        </button>
+    `
+    }
+`
+                : ""
+            }
         </div>
     </div>
   `;
@@ -270,8 +340,8 @@ function createOrderCard(order) {
 
 // Xem chi tiết đơn hàng - Popup Modal// Xem chi tiết đơn hàng - Popup Modal
 function viewOrderDetailModal(orderId) {
-  const order = orders.find(o => o.id === orderId);
-  
+  const order = orders.find((o) => o.id === orderId);
+
   if (!order) {
     showNotification("Không tìm thấy đơn hàng", "error");
     return;
@@ -281,7 +351,7 @@ function viewOrderDetailModal(orderId) {
   
   const itemsDetailHTML = items
     .map((item) => {
-      let itemImage = '/frontend/img/box.png';
+      let itemImage = "/frontend/img/box.png";
       if (item.product && item.product.image) {
         itemImage = `http://localhost:8000/storage/${item.product.image}`;
       }
@@ -316,18 +386,26 @@ function viewOrderDetailModal(orderId) {
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Chi tiết đơn hàng #${order.order_number || order.id}</h5>
+            <h5 class="modal-title">Chi tiết đơn hàng #${
+              order.order_number || order.id
+            }</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="row mb-3">
               <div class="col-md-6">
                 <p><strong>Trạng thái:</strong> <span class="badge bg-info">${statusText}</span></p>
-                <p><strong>Ngày đặt:</strong> ${formatDate(order.created_at)}</p>
+                <p><strong>Ngày đặt:</strong> ${formatDate(
+                  order.created_at
+                )}</p>
               </div>
               <div class="col-md-6">
-                <p><strong>Mã đơn hàng:</strong> ${order.order_number || order.id}</p>
-                <p><strong>Ngày cập nhật:</strong> ${formatDate(order.updated_at || order.created_at)}</p>
+                <p><strong>Mã đơn hàng:</strong> ${
+                  order.order_number || order.id
+                }</p>
+                <p><strong>Ngày cập nhật:</strong> ${formatDate(
+                  order.updated_at || order.created_at
+                )}</p>
               </div>
             </div>
 
@@ -361,15 +439,21 @@ function viewOrderDetailModal(orderId) {
                   <span>Phí vận chuyển:</span>
                   <strong>${formatCurrency(shippingFee)}</strong>
                 </div>
-                ${discount > 0 ? `
+                ${
+                  discount > 0
+                    ? `
                 <div class="d-flex justify-content-between mb-2">
                   <span>Giảm giá:</span>
                   <strong>-${formatCurrency(discount)}</strong>
                 </div>
-                ` : ""}
+                `
+                    : ""
+                }
                 <div class="d-flex justify-content-between border-top pt-2">
                   <span><strong>Tổng cộng:</strong></span>
-                  <strong class="text-primary fs-5">${formatCurrency(totalAmount)}</strong>
+                  <strong class="text-primary fs-5">${formatCurrency(
+                    totalAmount
+                  )}</strong>
                 </div>
               </div>
             </div>
@@ -392,15 +476,15 @@ function viewOrderDetailModal(orderId) {
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
   // Hiển thị modal
-  const modal = new bootstrap.Modal(document.getElementById(`orderDetailModal_${orderId}`));
+  const modal = new bootstrap.Modal(
+    document.getElementById(`orderDetailModal_${orderId}`)
+  );
   modal.show();
 }
 
-
 // Popup Đánh giá
-function openReviewModal(orderId) {
-  const order = orders.find(o => o.id === orderId);
-  
+function openReviewModal(orderId, isEdit = false) {
+  const order = orders.find((o) => o.id === orderId);
   if (!order) {
     showNotification("Không tìm thấy đơn hàng", "error");
     return;
@@ -410,7 +494,7 @@ function openReviewModal(orderId) {
   
   const itemsHTML = items
     .map((item) => {
-      let itemImage = '/frontend/img/box.png';
+      let itemImage = "/frontend/img/box.png";
       if (item.product && item.product.image) {
         itemImage = `http://localhost:8000/storage/${item.product.image}`;
       }
@@ -427,9 +511,13 @@ function openReviewModal(orderId) {
               <div class="rating mb-2">
                 <label class="me-3">Đánh giá:</label>
                 <div class="d-flex gap-1">
-                  ${[1,2,3,4,5].map(star => `
+                  ${[1, 2, 3, 4, 5]
+                    .map(
+                      (star) => `
                     <i class="fas fa-star star-rating" data-rating="${star}" data-product="${productId}" style="cursor: pointer; font-size: 20px; color: #ddd;"></i>
-                  `).join('')}
+                  `
+                    )
+                    .join("")}
                 </div>
               </div>
               <textarea class="form-control form-control-sm" rows="2" placeholder="Nhận xét về sản phẩm..." data-product="${productId}"></textarea>
@@ -445,7 +533,9 @@ function openReviewModal(orderId) {
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Đánh giá đơn hàng #${order.order_number || order.id}</h5>
+            <h5 class="modal-title">Đánh giá đơn hàng #${
+              order.order_number || order.id
+            }</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -473,31 +563,42 @@ function openReviewModal(orderId) {
 
   // Thêm event listener cho rating stars
   setTimeout(() => {
-    document.querySelectorAll(`#reviewModal_${orderId} .star-rating`).forEach(star => {
-      star.addEventListener('click', function() {
-        const rating = this.dataset.rating;
-        const productId = this.dataset.product;
-        const container = this.closest('.d-flex');
-        
-        container.querySelectorAll('.star-rating').forEach(s => {
-          if (s.dataset.rating <= rating) {
-            s.style.color = '#ffc107';
-          } else {
-            s.style.color = '#ddd';
-          }
+    document
+      .querySelectorAll(`#reviewModal_${orderId} .star-rating`)
+      .forEach((star) => {
+        star.addEventListener("click", function () {
+          const rating = this.dataset.rating;
+          const productId = this.dataset.product;
+          const container = this.closest(".d-flex");
+
+          container.querySelectorAll(".star-rating").forEach((s) => {
+            if (s.dataset.rating <= rating) {
+              s.style.color = "#ffc107";
+            } else {
+              s.style.color = "#ddd";
+            }
+          });
         });
       });
-    });
   }, 100);
 
   // Hiển thị modal
-  const modal = new bootstrap.Modal(document.getElementById(`reviewModal_${orderId}`));
+  const modal = new bootstrap.Modal(
+    document.getElementById(`reviewModal_${orderId}`)
+  );
   modal.show();
 }
 
 // Submit Đánh giá
-function submitReview(orderId) {
-  const order = orders.find(o => o.id === orderId);
+async function submitReview(orderId) {
+  const order = orders.find((o) => o.id === orderId);
+
+  // Đã đánh giá rồi thì không cho đánh nữa
+  // if (reviewedOrders.has(orderId) || order?.is_reviewed) {
+  //   showNotification("Đơn hàng này bạn đã đánh giá rồi.", "info");
+  //   return;
+  // }
+
   const reviewContainer = document.getElementById(`reviewContainer_${orderId}`);
   const reviewItems = reviewContainer.querySelectorAll('.review-item');
 
@@ -524,17 +625,21 @@ function submitReview(orderId) {
 
     // Gửi từng product lên API
     try {
-      const response = await fetch(`${API_BASE_URL}/products/${productId}/review`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          rating: rating,
-          comment: textarea.value.trim()
-        }),
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/products/${review.productId}/review`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            rating: review.rating,
+            comment: review.comment,
+            order_id: orderId,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -548,19 +653,55 @@ function submitReview(orderId) {
     }
   });
 
-  showNotification("Gửi đánh giá thành công!", "success");
-  const modal = bootstrap.Modal.getInstance(document.getElementById(`reviewModal_${orderId}`));
-  modal.hide();
-  loadOrders();
+  if (hasError) {
+    showNotification(
+      "Một số sản phẩm gửi đánh giá không thành công. Vui lòng kiểm tra lại.",
+      "error"
+    );
+    return;
+  }
+
+  // 3. Thành công: đánh dấu đơn hàng đã đánh giá, lưu localStorage
+
+  //  👉 4. XÓA NÚT ĐÁNH GIÁ TRÊN CARD ĐƠN HÀNG
+  const card = document.querySelector(
+    `.order-card[data-order-id="${orderId}"]`
+  );
+  if (card) {
+    const reviewBtn = card.querySelector(".btn.btn-warning");
+    if (reviewBtn) {
+      reviewBtn.outerHTML = `
+            <button class="btn btn-secondary" onclick="openReviewModal(${orderId}, true)">
+                <i class="fas fa-sync"></i> Đánh giá lại
+            </button>
+        `;
+    }
+  }
+
+  if (order && order.is_reviewed) {
+    showNotification(
+      "Cảm ơn bạn! Đánh giá của bạn đã được cập nhật.",
+      "success"
+    );
+  }else {
+    showNotification(
+      "Bạn đã gửi đánh giá thành công! Bạn vẫn có thể đánh giá lại nếu muốn.",
+      "success"
+    );
+  }
+
+  const modalEl = document.getElementById(`reviewModal_${orderId}`);
+  const modal = bootstrap.Modal.getInstance(modalEl);
+  if (modal) modal.hide();
+
+  // Có thể giữ hoặc bỏ, tùy bạn:
+  // loadOrders(); // nếu muốn reload lại toàn bộ danh sách
 }
-
-
 
 // Popup Theo dõi đơn hàng
 // Popup Theo dõi đơn hàng
 async function openTrackingModal(orderId) {
-  const order = orders.find(o => o.id === orderId);
-  
+  const order = orders.find((o) => o.id === orderId);
   if (!order) {
     showNotification("Không tìm thấy đơn hàng", "error");
     return;
@@ -568,13 +709,16 @@ async function openTrackingModal(orderId) {
 
   try {
     // Lấy dữ liệu lịch sử giao hàng từ API
-    const response = await fetch(`${API_BASE_URL}/orders/${orderId}/shipments`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/orders/${orderId}/shipments`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       showNotification("Không thể tải thông tin giao hàng", "error");
@@ -584,8 +728,7 @@ async function openTrackingModal(orderId) {
     const shipments = await response.json();
     
     // Tạo HTML cho timeline từ dữ liệu API
-    let timelineHTML = '';
-    
+    let timelineHTML = "";
     if (Array.isArray(shipments) && shipments.length > 0) {
       timelineHTML = shipments
         .map((shipment) => {
@@ -601,15 +744,21 @@ async function openTrackingModal(orderId) {
                 </div>
                 <div>
                   <h6>${statusLabel}</h6>
-                  <p class="text-muted mb-1">${shipment.description || ''}</p>
-                  <small class="text-muted">${formatDate(shipment.created_at)}</small>
-                  ${shipment.location ? `<p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> ${shipment.location}</p>` : ''}
+                  <p class="text-muted mb-1">${shipment.description || ""}</p>
+                  <small class="text-muted">${formatDate(
+                    shipment.created_at
+                  )}</small>
+                  ${
+                    shipment.location
+                      ? `<p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i> ${shipment.location}</p>`
+                      : ""
+                  }
                 </div>
               </div>
             </div>
           `;
         })
-        .join('');
+        .join("");
     } else {
       timelineHTML = `
         <div class="timeline-item mb-3">
@@ -631,7 +780,9 @@ async function openTrackingModal(orderId) {
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Theo dõi đơn hàng #${order.order_number || order.id}</h5>
+              <h5 class="modal-title">Theo dõi đơn hàng #${
+                order.order_number || order.id
+              }</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -639,17 +790,23 @@ async function openTrackingModal(orderId) {
                 <div class="row">
                   <div class="col-md-6">
                     <p class="mb-2"><strong>Mã vận đơn:</strong></p>
-                    <p class="text-primary fw-bold">${order.tracking_number || 'Chưa cập nhật'}</p>
+                    <p class="text-primary fw-bold">${
+                      order.tracking_number || "Chưa cập nhật"
+                    }</p>
                   </div>
                   <div class="col-md-6">
                     <p class="mb-2"><strong>Nhà vận chuyển:</strong></p>
-                    <p class="fw-bold">${order.carrier_name || 'Chưa cập nhật'}</p>
+                    <p class="fw-bold">${
+                      order.carrier_name || "Chưa cập nhật"
+                    }</p>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12">
                     <p class="mb-2"><strong>Trạng thái:</strong></p>
-                    <span class="badge bg-info p-2">${getStatusText(order.shipping_status)}</span>
+                    <span class="badge bg-info p-2">${getStatusText(
+                      order.shipping_status
+                    )}</span>
                   </div>
                 </div>
               </div>
@@ -659,14 +816,18 @@ async function openTrackingModal(orderId) {
                 ${timelineHTML}
               </div>
 
-              ${order.tracking_number ? `
+              ${
+                order.tracking_number
+                  ? `
               <div class="mt-4 p-3 bg-light rounded">
                 <p class="mb-2"><strong>Theo dõi trực tuyến:</strong></p>
                 <a href="https://tracking.example.com/${order.tracking_number}" target="_blank" class="btn btn-sm btn-outline-primary">
                   <i class="fas fa-external-link-alt"></i> Xem trên website vận chuyển
                 </a>
               </div>
-              ` : ''}
+              `
+                  : ""
+              }
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -686,9 +847,10 @@ async function openTrackingModal(orderId) {
     document.body.insertAdjacentHTML("beforeend", trackingHTML);
 
     // Hiển thị modal
-    const modal = new bootstrap.Modal(document.getElementById(`trackingModal_${orderId}`));
+    const modal = new bootstrap.Modal(
+      document.getElementById(`trackingModal_${orderId}`)
+    );
     modal.show();
-
   } catch (error) {
     console.error("Error loading shipments:", error);
     showNotification("Có lỗi xảy ra khi tải thông tin giao hàng", "error");
@@ -728,7 +890,6 @@ function getShipmentStatusLabel(status) {
 
 // ...existing code...
 
-
 // Pagination
 function renderPagination() {
   const container = document.getElementById("pagination");
@@ -744,7 +905,9 @@ function renderPagination() {
   let html = "";
   for (let i = 1; i <= totalPages; i++) {
     html += `
-      <button ${i === currentPage ? 'class="active"' : ""} onclick="goToPage(${i})">
+      <button ${
+        i === currentPage ? 'class="active"' : ""
+      } onclick="goToPage(${i})">
         ${i}
       </button>
     `;
@@ -927,6 +1090,7 @@ function formatDate(dateString) {
   });
 }
 
+
 function getStatusText(status) {
   const statusMap = {
     pending: "Chờ xử lí",
@@ -937,13 +1101,13 @@ function getStatusText(status) {
   return statusMap[status] || status;
 }
 
-function showNotification(message, type = "info") {
-  // Có thể thay bằng thư viện Toast như Toastr hoặc SweetAlert2
-  alert(message);
-}
+// Lưu danh sách đơn đã đánh giá (đọc từ localStorage)
+let reviewedOrders = new Set(
+  JSON.parse(localStorage.getItem("reviewedOrders") || "[]")
+);
 
 function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  window.location.href = '/frontend/index.html';
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/frontend/index.html";
 }

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/formLogin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    
+
     <title>Document</title>
 </head>
+
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
@@ -38,8 +40,15 @@
                 <span>hoặc sử dụng tài khoản của bạn</span>
                 <input type="email" id="emailLog" placeholder="Email" />
                 <input type="password" id="passwordLog" placeholder="Mật khẩu" />
-                <a href="#">Quên mật khẩu?</a>
-                <button type="submit" >Đăng nhập</button>
+                <!-- Thêm vào form đăng nhập -->
+                <div style="text-align: right; margin-bottom: 15px;">
+                    <a href="/frontend/forgotPassword.html"
+                        style="color: var(--primary-color); text-decoration: none; font-size: 13px;">
+                        <i class="fas fa-question-circle me-1"></i> Quên mật khẩu?
+                    </a>
+                </div>
+
+                <button type="submit">Đăng nhập</button>
             </form>
         </div>
         <div class="overlay-container">
@@ -63,8 +72,9 @@
     <script src="js/Register.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/Login.js"></script>
-    
-    
+
+
 
 </body>
+
 </html>

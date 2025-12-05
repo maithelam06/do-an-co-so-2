@@ -74,10 +74,14 @@ body {
 
 /* ========== BANNER ========== */
 .banner {
-    background: #0d6efd;
+    background: #f5f7fa;
+    /* nền sáng sang trọng */
+    border: 1px solid #e2e8f0;
+    /* viền mảnh kiểu doanh nghiệp */
     border-radius: 8px;
     padding: 1.5rem 2rem;
-    color: white;
+    color: #1a202c;
+    /* text đen sang */
     margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
@@ -95,12 +99,52 @@ body {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.3rem;
+    color: #1a202c;
 }
 
 .banner p {
     font-size: 0.9rem;
     margin-bottom: 0;
-    opacity: 0.95;
+    opacity: 0.85;
+    color: #4a5568;
+}
+
+/* Nếu m muốn search box đẹp hơn */
+.banner .form-control {
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    padding: 0.55rem 0.9rem;
+}
+
+.sort-btn {
+    padding: 8px 14px;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sort-btn:hover {
+    background: var(--light-bg);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.sort-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.sort-btn i {
+    font-size: 12px;
 }
 
 /* ========== SEARCH BOX ========== */
@@ -279,13 +323,37 @@ body {
     color: white;
 }
 
+.pagination li a {
+    color: #0d6efd;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin: 0 3px;
+    transition: 0.2s;
+}
+
+.pagination li a:hover {
+    background: #0d6efd;
+    color: white;
+}
+
+.pagination .active a {
+    background: #0d6efd !important;
+    color: white !important;
+    border-color: #0d6efd !important;
+}
+
 /* ========== FOOTER ========== */
 footer {
     background: #34495e;
     color: white;
-    padding: 2rem 0 1rem;
-    margin-top: 2rem;
-    font-size: 0.85rem;
+    padding: 0.45rem 0 0.15rem;
+    /* giảm tiếp chiều cao footer */
+    margin-top: 0.5rem;
+    /* bớt khoảng cách với content */
+    font-size: 0.8rem;
+    line-height: 1.2;
+    /* chữ sít lại chút xíu */
 }
 
 footer h5 {
@@ -341,7 +409,7 @@ footer ul li {
 
 /* ========== MAIN CONTENT ========== */
 .main-content {
-    padding: 1.25rem 0;
+    padding: 1.25rem 0 0.3rem;
 }
 
 /* ========== CUSTOM GRID FOR 5 PRODUCTS PER ROW ========== */
