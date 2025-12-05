@@ -3,8 +3,18 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
+
+
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\PasswordOtpController;
+
+
+
+
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VnpayController;
@@ -22,9 +32,23 @@ use App\Http\Controllers\CouponController;
 
 
 
+
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+Route::post('/reset-password',  [ResetPasswordController::class, 'reset']);
+
+//rest
+Route::post('/forgot-password/send-otp', [PasswordOtpController::class, 'sendOtp']);
+Route::post('/forgot-password/verify-otp', [PasswordOtpController::class, 'verifyOtp']);
+Route::post('/forgot-password/reset-password', [PasswordOtpController::class, 'resetPassword']);
+
+// Ví dụ route cần auth:
+Route::middleware('auth:sanctum')->get('/profile', function (\Illuminate\Http\Request $request) {
+    return $request->user();
+});
+
 // Khách hàng
 Route::get('/customers', [CustomerController::class, 'index']);
 Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus']);
@@ -59,7 +83,7 @@ Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus']);
 // Cập nhật TRẠNG THÁI GIAO HÀNG (dùng cho nút "Cập nhật giao hàng")
 Route::patch('/orders/{id}/shipping-status', [OrderController::class, 'updateShippingStatus']);
 Route::delete('/orders/{id}', [OrderController::class, 'destroy']); //xóa
-Route::post('/orders/{id}/vnpay-refund', [OrderController::class, 'markVnpayRefund']);//hoantien
+Route::post('/orders/{id}/vnpay-refund', [OrderController::class, 'markVnpayRefund']); //hoantien
 //Duyệt hoàn tiền thủ công
 Route::post('/orders/{id}/approve-refund', [OrderController::class, 'approveRefund']);
 
@@ -82,7 +106,7 @@ Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus
 
 Route::post('/vnpay/create', [VnpayController::class, 'createPayment']);
 Route::get('/vnpay/return', [VnpayController::class, 'return']);
-Route::match(['GET','POST'], '/vnpay/ipn', [VnpayController::class, 'ipnHandler']);
+Route::match(['GET', 'POST'], '/vnpay/ipn', [VnpayController::class, 'ipnHandler']);
 Route::post('/vnpay/refund-test', [VnpayController::class, 'refund']);
 
 
@@ -136,7 +160,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/addresses/{id}', [AddressController::class, 'update']);
     Route::delete('/addresses/{id}', [AddressController::class, 'destroy']);
     Route::put('/addresses/{id}/set-default', [AddressController::class, 'setDefault']);
-    
 });
 
 Route::middleware('auth:sanctum')->post('/user/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
@@ -151,4 +174,3 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::delete('/coupons/{coupon}', [CouponController::class, 'destroy']);
 });
 Route::post('/coupons/apply', [CouponController::class, 'apply']);
-

@@ -1,64 +1,131 @@
+const API_BASE_URL = "http://localhost:8000/api";
 
-const formCreate = document.getElementById("CreateUserForm");
-const alertBox = document.getElementById("alertBox");
+const createUserForm = document.getElementById("CreateUserForm");
 
-
-formCreate.addEventListener("submit", async (e) => {
+if (createUserForm) {
+  createUserForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Lấy dữ liệu người dùng nhập
-    const userData = {
-        name: document.getElementById("Name").value.trim(),
-        email: document.getElementById("Email").value.trim(),
-        password: document.getElementById("Password").value.trim(),
-    };
+    const name = document.getElementById("Name").value.trim();
+    const email = document.getElementById("Email").value.trim();
+    const password = document.getElementById("Password").value.trim();
 
-    if (!userData.name || !userData.email || !userData.password) {
-        await Swal.fire({
-            icon: 'warning',
-            title: 'Thiếu thông tin',
-            text: 'Vui lòng nhập đầy đủ thông tin!',
-            confirmButtonText: 'Đóng'
-        });
-        return;
+    // ============================
+    // 🔴 VALIDATE CLIENT-SIDE
+    // ============================
+
+    // Kiểm tra email hợp lệ
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return Swal.fire({
+        icon: "error",
+        title: "Email không hợp lệ!",
+        text: "Vui lòng nhập đúng định dạng email.",
+      });
+    }
+
+    // Kiểm tra mật khẩu có chữ hoa
+    if (!/[A-Z]/.test(password)) {
+      return Swal.fire({
+        icon: "error",
+        title: "Mật khẩu không hợp lệ!",
+        text: "Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa.",
+      });
+    }
+
+    // Kiểm tra mật khẩu có số
+    if (!/[0-9]/.test(password)) {
+      return Swal.fire({
+        icon: "error",
+        title: "Mật khẩu không hợp lệ!",
+        text: "Mật khẩu phải chứa ít nhất 1 chữ số.",
+      });
+    }
+
+    // Kiểm tra độ dài mật khẩu
+    if (password.length < 6) {
+      return Swal.fire({
+        icon: "error",
+        title: "Mật khẩu quá ngắn!",
+        text: "Mật khẩu phải có ít nhất 6 ký tự.",
+      });
     }
 
     try {
+      const res = await fetch(`${API_BASE_URL}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          password_confirmation: password,
+        }),
+      });
 
-        const response = await fetch("http://localhost:8000/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-            body: JSON.stringify(userData),
-        });
+      const data = await res.json().catch(() => null);
 
+      // ============================
+      // 🔴 BẮT LỖI TỪ BACKEND
+      // ============================
+      if (!res.ok) {
+        let errorMsg = "Vui lòng kiểm tra lại thông tin.";
 
-        const result = await response.json();
+        if (data && data.errors) {
+          const errors = data.errors;
 
-        if (response.ok) {
-            alertBox.innerHTML = `
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ${result.message || "Đăng ký thành công!"}
-                </div>
-            `;
-            formCreate.reset();
-        } else {
-            alertBox.innerHTML = `
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ${result.message || "Đăng ký thất bại!"}
-                </div>
-            `;
+          // lỗi email đã tồn tại
+          if (errors.email) {
+            errorMsg = errors.email.join(" ");
+          }
+
+          // lỗi mật khẩu từ Laravel
+          else if (errors.password) {
+            errorMsg = errors.password.join(" ");
+          }
+
+          // lỗi name
+          else {
+            errorMsg = Object.values(errors)
+              .map((arr) => arr.join(" "))
+              .join("\n");
+          }
+        } else if (data && data.message) {
+          errorMsg = data.message;
         }
 
-    } catch (error) {
-        alertBox.innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Không thể kết nối tới server!
-            </div>
-        `;
-        console.error(error);
-    }
+        return Swal.fire({
+          icon: "error",
+          title: "Đăng ký thất bại!",
+          text: errorMsg,
+        });
+      }
 
-});
+      // ============================
+      // 🟢 ĐĂNG KÝ THÀNH CÔNG
+      // ============================
+      if (data && data.status === "success") {
+        await Swal.fire({
+          icon: "success",
+          title: "Đăng ký thành công!",
+          text:
+            data.message ||
+            "Vui lòng kiểm tra email để kích hoạt tài khoản trước khi đăng nhập.",
+          confirmButtonText: "Đến trang đăng nhập",
+        });
+
+        window.location.href = "/frontend/index.html";
+      }
+    } catch (err) {
+      console.error("Lỗi đăng ký:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi hệ thống!",
+        text: "Vui lòng thử lại sau.",
+      });
+    }
+  });
+}
