@@ -124,6 +124,14 @@ class PasswordOtpController extends Controller
             ], 404);
         }
 
+        //cập nh mạt khẩu mới
+        if(Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status'  => 'fail',
+                'message' => 'Mật khẩu mới không được trùng với mật khẩu cũ.',
+            ],400);
+        }
+        
         $user->password = Hash::make($request->password);
         $user->save();
 
