@@ -1,5 +1,23 @@
 const API_BASE_URL = "http://localhost:8000/api";
 
+
+function showSuccessPopup(title = "Đã cập nhật", text = "Thao tác đã được thực hiện thành công!") {
+  Swal.fire({
+    icon: "success",
+    title: title,
+    text: text,
+    confirmButtonText: "Đóng",
+  });
+}
+
+function showErrorPopup(title = "Lỗi", text = "Đã có lỗi xảy ra, vui lòng thử lại!") {
+  Swal.fire({
+    icon: "error",
+    title: title,
+    text: text,
+    confirmButtonText: "Đóng",
+  });
+}
 // Hiển thị thông tin người dùng
 function displayUserProfile(user) {
   // Hiển thị tên
@@ -73,7 +91,7 @@ async function updateProfile() {
   const phone = document.getElementById("phone").value.trim();
 
   if (!name || !phone) {
-    alert("Vui lòng điền đầy đủ thông tin!");
+    showErrorPopup("Thiếu thông tin", "Vui lòng nhập đầy đủ thông tin!");
     return;
   }
   const formData = new FormData();
@@ -106,9 +124,9 @@ async function updateProfile() {
       displayUserProfile(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      alert("Cập nhật thông tin thành công!");
+      showSuccessPopup("Đã cập nhật", "Thông tin tài khoản của bạn đã được lưu.");
     } else {
-      alert(`Nhập đúng định dạng thông tin!`);
+      showErrorPopup("Nhập sai định dạng", "Vui lòng nhập đúng định dạng thông tin");
     }
   } catch (err) {
     console.error("Lỗi khi cập nhật profile:", err);
@@ -244,9 +262,8 @@ function displayAddresses(addresses) {
         </p>
         <p class="mb-2">
           <i class="fas fa-map-marker-alt text-primary me-2"></i>
-          <span>${addr.address_detail}, ${addr.ward}, ${addr.district}, ${
-        addr.province
-      }
+          <span>${addr.address_detail}, ${addr.ward}, ${addr.district}, ${addr.province
+        }
         </span>
         </p>
       </div>
@@ -258,19 +275,17 @@ function displayAddresses(addresses) {
     onclick="editAddress(${addr.id})">
     <i class="fas fa-edit"></i> Sửa
 </button>
-        <button class="btn btn-sm btn-outline-danger" onclick="deleteAddress(${
-          addr.id
+        <button class="btn btn-sm btn-outline-danger" onclick="deleteAddress(${addr.id
         })">
           <i class="fas fa-trash"></i> Xóa
         </button>
-        ${
-          !addr.is_default
-            ? `
+        ${!addr.is_default
+          ? `
           <button class="btn btn-sm btn-outline-success ms-2" onclick="setDefaultAddress(${addr.id})">
             <i class="fas fa-check"></i> Mặc định
           </button>
         `
-            : ""
+          : ""
         }
       </div>
     </div>
@@ -301,7 +316,7 @@ async function saveNewAddress() {
     !districtSelect.value ||
     !wardSelect.value
   ) {
-    alert("Vui lòng nhập đầy đủ thông tin!");
+    showErrorPopup("Thiếu thông tin", "Vui lòng nhập đầy đủ thông tin!");
     return;
   }
 
@@ -333,10 +348,11 @@ async function saveNewAddress() {
     });
 
     if (res.ok) {
-      alert(
+      showSuccessPopup(
+        "Đã cập nhật",
         editingAddressId
-          ? "Cập nhật địa chỉ thành công!"
-          : "Thêm địa chỉ thành công!"
+          ? "Địa chỉ đã được cập nhật."
+          : "Địa chỉ mới đã được thêm."
       );
       loadAddresses();
       const modalEl = document.getElementById("addressModal");
@@ -345,7 +361,7 @@ async function saveNewAddress() {
       modal.hide();
       editingAddressId = null; // reset
     } else {
-      alert("Lỗi khi lưu địa chỉ!");
+      showErrorPopup("Lỗi", "Không thể lưu địa chỉ, vui lòng thử lại!");
     }
   } catch (error) {
     console.error("Lỗi:", error);
@@ -433,14 +449,16 @@ async function setDefaultAddress(addressId) {
     );
 
     if (res.ok) {
-      alert("Đã đặt làm địa chỉ mặc định!");
+      showSuccessPopup("Thành công", "Địa chỉ đã được đặt làm mặc định.");
+
       loadAddresses();
     } else {
-      alert("Lỗi khi cập nhật!");
+      showErrorPopup("Lỗi", "Không thể lưu địa chỉ, vui lòng thử lại!");
+
     }
   } catch (error) {
     console.error("Lỗi:", error);
-    alert("Có lỗi xảy ra!");
+    showErrorPopup("Lỗi", "Không thể lưu địa chỉ, vui lòng thử lại!");
   }
 }
 
@@ -448,7 +466,7 @@ async function setDefaultAddress(addressId) {
 async function changePassword() {
   const token = localStorage.getItem("token");
   if (!token) {
-    alert("Bạn chưa đăng nhập!");
+    showErrorPopup("Lỗi", "Bạn chưa đăng nhập!");
     return;
   }
 
@@ -458,12 +476,12 @@ async function changePassword() {
 
   // Kiểm tra input
   if (!currentPassword || !newPassword || !confirmPassword) {
-    alert("Vui lòng điền đầy đủ thông tin!");
+    showErrorPopup("Thiếu thông tin", "Vui lòng điền đầy đủ thông tin!");
     return;
   }
 
   if (newPassword !== confirmPassword) {
-    alert("Mật khẩu mới và xác nhận mật khẩu không khớp!");
+    showErrorPopup("Lỗi", "Mật khẩu mới và xác nhận mật khẩu không khớp!");
     return;
   }
 
@@ -483,18 +501,18 @@ async function changePassword() {
     });
 
     if (res.ok) {
-      alert("Đổi mật khẩu thành công!");
-      // Reset form
+      showSuccessPopup("Thành công", "Mật khẩu của bạn đã được thay đổi.");
       document.getElementById("security-form").reset();
     } else {
       const errorData = await res.json();
-      alert(errorData.message || "Đổi mật khẩu thất bại!");
+      showErrorPopup("Lỗi", errorData.message || "Đổi mật khẩu thất bại!");
     }
   } catch (err) {
     console.error("Lỗi khi đổi mật khẩu:", err);
-    alert("Có lỗi xảy ra. Vui lòng thử lại!");
+    showErrorPopup("Lỗi", "Có lỗi xảy ra. Vui lòng thử lại!");
   }
 }
+
 
 // Gắn sự kiện submit cho form
 document.getElementById("security-form")?.addEventListener("submit", (e) => {

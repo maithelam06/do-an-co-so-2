@@ -69,14 +69,12 @@ function filterOrders() {
   }
 
   return ORDERS_CACHE.filter(order => {
-    // Tìm kiếm theo tên khách, SĐT, mã đơn
     const searchMatch = !searchTerm ||
       order.full_name?.toLowerCase().includes(searchTerm) ||
       order.phone?.toLowerCase().includes(searchTerm) ||
       `DH${order.id}`.toLowerCase().includes(searchTerm) ||
       order.address?.toLowerCase().includes(searchTerm);
 
-    // Lọc theo trạng thái
     const statusMatch = !statusFilter || order.status === statusFilter;
 
     return searchMatch && statusMatch;
@@ -157,7 +155,7 @@ async function loadOrdersAdmin() {
     const orders = await res.json();
 
     ORDERS_CACHE = orders;
-    renderOrders(); // Render sau khi load xong
+    renderOrders(); 
   } catch (error) {
     console.error("Lỗi load orders:", error);
     const tbody = document.getElementById("orderTableBody");
@@ -311,7 +309,6 @@ async function deleteOrder(orderId) {
       return;
     }
 
-    // Xóa khỏi mảng và render lại
     ORDERS_CACHE = ORDERS_CACHE.filter(o => o.id !== orderId);
     renderOrders();
 
@@ -369,7 +366,6 @@ async function approveRefund(orderId) {
       confirmButtonText: "Đóng",
     });
 
-    // Reload lại danh sách
     loadOrdersAdmin();
   } catch (err) {
     console.error("Exception approveRefund:", err);
@@ -391,4 +387,3 @@ function renderOrders() {
 }
 
 document.addEventListener("DOMContentLoaded", loadOrdersAdmin);
-

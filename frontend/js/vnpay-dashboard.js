@@ -7,14 +7,25 @@ function formatCurrency(value) {
     });
 }
 
+//  HÀM ĐÃ SỬA LẠI
 function renderStatus(status) {
     switch (status) {
         case "completed":
             return '<span class="badge bg-success">Hoàn thành</span>';
+
         case "pending":
             return '<span class="badge bg-warning text-dark">Chờ xử lý</span>';
+
+        // User đã hủy – chờ admin hoàn VNPay
+        // Ở dashboard chỉ hiển thị "Không rõ"
+        case "refund_pending":
+            return '<span class="badge bg-secondary">Không rõ</span>';
+
+        // Đã hoàn tiền xong -> được tính như ĐÃ HỦY
+        case "refunded":
         case "cancelled":
             return '<span class="badge bg-danger">Đã hủy</span>';
+
         default:
             return '<span class="badge bg-secondary">Không rõ</span>';
     }
@@ -118,7 +129,7 @@ async function loadVnpaySummary() {
         const url = `${API_BASE_URL}/admin/vnpay/summary${params}`;
         const data = await safeFetchJson(url);
 
-        updateSummaryCards(data); // dùng animation
+        updateSummaryCards(data);
     } catch (err) {
         console.error("Lỗi load summary VNPay:", err);
     }
@@ -133,7 +144,7 @@ async function loadVnpayOrders() {
         const tbody = document.getElementById("orderTableBody");
         tbody.innerHTML = "";
 
-        const orders = page.data || page; // paginate hoặc array
+        const orders = page.data || page;
 
         if (!orders || !orders.length) {
             tbody.innerHTML = `
@@ -170,7 +181,7 @@ async function loadCodSummary() {
         const url = `${API_BASE_URL}/admin/cod/summary${params}`;
         const data = await safeFetchJson(url);
 
-        updateSummaryCards(data); // dùng lại animation
+        updateSummaryCards(data);
     } catch (err) {
         console.error("Lỗi load summary COD:", err);
     }

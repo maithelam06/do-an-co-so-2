@@ -18,6 +18,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\OrderShipmentController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CouponController;
 
 
 
@@ -139,4 +140,15 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->post('/user/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
+
+
+
+//mã giảm giá
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+    Route::get('/coupons', [CouponController::class, 'index']);
+    Route::post('/coupons', [CouponController::class, 'store']);
+    Route::put('/coupons/{coupon}', [CouponController::class, 'update']);
+    Route::delete('/coupons/{coupon}', [CouponController::class, 'destroy']);
+});
+Route::post('/coupons/apply', [CouponController::class, 'apply']);
 
