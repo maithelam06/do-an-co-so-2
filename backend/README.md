@@ -85,7 +85,7 @@
    ```bash
    php artisan migrate
    php artisan db:seed  # Tạo tài khoản admin
-    php artisan:link  # để upload ảnh lên
+   php artisan storage:link  # để upload ảnh lên
    
    ```
 
