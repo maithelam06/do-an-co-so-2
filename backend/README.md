@@ -84,7 +84,9 @@
 6. **Chạy migrations và seeders**:
    ```bash
    php artisan migrate
-   php artisan db:seed  # Tạo tài khoản admin 
+   php artisan db:seed  # Tạo tài khoản admin
+    php artisan:link  # để upload ảnh lên
+   
    ```
 
    **Import dữ liệu đầy đủ từ file SQL dump** (tùy chọn):
