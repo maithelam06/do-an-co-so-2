@@ -10,15 +10,16 @@ class StatsController extends Controller
 {
     /**
      * Hàm dùng chung: áp filter từ ngày / đến ngày lên query (dùng created_at).
+     * Thêm tham số $dateColumn để có thể truyền 'orders.created_at' khi query có join.
      */
-    protected function applyDateFilter($query, Request $request)
+    protected function applyDateFilter($query, Request $request, $dateColumn = 'created_at')
     {
         if ($request->filled('from')) {
-            $query->whereDate('created_at', '>=', $request->from);
+            $query->whereDate($dateColumn, '>=', $request->from);
         }
 
         if ($request->filled('to')) {
-            $query->whereDate('created_at', '<=', $request->to);
+            $query->whereDate($dateColumn, '<=', $request->to);
         }
 
         return $query;
@@ -102,7 +103,8 @@ class StatsController extends Controller
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->where('orders.status', 'completed');
 
-        $q = $this->applyDateFilter($q, $request);
+        // truyền rõ cột ngày của orders để tránh ambiguous column
+        $q = $this->applyDateFilter($q, $request, 'orders.created_at');
 
         $data = $q->selectRaw('
                 order_items.product_id,
@@ -124,23 +126,29 @@ class StatsController extends Controller
      */
     public function topCustomers(Request $request)
     {
-        $q = DB::table('orders')
-            ->join('users', 'orders.user_id', '=', 'users.id')
-            ->where('orders.status', 'completed');
+        try {
+            $q = DB::table('orders')
+                ->join('users', 'orders.user_id', '=', 'users.id')
+                ->where('orders.status', 'completed');
 
-        $q = $this->applyDateFilter($q, $request);
+            // -- quan trọng: chỉ định rõ cột ngày của bảng orders để tránh ambiguous column
+            $q = $this->applyDateFilter($q, $request, 'orders.created_at');
 
-        $data = $q->selectRaw('
-                users.id,
-                users.name as full_name,
-                COUNT(orders.id) as order_count,
-                SUM(orders.total_amount) as total_spent
-            ')
-            ->groupBy('users.id', 'users.name')
-            ->orderByDesc('total_spent')
-            ->limit(5)
-            ->get();
+            $data = $q->selectRaw('
+                    users.id,
+                    users.name as full_name,
+                    COUNT(orders.id) as order_count,
+                    SUM(orders.total_amount) as total_spent
+                ')
+                ->groupBy('users.id', 'users.name')
+                ->orderByDesc('total_spent')
+                ->limit(5)
+                ->get();
 
-        return response()->json($data);
+            return response()->json($data);
+        } catch (\Throwable $ex) {
+            \Log::error('topCustomers error: '.$ex->getMessage(), ['trace' => $ex->getTraceAsString(), 'request' => $request->all()]);
+            return response()->json(['error' => 'Internal Server Error', 'message' => $ex->getMessage()], 500);
+        }
     }
 }
