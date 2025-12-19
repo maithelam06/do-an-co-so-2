@@ -27,7 +27,7 @@
 
 1. **Clone repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/maithelam06/do-an-co-so-2
    cd backend
    ```
 
