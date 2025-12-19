@@ -85,7 +85,7 @@ function filterOrders() {
 function renderOrdersTable(orders) {
   const tbody = document.getElementById("orderTableBody");
   const totalText = document.getElementById("orderTotalText");
-  const badge = document.getElementById("orderCountBadge");
+  // const badge = document.getElementById("orderCountBadge");
 
   tbody.innerHTML = "";
 
@@ -144,7 +144,7 @@ function renderOrdersTable(orders) {
   });
 
   totalText.textContent = `Tổng: ${orders.length} đơn hàng`;
-  badge.textContent = orders.length;
+  // badge.textContent = orders.length;
 }
 
 

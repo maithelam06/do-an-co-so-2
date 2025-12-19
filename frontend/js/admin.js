@@ -1,6 +1,3 @@
-// ==========================
-// 🧩 TOGGLE SIDEBAR
-// ==========================
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   const mainContent = document.getElementById("mainContent");
@@ -8,9 +5,6 @@ function toggleSidebar() {
   mainContent.classList.toggle("expanded");
 }
 
-// ==========================
-// ACTIVE MENU LINK
-// ==========================
 function initMenuLinks() {
   document.querySelectorAll(".menu-link").forEach((link) => {
     link.addEventListener("click", function () {
@@ -22,9 +16,6 @@ function initMenuLinks() {
   });
 }
 
-// ==========================
-// RESPONSIVE SIDEBAR TOGGLE
-// ==========================
 function initResponsiveSidebar() {
   if (window.innerWidth <= 768) {
     const menuToggle = document.querySelector(".menu-toggle");
@@ -36,9 +27,6 @@ function initResponsiveSidebar() {
   }
 }
 
-// ==========================
-// 🔒 BẢO VỆ TRANG ADMIN
-// ==========================
 async function protectAdminPage() {
   const token = localStorage.getItem("token");
   const userData = localStorage.getItem("user");
@@ -70,9 +58,6 @@ async function protectAdminPage() {
   return user;
 }
 
-// ==========================
-// 🔥 CHECK USER BỊ KHÓA
-// ==========================
 async function checkUserLocked(token) {
   try {
     const response = await fetch("http://localhost:8000/api/customers", {
@@ -102,9 +87,6 @@ async function checkUserLocked(token) {
   return false;
 }
 
-// ==========================
-// 🔧 LOAD THÔNG TIN NGƯỜI DÙNG
-// ==========================
 function loadUserInfo(user) {
   document.getElementById("admin-name").textContent = user.name || "Không rõ";
   document.getElementById("admin-role").textContent =
@@ -112,9 +94,6 @@ function loadUserInfo(user) {
   document.getElementById("admin-avatar").src = "/frontend/img/avt.jpg";
 }
 
-// ==========================
-// 🚪 XỬ LÝ ĐĂNG XUẤT
-// ==========================
 async function handleLogout(event) {
   event.preventDefault();
 
@@ -141,9 +120,7 @@ function initLogoutButton() {
   }
 }
 
-// ==========================
-// 🟢 INIT ALL
-// ==========================
+
 document.addEventListener("DOMContentLoaded", async () => {
   // Sidebar & menu
   initMenuLinks();
@@ -162,4 +139,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Logout
   initLogoutButton();
+
 });

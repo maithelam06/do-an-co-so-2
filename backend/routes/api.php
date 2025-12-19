@@ -1,37 +1,24 @@
 <?php
-
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
-
-
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
-
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\PasswordOtpController;
-
-
-
-
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VnpayController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CategoryController;
-
 use App\Http\Controllers\VnpayReportController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\ChatController;
-
 use App\Http\Controllers\OrderShipmentController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CouponController;
-
-
-
 
 // 🔐 Auth
 Route::post('/register', [RegisterController::class, 'store']);
@@ -70,8 +57,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/cart/update/{itemId}', [CartController::class, 'updateQuantity']);
     Route::delete('/cart/clear', [CartController::class, 'clearCart']);
     Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple']);
-
-    Route::post('/orders', [OrderController::class, 'store']);
 });
 
 // Đơn hàng cho admin (public API – ông đang dùng thẳng trên FE admin)
@@ -87,22 +72,18 @@ Route::post('/orders/{id}/vnpay-refund', [OrderController::class, 'markVnpayRefu
 //Duyệt hoàn tiền thủ công
 Route::post('/orders/{id}/approve-refund', [OrderController::class, 'approveRefund']);
 
-// USER
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/my-orders', [OrderController::class, 'myOrders']);
     Route::post('/orders/{orderId}/cancel', [OrderController::class, 'cancelOrder']);
+    Route::post('/orders', [OrderController::class, 'store']);
 });
 
-
-
+Route::get('/orders/count', [OrderController::class, 'count']);
 
 
 Route::get('/customers', [CustomerController::class, 'index']);
 Route::patch('/customers/{id}/status', [CustomerController::class, 'updateStatus']);
-
-
-
-
 
 Route::post('/vnpay/create', [VnpayController::class, 'createPayment']);
 Route::get('/vnpay/return', [VnpayController::class, 'return']);
@@ -141,7 +122,13 @@ Route::prefix('chat')->group(function () {
 
 
 
+// 📂 Categories
 Route::get('/categories', [CategoryController::class, 'index']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+Route::patch('/categories/{id}/toggle', [CategoryController::class, 'toggle']);
 
 
 Route::middleware('auth:sanctum')->get('/orders/{orderId}/shipments', [OrderShipmentController::class, 'index']);
@@ -163,7 +150,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->post('/user/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
-
 
 
 //mã giảm giá

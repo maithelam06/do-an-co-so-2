@@ -366,4 +366,13 @@ class OrderController extends Controller
             'order'   => $order,
         ]);
     }
+
+    public function count()
+    {
+        $count = Order::count();
+
+        return response()->json([
+            'total_orders' => $count
+        ]);
+    }
 }
