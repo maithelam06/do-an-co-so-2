@@ -84,7 +84,7 @@
 6. **Chạy migrations và seeders**:
    ```bash
    php artisan migrate
-   php artisan db:seed  # Tạo tài khoản admin
+   php artisan db:seed --class=AdminUserSeeder  # tài khoản admin lúc setup lúc đầu
    php artisan storage:link  # để upload ảnh lên
    
    ```
