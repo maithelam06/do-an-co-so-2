@@ -27,7 +27,11 @@
 
 1. **Clone repository**:
    ```bash
+<<<<<<< HEAD
    git clone <https://github.com/maithelam06/do-an-co-so-2>
+=======
+   git clone https://github.com/maithelam06/do-an-co-so-2
+>>>>>>> d4f2fee9904752a87738758db677514c02a29e58
    cd backend
    ```
 
@@ -76,9 +80,22 @@
    php artisan key:generate
    ```
 
+<<<<<<< HEAD
 6. **Import dữ liệu từ file SQL dump**:
    - Tải file SQL từ link `https://drive.google.com/file/d/1TRHZsDguR1kaH7sTpOt2LTtR7aljGaN2/view?usp=sharing`
    - Import vào database:
+=======
+6. **Chạy migrations và seeders**:
+   ```bash
+   php artisan migrate
+   php artisan db:seed --class=AdminUserSeeder  # tài khoản admin lúc setup lúc đầu
+   php artisan storage:link  # để upload ảnh lên
+   
+   ```
+
+   **Import dữ liệu đầy đủ từ file SQL dump** (tùy chọn):
+   - Vào link `https://drive.google.com/file/d/1PEYycCckPDsN_d4umX1Dam812iWbbLy4/view?usp=sharing` với dữ liệu đầy đủ, import vào database:
+>>>>>>> d4f2fee9904752a87738758db677514c02a29e58
      ```bash
      mysql -u your_username -p your_database < path/to/dacs.sql
      ```
