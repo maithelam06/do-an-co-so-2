@@ -27,7 +27,7 @@
 
 1. **Clone repository**:
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/maithelam06/do-an-co-so-2>
    cd backend
    ```
 
@@ -36,12 +36,7 @@
    composer install
    ```
 
-3. **Cài đặt dependencies Node.js**:
-   ```bash
-   npm install
-   ```
-
-4. **Cấu hình môi trường**:
+3. **Cấu hình môi trường**:
    - Sao chép file `.env.example` thành `.env`:
      ```bash
      cp .env.example .env
@@ -81,18 +76,17 @@
    php artisan key:generate
    ```
 
-6. **Chạy migrations và seeders**:
-   ```bash
-   php artisan migrate
-   php artisan db:seed  # Tạo tài khoản admin 
-   ```
-
-   **Import dữ liệu đầy đủ từ file SQL dump** (tùy chọn):
-   - Vào link `https://drive.google.com/file/d/1PEYycCckPDsN_d4umX1Dam812iWbbLy4/view?usp=sharing` với dữ liệu đầy đủ, import vào database:
+6. **Import dữ liệu từ file SQL dump**:
+   - Tải file SQL từ link `https://drive.google.com/file/d/1TRHZsDguR1kaH7sTpOt2LTtR7aljGaN2/view?usp=sharing`
+   - Import vào database:
      ```bash
      mysql -u your_username -p your_database < path/to/dacs.sql
      ```
-   - Hoặc dùng phpMyAdmin: Import > Chọn file `dacs.sql` > Go
+     Hoặc dùng phpMyAdmin: Import > Chọn file `dacs.sql` > Go
+   - Sau khi import xong, chạy seeder để tạo tài khoản admin:
+     ```bash
+     php artisan db:seed --class=AdminUserSeeder
+     ```
 
 7. **Build assets**:
    ```bash

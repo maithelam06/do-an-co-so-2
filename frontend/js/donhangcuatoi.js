@@ -591,6 +591,7 @@ function openReviewModal(orderId, isEdit = false) {
 
 // Submit Đánh giá
 async function submitReview(orderId) {
+  let hasError = false;
   const order = orders.find((o) => o.id === orderId);
 
   // Đã đánh giá rồi thì không cho đánh nữa
@@ -623,10 +624,16 @@ async function submitReview(orderId) {
       return;
     }
 
+    const reviewData = {
+      productId: productId,
+      rating: rating,
+      comment: textarea.value.trim(),
+    };
+
     // Gửi từng product lên API
     try {
       const response = await fetch(
-        `${API_BASE_URL}/products/${review.productId}/review`,
+        `${API_BASE_URL}/products/${reviewData.productId}/review`,
         {
           method: "POST",
           headers: {
@@ -634,8 +641,8 @@ async function submitReview(orderId) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            rating: review.rating,
-            comment: review.comment,
+            rating: reviewData.rating,
+            comment: reviewData.comment,
             order_id: orderId,
           }),
         }
